@@ -13,6 +13,11 @@
             --light-grey: #f4f4f4;
             --alert-red: #da291c;
             --success-green: #009639;
+            --monitor-bg: #111111;
+            --monitor-green: #00ff00;
+            --monitor-cyan: #00ffff;
+            --monitor-yellow: #ffff00;
+            --monitor-red: #ff3333;
         }
 
         body {
@@ -205,6 +210,14 @@
         .btn:hover {
             background-color: #004a93;
         }
+        
+        .btn-secondary {
+            background-color: var(--mid-grey);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--dark-grey);
+        }
 
         .quiz-question {
             margin-bottom: 20px;
@@ -232,6 +245,88 @@
         .correct { color: var(--success-green); }
         .incorrect { color: var(--alert-red); }
 
+        /* Simulation Specific Styles */
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .sim-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .monitor {
+            background-color: var(--monitor-bg);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .monitor-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .monitor-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .monitor-label {
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .monitor-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .val-hr { color: var(--monitor-green); }
+        .val-spo2 { color: var(--monitor-cyan); }
+        .val-rr { color: var(--monitor-yellow); }
+        .val-bp { color: var(--monitor-red); }
+
+        .abg-display {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .abg-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .sim-feedback {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 5px solid #ffeeba;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .sim-case-selector {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -248,6 +343,7 @@
         <button class="tab-button" onclick="openTab('hamilton')">Hamilton T1 Setup</button>
         <button class="tab-button" onclick="openTab('monitoring')">Monitoring</button>
         <button class="tab-button" onclick="openTab('scenarios')">Scenarios</button>
+        <button class="tab-button" onclick="openTab('simulator')">Simulations</button>
         <button class="tab-button" onclick="openTab('quiz')">Quiz</button>
     </div>
 
@@ -454,40 +550,124 @@
 
         <div class="card">
             <h3>Scenario 1: COPD Exacerbation</h3>
-            <p><strong>Presentation:</strong> A 68-year-old man presents with worsening breathlessness. He has a background of severe COPD. His respiratory rate is 28 breaths per minute. He is using accessory muscles. An ABG on 15L oxygen shows:</p>
+            <p><strong>Presentation:</strong> A 68-year-old man presents with worsening breathlessness. He has a background of severe COPD. He sits on the edge of the bed using accessory muscles. His respiratory rate is 32 breaths per minute. An ABG on 2L oxygen via nasal cannula shows:</p>
             <ul>
-                <li>pH: 7.28</li>
-                <li>PaCO2: 9.8 kPa</li>
-                <li>PaO2: 8.5 kPa</li>
-                <li>Bicarbonate: 32 mmol/L</li>
+                <li>pH: 7.26</li>
+                <li>PaCO2: 10.2 kPa</li>
+                <li>PaO2: 7.1 kPa</li>
+                <li>Bicarbonate: 34 mmol/L</li>
             </ul>
-            <p><strong>Physiological Issue:</strong> He has type 2 respiratory failure. He is failing to clear carbon dioxide due to shallow breathing and gas trapping. The acidaemia is life-threatening.</p>
+            <p><strong>Pre-NIV Pathophysiology:</strong> He has life-threatening acute-on-chronic type 2 respiratory failure. Severe airway inflammation causes premature airway collapse during exhalation. This traps gas in the alveoli. The trapped gas generates an intrinsic positive end-expiratory pressure (auto-PEEP) of approximately +6 cmH2O. His diaphragm is pushed flat and operates at a severe mechanical disadvantage. To draw a new breath, he must generate a negative intrathoracic pressure of -8 cmH2O just to overcome the auto-PEEP. This causes extreme fatigue. His tidal volumes drop to 200ml. This shallow breathing vastly increases dead space ventilation and causes PaCO2 to spike. Alveolar hypoventilation leads to profound V/Q mismatching.</p>
+            
             <p><strong>Hamilton T1 Setup:</strong></p>
             <ul>
                 <li>Mode: NIV-ST</li>
-                <li>PEEP: 5 cmH2O. This overcomes his intrinsic PEEP and reduces inspiratory work.</li>
-                <li>Psupport: 10 cmH2O. This provides a total IPAP of 15 cmH2O. This pressure gap drives his tidal volume up.</li>
-                <li>FiO2: Titrate down to achieve SpO2 88-92%.</li>
+                <li>PEEP: 5 cmH2O. </li>
+                <li>Psupport: 12 cmH2O. </li>
+                <li>FiO2: Titrate to achieve SpO2 88-92%.</li>
             </ul>
-            <p><strong>Next Steps:</strong> Reassess clinically in 15 minutes. Repeat the ABG in 1 hour. If the repeat pH is 7.30 and PaCO2 is 9.0 kPa, he is improving but still acidotic. Increase the Psupport to 12 cmH2O. This increases the total IPAP to 17 cmH2O. The larger tidal volume will clear more CO2. Repeat the ABG after another hour.</p>
+            
+            <p><strong>Post-NIV Pathophysiology:</strong> Applying 5 cmH2O of PEEP externally balances his internal auto-PEEP. His inspiratory effort required to trigger a breath drops from -8 cmH2O to just -1 cmH2O. This provides immediate relief to his fatigued diaphragm. The Psupport of 12 cmH2O delivers a targeted pressure boost during inspiration. His tidal volume increases from 200ml to 450ml. This massive increase in alveolar ventilation clears the retained CO2. Fresh oxygen reaches previously under-ventilated alveoli. This rapidly corrects the V/Q mismatch.</p>
+            
+            <p><strong>Next Steps:</strong> Reassess clinically in 15 minutes. Repeat the ABG in 1 hour. Adjust Psupport based on the new PaCO2 and pH.</p>
         </div>
 
         <div class="card">
             <h3>Scenario 2: Cardiogenic Pulmonary Oedema</h3>
-            <p><strong>Presentation:</strong> A 75-year-old woman presents with sudden onset severe dyspnoea. She has a history of ischaemic heart disease. She is sitting forward and sweating. Auscultation reveals widespread fine crackles. Her respiratory rate is 36 breaths per minute. Her SpO2 is 82% on 15L oxygen via a non-rebreathe mask.</p>
-            <p><strong>Physiological Issue:</strong> She has severe hypoxic respiratory failure. High left ventricular end-diastolic pressure has forced fluid into her alveoli. She has a massive intrapulmonary shunt.</p>
+            <p><strong>Presentation:</strong> A 75-year-old woman presents with sudden onset severe dyspnoea. She has a history of ischaemic heart disease. She sits upright and sweats profusely. You hear widespread fine crackles on auscultation. Her respiratory rate is 36 breaths per minute. Her SpO2 is 82% on 15L oxygen via a non-rebreathe mask. Her blood pressure is 180/100 mmHg.</p>
+            
+            <p><strong>Pre-NIV Pathophysiology:</strong> She has severe hypoxic type 1 respiratory failure. Acute left ventricular failure causes high left ventricular end-diastolic pressure (LVEDP). This pressure transmits backwards into the pulmonary circulation. Hydrostatic forces push transudate fluid from the capillaries into the interstitial spaces and alveoli. Fluid-filled alveoli collapse. They receive pulmonary blood flow but zero ventilation. This creates a massive right-to-left intrapulmonary shunt. The V/Q ratio in these affected lung units drops to zero. Lung compliance falls sharply. She breathes rapidly to maintain minute ventilation against stiff lungs.</p>
+            
             <p><strong>Hamilton T1 Setup:</strong></p>
             <ul>
                 <li>Mode: NIV</li>
-                <li>PEEP: 10 cmH2O. This acts as her CPAP. It pushes fluid out of the alveoli and reduces her left ventricular afterload.</li>
-                <li>Psupport: 0 cmH2O. She does not need ventilatory assistance to clear CO2.</li>
-                <li>FiO2: 100% initially. Wean as her oxygenation improves.</li>
+                <li>PEEP: 10 cmH2O.</li>
+                <li>Psupport: 0 cmH2O.</li>
+                <li>FiO2: 100% initially.</li>
             </ul>
-            <p><strong>Next Steps:</strong> Monitor her blood pressure closely. The applied CPAP reduces venous return. This can cause severe hypotension if she is relatively hypovolaemic. Ensure she receives concurrent medical therapy including nitrates to further reduce preload. Reassess clinically and via ABG.</p>
+            
+            <p><strong>Post-NIV Pathophysiology:</strong> Applying a constant CPAP of 10 cmH2O physically forces fluid out of the alveoli and back into the pulmonary interstitium. The pressure splints collapsed alveoli open. This restores her functional residual capacity (FRC). Ventilation returns to the previously shunted areas. V/Q matching improves dramatically. Oxygen diffuses normally again. Furthermore, the positive intrathoracic pressure compresses the vena cava. This reduces venous return and lowers right ventricular preload. The positive pressure also surrounds the failing left ventricle. This lowers the transmural pressure required to eject blood. Left ventricular afterload falls. Her cardiac output improves.</p>
+            
+            <p><strong>Next Steps:</strong> Monitor her blood pressure closely. The reduced venous return can cause sudden hypotension. Continue medical therapy including IV nitrates. Wean the FiO2 as her oxygenation improves.</p>
         </div>
     </div>
 
-    <!-- TAB 6: Quiz -->
+    <!-- TAB 6: Interactive Simulator -->
+    <div id="simulator" class="tab-content">
+        <h2>Interactive Clinical Simulator</h2>
+        <p>Apply settings on the Hamilton T1 and observe the simulated physiological response. Treat the patient in real-time.</p>
+
+        <div class="sim-case-selector">
+            <button class="btn" onclick="loadSimulation('copd')">Load Case 1: COPD</button>
+            <button class="btn btn-secondary" onclick="loadSimulation('cpo')">Load Case 2: Pulm Oedema</button>
+        </div>
+
+        <div id="active-case-desc" class="card" style="display: none;">
+            <h3 id="case-title">Case Title</h3>
+            <p id="case-details">Details</p>
+        </div>
+
+        <div class="sim-grid" id="sim-interface" style="display: none;">
+            <!-- Left Panel: Monitor -->
+            <div class="monitor">
+                <div class="monitor-row">
+                    <span class="monitor-label">HR (bpm)</span>
+                    <span class="monitor-value val-hr" id="sim-hr">--</span>
+                </div>
+                <div class="monitor-row">
+                    <span class="monitor-label">SpO2 (%)</span>
+                    <span class="monitor-value val-spo2" id="sim-spo2">--</span>
+                </div>
+                <div class="monitor-row">
+                    <span class="monitor-label">RR (resp/min)</span>
+                    <span class="monitor-value val-rr" id="sim-rr">--</span>
+                </div>
+                <div class="monitor-row">
+                    <span class="monitor-label">NIBP (mmHg)</span>
+                    <span class="monitor-value val-bp" id="sim-bp">--/--</span>
+                </div>
+
+                <div class="abg-display">
+                    <div style="margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px;"><strong>Arterial Blood Gas</strong></div>
+                    <div class="abg-grid">
+                        <div>pH: <span id="sim-ph">--</span></div>
+                        <div>PaCO2: <span id="sim-pco2">--</span> kPa</div>
+                        <div>PaO2: <span id="sim-po2">--</span> kPa</div>
+                        <div>HCO3: <span id="sim-hco3">--</span> mmol/L</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Ventilator Controls -->
+            <div class="controls">
+                <h3>Hamilton T1 Controls</h3>
+                <div class="control-group">
+                    <label for="sim-peep">PEEP: <span id="sim-peep-val" class="value-display">5</span> cmH2O</label>
+                    <input type="range" id="sim-peep" min="0" max="15" value="5" oninput="document.getElementById('sim-peep-val').textContent = this.value">
+                </div>
+                <div class="control-group">
+                    <label for="sim-ps">Psupport: <span id="sim-ps-val" class="value-display">0</span> cmH2O</label>
+                    <input type="range" id="sim-ps" min="0" max="20" value="0" oninput="document.getElementById('sim-ps-val').textContent = this.value">
+                </div>
+                <div class="control-group">
+                    <label for="sim-fio2">FiO2: <span id="sim-fio2-val" class="value-display">21</span> %</label>
+                    <input type="range" id="sim-fio2" min="21" max="100" value="21" oninput="document.getElementById('sim-fio2-val').textContent = this.value">
+                </div>
+                
+                <div class="card" style="background: white; padding: 10px; margin-top: 15px;">
+                    <strong>Total IPAP: <span id="sim-ipap-val" style="color: var(--alert-red);">5</span> cmH2O</strong>
+                </div>
+
+                <button class="btn" style="width: 100%;" onclick="applySimulationSettings()">Apply Settings & Assess</button>
+            </div>
+        </div>
+
+        <div id="sim-feedback" class="sim-feedback" style="display: none;">
+            Feedback will appear here after you apply settings.
+        </div>
+    </div>
+
+    <!-- TAB 7: Quiz -->
     <div id="quiz" class="tab-content">
         <h2>Knowledge Check</h2>
         <p>Test your physiological understanding and practical Hamilton T1 skills.</p>
@@ -562,24 +742,22 @@
         document.getElementById(tabName).classList.add("active");
         event.currentTarget.classList.add("active");
 
-        // Redraw canvas if physiology tab is opened
         if(tabName === 'physiology') {
             drawCanvas();
         }
     }
 
-    // Canvas Logic
+    // Canvas Logic (Physiology Tab)
     const canvas = document.getElementById('pressureCanvas');
     const ctx = canvas.getContext('2d');
     const epapSlider = document.getElementById('epap-slider');
     const psSlider = document.getElementById('ps-slider');
-    
     const epapValDisplay = document.getElementById('epap-val');
     const psValDisplay = document.getElementById('ps-val');
     const ipapValDisplay = document.getElementById('ipap-val');
 
     function drawCanvas() {
-        // Handle high DPI displays
+        if (!canvas) return;
         const rect = canvas.parentNode.getBoundingClientRect();
         canvas.width = rect.width;
         canvas.height = 300;
@@ -598,13 +776,11 @@
         
         ctx.clearRect(0, 0, width, height);
 
-        // Map pressure (0-35) to Y coordinates
         const maxPressure = 35;
         function getScaleY(pressure) {
             return height - padding - ((pressure / maxPressure) * (height - 2 * padding));
         }
 
-        // Draw Grid and Axes
         ctx.strokeStyle = '#e0e0e0';
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -612,20 +788,18 @@
             const y = getScaleY(i);
             ctx.moveTo(padding, y);
             ctx.lineTo(width, y);
-            // Y-axis labels
             ctx.fillStyle = '#768692';
             ctx.font = '12px Arial';
             ctx.fillText(i, 10, y + 4);
         }
         ctx.stroke();
 
-        // Draw Axes
         ctx.strokeStyle = '#333';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(padding, 0);
-        ctx.lineTo(padding, height - padding); // Y axis
-        ctx.lineTo(width, height - padding); // X axis
+        ctx.lineTo(padding, height - padding); 
+        ctx.lineTo(width, height - padding); 
         ctx.stroke();
         
         ctx.fillStyle = '#333';
@@ -637,9 +811,8 @@
         ctx.fillText("Pressure (cmH2O)", -40, -5);
         ctx.restore();
 
-        // Draw Waveform
         const startX = padding;
-        const cycleWidth = (width - padding) / 2; // Show 2 cycles
+        const cycleWidth = (width - padding) / 2; 
         
         ctx.strokeStyle = '#005eb8';
         ctx.lineWidth = 4;
@@ -647,31 +820,18 @@
         
         for (let i = 0; i < 2; i++) {
             const offsetX = startX + (i * cycleWidth);
-            
-            // Expiration (baseline at EPAP)
             if (i === 0) ctx.moveTo(offsetX, getScaleY(epap));
             else ctx.lineTo(offsetX, getScaleY(epap));
-            
-            ctx.lineTo(offsetX + cycleWidth * 0.1, getScaleY(epap)); // Hold EPAP
-            
-            // Inspiration (rise to IPAP)
+            ctx.lineTo(offsetX + cycleWidth * 0.1, getScaleY(epap)); 
             ctx.lineTo(offsetX + cycleWidth * 0.3, getScaleY(ipap)); 
-            
-            // Hold IPAP
             ctx.lineTo(offsetX + cycleWidth * 0.5, getScaleY(ipap));
-            
-            // Expiration (fall to EPAP)
             ctx.lineTo(offsetX + cycleWidth * 0.8, getScaleY(epap));
-            
-            // Hold EPAP
             ctx.lineTo(offsetX + cycleWidth, getScaleY(epap));
         }
         ctx.stroke();
 
-        // Draw Reference Lines for EPAP and IPAP
         ctx.setLineDash([5, 5]);
         
-        // EPAP Line
         ctx.strokeStyle = '#009639';
         ctx.beginPath();
         ctx.moveTo(padding, getScaleY(epap));
@@ -680,7 +840,6 @@
         ctx.fillStyle = '#009639';
         ctx.fillText("EPAP", width - 40, getScaleY(epap) - 5);
 
-        // IPAP Line
         ctx.strokeStyle = '#da291c';
         ctx.beginPath();
         ctx.moveTo(padding, getScaleY(ipap));
@@ -689,26 +848,164 @@
         ctx.fillStyle = '#da291c';
         ctx.fillText("IPAP", width - 40, getScaleY(ipap) - 5);
 
-        ctx.setLineDash([]); // Reset
+        ctx.setLineDash([]); 
     }
 
-    // Event Listeners for Sliders
-    epapSlider.addEventListener('input', drawCanvas);
-    psSlider.addEventListener('input', drawCanvas);
+    if (epapSlider) epapSlider.addEventListener('input', drawCanvas);
+    if (psSlider) psSlider.addEventListener('input', drawCanvas);
 
-    // Initial Draw
     window.onload = function() {
         drawCanvas();
     };
 
-    // Handle Window Resize
     window.addEventListener('resize', () => {
         if(document.getElementById('physiology').classList.contains('active')) {
             drawCanvas();
         }
     });
 
-    // Quiz Logic
+    // --- Interactive Simulator Logic ---
+    let currentSimCase = null;
+    let patientState = {};
+
+    const cases = {
+        copd: {
+            title: "68M - COPD Exacerbation",
+            desc: "Patient presents with severe respiratory distress. RR 34. Using accessory muscles. He requires BiPAP to clear CO2 and overcome auto-PEEP.",
+            base: { hr: 115, rr: 34, spo2: 82, sys: 150, dia: 90, ph: 7.24, pco2: 10.5, po2: 6.5, hco3: 34 },
+            type: "bipap"
+        },
+        cpo: {
+            title: "75F - Cardiogenic Pulmonary Oedema",
+            desc: "Patient presents sitting forward, sweating, with widespread fine crackles. High blood pressure. She requires CPAP to recruit alveoli and reduce afterload.",
+            base: { hr: 125, rr: 38, spo2: 78, sys: 195, dia: 105, ph: 7.32, pco2: 5.2, po2: 5.5, hco3: 24 },
+            type: "cpap"
+        }
+    };
+
+    function updateMonitorDisplay() {
+        document.getElementById('sim-hr').textContent = Math.round(patientState.hr);
+        document.getElementById('sim-spo2').textContent = Math.round(patientState.spo2);
+        document.getElementById('sim-rr').textContent = Math.round(patientState.rr);
+        document.getElementById('sim-bp').textContent = `${Math.round(patientState.sys)}/${Math.round(patientState.dia)}`;
+        
+        document.getElementById('sim-ph').textContent = patientState.ph.toFixed(2);
+        document.getElementById('sim-pco2').textContent = patientState.pco2.toFixed(1);
+        document.getElementById('sim-po2').textContent = patientState.po2.toFixed(1);
+        document.getElementById('sim-hco3').textContent = patientState.hco3;
+    }
+
+    function loadSimulation(caseId) {
+        currentSimCase = cases[caseId];
+        // Clone the base state so we do not overwrite the default
+        patientState = JSON.parse(JSON.stringify(currentSimCase.base)); 
+        
+        document.getElementById('case-title').textContent = currentSimCase.title;
+        document.getElementById('case-details').textContent = currentSimCase.desc;
+        document.getElementById('active-case-desc').style.display = "block";
+        document.getElementById('sim-interface').style.display = "grid";
+        document.getElementById('sim-feedback').style.display = "none";
+        
+        // Reset sliders
+        document.getElementById('sim-peep').value = 0;
+        document.getElementById('sim-ps').value = 0;
+        document.getElementById('sim-fio2').value = 21;
+        updateSimSliderDisplays();
+
+        updateMonitorDisplay();
+    }
+
+    function updateSimSliderDisplays() {
+        const peep = parseInt(document.getElementById('sim-peep').value);
+        const ps = parseInt(document.getElementById('sim-ps').value);
+        document.getElementById('sim-peep-val').textContent = peep;
+        document.getElementById('sim-ps-val').textContent = ps;
+        document.getElementById('sim-fio2-val').textContent = document.getElementById('sim-fio2').value;
+        document.getElementById('sim-ipap-val').textContent = peep + ps;
+    }
+
+    // Attach event listeners to simulator sliders to update IPAP dynamically
+    document.getElementById('sim-peep').addEventListener('input', updateSimSliderDisplays);
+    document.getElementById('sim-ps').addEventListener('input', updateSimSliderDisplays);
+
+    function applySimulationSettings() {
+        if (!currentSimCase) return;
+
+        const peep = parseInt(document.getElementById('sim-peep').value);
+        const ps = parseInt(document.getElementById('sim-ps').value);
+        const fio2 = parseInt(document.getElementById('sim-fio2').value);
+        const feedbackEl = document.getElementById('sim-feedback');
+        
+        let feedbackText = "";
+
+        if (currentSimCase.type === "bipap") {
+            // COPD Logic
+            let newPco2 = currentSimCase.base.pco2;
+            let newRr = currentSimCase.base.rr;
+            let newSpo2 = currentSimCase.base.spo2;
+
+            if (peep < 4) {
+                feedbackText += "PEEP is too low. The patient is struggling against auto-PEEP. ";
+            } else {
+                newRr -= 4; // PEEP relieves work of breathing
+                feedbackText += "PEEP counteracts auto-PEEP. Work of breathing drops. ";
+            }
+
+            if (ps < 5) {
+                feedbackText += "Psupport is too low. Tidal volume is poor. PaCO2 remains high. ";
+            } else {
+                let pco2Drop = (ps - 4) * 0.4; 
+                newPco2 = Math.max(6.5, currentSimCase.base.pco2 - pco2Drop);
+                newRr -= (ps * 0.3);
+                feedbackText += "Psupport increases tidal volume. PaCO2 clears. pH improves. ";
+            }
+
+            newSpo2 = Math.min(100, currentSimCase.base.spo2 + ((fio2 - 21) * 0.4) + (peep * 0.5));
+            
+            if (fio2 > 40 && newSpo2 > 92) {
+                feedbackText += "Warning: SpO2 exceeds target (88-92%). Risk of worsening hypercapnia. Wean FiO2. ";
+            }
+
+            patientState.pco2 = newPco2;
+            patientState.ph = 7.4 - ((newPco2 - 5.3) * 0.05); // Rough pH calculation
+            patientState.rr = Math.max(16, newRr);
+            patientState.spo2 = newSpo2;
+            patientState.po2 = currentSimCase.base.po2 + ((fio2 - 21) * 0.3);
+
+        } else if (currentSimCase.type === "cpap") {
+            // CPO Logic
+            let newSpo2 = currentSimCase.base.spo2;
+            let newRr = currentSimCase.base.rr;
+            let newSys = currentSimCase.base.sys;
+
+            if (ps > 0) {
+                feedbackText += "Warning: You applied Psupport. This patient requires CPAP (Psupport = 0). Extra inspiratory pressure is unnecessary and may be poorly tolerated. ";
+            }
+
+            if (peep < 5) {
+                feedbackText += "PEEP is too low to recruit fluid-filled alveoli. ";
+            } else {
+                newSpo2 = Math.min(100, currentSimCase.base.spo2 + (peep * 2) + ((fio2 - 21) * 0.3));
+                newRr = Math.max(20, currentSimCase.base.rr - (peep * 1.2));
+                newSys = currentSimCase.base.sys - (peep * 3); // Preload/Afterload reduction
+                
+                feedbackText += "CPAP recruits alveoli. Oxygenation improves. Venous return drops, improving blood pressure and cardiac workload. ";
+            }
+
+            patientState.spo2 = newSpo2;
+            patientState.rr = newRr;
+            patientState.sys = newSys;
+            patientState.dia = currentSimCase.base.dia - (peep * 1.5);
+            patientState.po2 = currentSimCase.base.po2 + (peep * 0.5) + ((fio2 - 21) * 0.4);
+        }
+
+        updateMonitorDisplay();
+        
+        feedbackEl.textContent = feedbackText;
+        feedbackEl.style.display = "block";
+    }
+
+    // --- Quiz Logic ---
     function submitQuiz() {
         const q1 = document.querySelector('input[name="q1"]:checked');
         const q2 = document.querySelector('input[name="q2"]:checked');
