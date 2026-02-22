@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIV Guide: Hamilton T1 in the ED</title>
+    <style>
+        :root {
+            --primary-blue: #005eb8;
+            --light-blue: #e8f0f8;
+            --dark-grey: #333333;
+            --mid-grey: #768692;
+            --light-grey: #f4f4f4;
+            --alert-red: #da291c;
+            --success-green: #009639;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: var(--dark-grey);
+            background-color: var(--light-grey);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--mid-grey);
+            outline: none;
+        }
+
+        .tab-button:hover {
+            color: var(--primary-blue);
+            background-color: var(--light-blue);
+        }
+
+        .tab-button.active {
+            color: white;
+            background-color: var(--primary-blue);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .card {
+            background: var(--light-grey);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .warning-card {
+            border-left: 5px solid var(--alert-red);
+            background: #fdf0ef;
+        }
+
+        ul {
+            margin: 0 0 15px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Interactive Diagram Styles */
+        .interactive-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .interactive-section {
+                flex-direction: row;
+            }
+        }
+
+        .controls {
+            flex: 1;
+            background: var(--light-blue);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .chart-container {
+            flex: 2;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            position: relative;
+            background: white;
+        }
+
+        canvas {
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+
+        .value-display {
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .equation-box {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #004a93;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        #quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .correct { color: var(--success-green); }
+        .incorrect { color: var(--alert-red); }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>NIV in the ED</h1>
+    <p>A practical guide for Junior Doctors using the Hamilton T1 Ventilator</p>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab('physiology')">Physiology</button>
+        <button class="tab-button" onclick="openTab('indications')">Indications</button>
+        <button class="tab-button" onclick="openTab('hamilton')">Hamilton T1 Setup</button>
+        <button class="tab-button" onclick="openTab('monitoring')">Monitoring</button>
+        <button class="tab-button" onclick="openTab('scenarios')">Scenarios</button>
+        <button class="tab-button" onclick="openTab('quiz')">Quiz</button>
+    </div>
+
+    <!-- TAB 1: Physiology -->
+    <div id="physiology" class="tab-content active">
+        <h2>NIV Physiology</h2>
+        <p>Non-Invasive Ventilation provides positive pressure to the airways. This improves gas exchange and reduces the work of breathing. You must understand the underlying mechanics to treat your patients effectively.</p>
+        
+        <div class="card">
+            <h3>Hypercapnic Failure Mechanics (COPD)</h3>
+            <p>COPD patients suffer from airflow limitation and gas trapping. They cannot fully empty their lungs before the next breath begins. This creates intrinsic PEEP (auto-PEEP).</p>
+            <p>Auto-PEEP forces the patient to generate highly negative pleural pressures just to initiate a breath. This causes severe diaphragm fatigue. Applying EPAP externally counterbalances this auto-PEEP. It splints the small airways open during exhalation. This reduces the inspiratory effort required.</p>
+            <p>Adding Psupport increases the tidal volume. A larger tidal volume increases minute ventilation. Higher minute ventilation washes out retained carbon dioxide.</p>
+        </div>
+
+        <div class="card">
+            <h3>Hypoxic Failure Mechanics (Cardiogenic Pulmonary Oedema)</h3>
+            <p>Left ventricular failure causes hydrostatic pressure to push fluid into the alveoli. Fluid-filled alveoli cannot participate in gas exchange. This creates an intrapulmonary shunt and profound hypoxia.</p>
+            <p>Applying CPAP provides a constant positive pressure. This pressure splints collapsed alveoli open. It increases functional residual capacity and physically pushes fluid out of the alveolar space.</p>
+            <p>Crucially, CPAP alters cardiac haemodynamics. Positive intrathoracic pressure decreases venous return to the right heart. This reduces right ventricular preload. It also decreases left ventricular transmural pressure. This reduces left ventricular afterload. Your patient's failing heart will pump much more effectively against a lower afterload.</p>
+        </div>
+
+        <div class="card">
+            <h3>Key Terms Summary</h3>
+            <ul>
+                <li><strong>CPAP:</strong> Delivers a single, constant pressure. It increases functional residual capacity and improves oxygenation.</li>
+                <li><strong>BiPAP:</strong> Delivers two varying levels of pressure.</li>
+                <li><strong>EPAP:</strong> The lower pressure during exhalation. It maintains alveolar recruitment and overcomes auto-PEEP.</li>
+                <li><strong>IPAP:</strong> The higher pressure during inhalation. It provides a pressure boost to increase tidal volume and clear carbon dioxide.</li>
+            </ul>
+        </div>
+
+        <h3>Interactive Pressure Diagram</h3>
+        <p>Use the sliders to understand how EPAP and Pressure Support dictate the final IPAP.</p>
+        
+        <div class="interactive-section">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="epap-slider">EPAP (PEEP): <span id="epap-val" class="value-display">5</span> cmH2O</label>
+                    <input type="range" id="epap-slider" min="4" max="15" value="5">
+                    <small>Splints airways and counteracts auto-PEEP.</small>
+                </div>
+                <div class="control-group">
+                    <label for="ps-slider">Pressure Support (Psupport): <span id="ps-val" class="value-display">10</span> cmH2O</label>
+                    <input type="range" id="ps-slider" min="0" max="20" value="10">
+                    <small>Drives tidal volume and clears CO2.</small>
+                </div>
+                <div class="card" style="margin-top: 20px; background: white;">
+                    <strong>Calculated IPAP: <span id="ipap-val" style="font-size: 1.5em; color: var(--alert-red);">15</span> cmH2O</strong>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="pressureCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: Indications -->
+    <div id="indications" class="tab-content">
+        <h2>Clinical Indications & Guidelines</h2>
+        <p>Follow the BTS guidelines when prescribing NIV in the Emergency Department. Patient selection dictates success.</p>
+
+        <div class="card">
+            <h3>Type 2 Respiratory Failure (Hypercapnic)</h3>
+            <p><strong>Primary Indication:</strong> COPD Exacerbation.</p>
+            <p>Initiate BiPAP if the patient meets these criteria after 1 hour of optimal medical therapy. Optimal therapy includes bronchodilators, systemic steroids, and controlled oxygen titrated to 88-92%.</p>
+            <ul>
+                <li>pH &lt; 7.35</li>
+                <li>PaCO2 &gt; 6.5 kPa</li>
+                <li>Respiratory rate &gt; 23 breaths per minute</li>
+            </ul>
+            <p>You can also use BiPAP for neuromuscular disease (like Motor Neurone Disease) or chest wall deformities presenting with acute hypercapnic respiratory failure.</p>
+        </div>
+
+        <div class="card">
+            <h3>Type 1 Respiratory Failure (Hypoxic)</h3>
+            <p><strong>Primary Indication:</strong> Cardiogenic Pulmonary Oedema.</p>
+            <ul>
+                <li>Initiate CPAP if the patient remains hypoxic or in severe respiratory distress despite medical therapy. Medical therapy includes nitrates, diuretics, and high-flow oxygen.</li>
+                <li>Start CPAP at 5 to 10 cmH2O.</li>
+                <li>Do not use BiPAP routinely for pulmonary oedema unless concurrent hypercapnia is present.</li>
+            </ul>
+        </div>
+
+        <div class="card warning-card">
+            <h3>Contraindications</h3>
+            <p>Do not use NIV if the patient has any of the following:</p>
+            <ul>
+                <li>Impaired consciousness (GCS &lt; 8); an exception is hypercapnic encephalopathy where a short trial is acceptable under close supervision.</li>
+                <li>Inability to protect their airway or clear secretions.</li>
+                <li>Severe facial trauma, burns, or recent upper airway surgery.</li>
+                <li>Undrained pneumothorax.</li>
+                <li>Vomiting or bowel obstruction.</li>
+                <li>Life-threatening hypoxaemia requiring immediate intubation.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TAB 3: Hamilton T1 Setup -->
+    <div id="hamilton" class="tab-content">
+        <h2>Setting up the Hamilton T1</h2>
+        <p>The Hamilton T1 calculates pressure settings differently from standard ward BiPAP machines. You must understand the additive nature of the settings to avoid under-ventilating your patient.</p>
+
+        <div class="equation-box">
+            IPAP = PEEP + Psupport
+        </div>
+
+        <div class="card">
+            <h3>Key Settings Translation</h3>
+            <ul>
+                <li><strong>PEEP</strong> on the Hamilton equals <strong>EPAP</strong>.</li>
+                <li><strong>Psupport</strong> (in NIV mode) or <strong>Pinsp</strong> (in NIV-ST mode) equals the additional pressure given above PEEP.</li>
+                <li>You cannot input the IPAP directly. You must calculate the Psupport required to reach your target IPAP.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Advanced Settings: Triggers</h3>
+            <p>The ventilator must synchronise with the patient. It does this using flow triggers.</p>
+            <ul>
+                <li><strong>Inspiratory Trigger:</strong> This determines how much effort the patient needs to initiate a breath. Leave it at the default setting initially. If the patient struggles to trigger breaths, lower the threshold.</li>
+                <li><strong>ETS (Expiratory Trigger Sensitivity):</strong> This dictates when the machine cycles from inspiration back to expiration. It is a percentage of peak inspiratory flow. COPD patients need a long time to exhale. Set the ETS higher (e.g. 40-50%) for COPD patients. This cuts off the inspiratory pressure sooner and gives them more time to empty their lungs.</li>
+            </ul>
+        </div>
+
+        <h3>Step-by-Step Initial Setup (COPD Exacerbation)</h3>
+        <ol>
+            <li>Turn on the Hamilton T1 and complete the pre-use checks.</li>
+            <li>Select your patient category (Adult) and input their height.</li>
+            <li>Select the mode: Choose <strong>NIV</strong> (spontaneous breaths only) or <strong>NIV-ST</strong> (sets a backup respiratory rate).</li>
+            <li>Go to the <strong>Controls</strong> tab.</li>
+            <li>Set <strong>PEEP</strong> to 4 or 5 cmH2O (This is your EPAP).</li>
+            <li>Set <strong>Psupport</strong> (or Pinsp) to 10 cmH2O. This provides a total IPAP of 15 cmH2O.</li>
+            <li>Set <strong>FiO2</strong> to maintain target saturations. This is usually 88-92% for COPD.</li>
+            <li>If using NIV-ST, set a backup <strong>Rate</strong>. Aim for 12 to 15 breaths per minute.</li>
+        </ol>
+    </div>
+
+    <!-- TAB 4: Monitoring -->
+    <div id="monitoring" class="tab-content">
+        <h2>Monitoring and Titration</h2>
+        <p>NIV requires close monitoring. Assess your patient clinically and interpret their blood gases methodically.</p>
+
+        <div class="card">
+            <h3>Complications to Monitor</h3>
+            <ul>
+                <li><strong>Hypotension:</strong> Positive intrathoracic pressure reduces venous return. Check blood pressure frequently after initiating therapy.</li>
+                <li><strong>Barotrauma:</strong> High pressures can cause pneumothoraces. Examine for unequal breath sounds.</li>
+                <li><strong>Skin Breakdown:</strong> Tight masks cause nasal bridge necrosis. Apply protective dressings early.</li>
+                <li><strong>Gastric Distension:</strong> Air enters the stomach at higher pressures. This increases vomiting risk.</li>
+            </ul>
+        </div>
+
+        <h3>ABG Schedule</h3>
+        <ul>
+            <li><strong>Baseline:</strong> Before starting NIV.</li>
+            <li><strong>1 Hour:</strong> Do an ABG 1 hour after commencing NIV or 1 hour after any pressure change.</li>
+            <li><strong>4 Hours:</strong> Do another ABG to ensure ongoing improvement.</li>
+        </ul>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem</th>
+                    <th>Action on Hamilton T1</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>High PaCO2 (Not clearing)</td>
+                    <td>Increase Psupport by 2 to 3 cmH2O to increase tidal volume. Monitor patient tolerance.</td>
+                </tr>
+                <tr>
+                    <td>Low PaO2 (Hypoxia)</td>
+                    <td>Increase FiO2 first. If still hypoxic, increase PEEP by 1 to 2 cmH2O. Note: If you increase PEEP, you must also increase Psupport to maintain the same tidal volume gap.</td>
+                </tr>
+                <tr>
+                    <td>High Mask Leak (>20%)</td>
+                    <td>Reposition the mask. Check the straps. Ensure the exhalation port is clear.</td>
+                </tr>
+                <tr>
+                    <td>Patient Asynchrony</td>
+                    <td>Check leak. Adjust Inspiratory trigger or ETS. Coach the patient. Consider mild sedation only with senior critical care input.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="card warning-card">
+            <h3>When to call ICU</h3>
+            <p>Escalate to critical care immediately if the patient develops:</p>
+            <ul>
+                <li>pH dropping below 7.25 despite optimal NIV.</li>
+                <li>Falling GCS.</li>
+                <li>Haemodynamic instability.</li>
+                <li>Inability to tolerate the mask.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TAB 5: Scenarios -->
+    <div id="scenarios" class="tab-content">
+        <h2>Clinical Case Scenarios</h2>
+        <p>Apply your physiological knowledge to these common ED presentations.</p>
+
+        <div class="card">
+            <h3>Scenario 1: COPD Exacerbation</h3>
+            <p><strong>Presentation:</strong> A 68-year-old man presents with worsening breathlessness. He has a background of severe COPD. His respiratory rate is 28 breaths per minute. He is using accessory muscles. An ABG on 15L oxygen shows:</p>
+            <ul>
+                <li>pH: 7.28</li>
+                <li>PaCO2: 9.8 kPa</li>
+                <li>PaO2: 8.5 kPa</li>
+                <li>Bicarbonate: 32 mmol/L</li>
+            </ul>
+            <p><strong>Physiological Issue:</strong> He has type 2 respiratory failure. He is failing to clear carbon dioxide due to shallow breathing and gas trapping. The acidaemia is life-threatening.</p>
+            <p><strong>Hamilton T1 Setup:</strong></p>
+            <ul>
+                <li>Mode: NIV-ST</li>
+                <li>PEEP: 5 cmH2O. This overcomes his intrinsic PEEP and reduces inspiratory work.</li>
+                <li>Psupport: 10 cmH2O. This provides a total IPAP of 15 cmH2O. This pressure gap drives his tidal volume up.</li>
+                <li>FiO2: Titrate down to achieve SpO2 88-92%.</li>
+            </ul>
+            <p><strong>Next Steps:</strong> Reassess clinically in 15 minutes. Repeat the ABG in 1 hour. If the repeat pH is 7.30 and PaCO2 is 9.0 kPa, he is improving but still acidotic. Increase the Psupport to 12 cmH2O. This increases the total IPAP to 17 cmH2O. The larger tidal volume will clear more CO2. Repeat the ABG after another hour.</p>
+        </div>
+
+        <div class="card">
+            <h3>Scenario 2: Cardiogenic Pulmonary Oedema</h3>
+            <p><strong>Presentation:</strong> A 75-year-old woman presents with sudden onset severe dyspnoea. She has a history of ischaemic heart disease. She is sitting forward and sweating. Auscultation reveals widespread fine crackles. Her respiratory rate is 36 breaths per minute. Her SpO2 is 82% on 15L oxygen via a non-rebreathe mask.</p>
+            <p><strong>Physiological Issue:</strong> She has severe hypoxic respiratory failure. High left ventricular end-diastolic pressure has forced fluid into her alveoli. She has a massive intrapulmonary shunt.</p>
+            <p><strong>Hamilton T1 Setup:</strong></p>
+            <ul>
+                <li>Mode: NIV</li>
+                <li>PEEP: 10 cmH2O. This acts as her CPAP. It pushes fluid out of the alveoli and reduces her left ventricular afterload.</li>
+                <li>Psupport: 0 cmH2O. She does not need ventilatory assistance to clear CO2.</li>
+                <li>FiO2: 100% initially. Wean as her oxygenation improves.</li>
+            </ul>
+            <p><strong>Next Steps:</strong> Monitor her blood pressure closely. The applied CPAP reduces venous return. This can cause severe hypotension if she is relatively hypovolaemic. Ensure she receives concurrent medical therapy including nitrates to further reduce preload. Reassess clinically and via ABG.</p>
+        </div>
+    </div>
+
+    <!-- TAB 6: Quiz -->
+    <div id="quiz" class="tab-content">
+        <h2>Knowledge Check</h2>
+        <p>Test your physiological understanding and practical Hamilton T1 skills.</p>
+
+        <form id="quizForm">
+            <div class="quiz-question">
+                <p>1. You want to start BiPAP for a COPD patient. Your target EPAP is 5 cmH2O and target IPAP is 18 cmH2O. What settings do you enter on the Hamilton T1 in NIV mode?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="A"> PEEP = 5, Psupport = 18</label>
+                    <label><input type="radio" name="q1" value="B"> PEEP = 5, Psupport = 13</label>
+                    <label><input type="radio" name="q1" value="C"> PEEP = 18, Psupport = 5</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. According to BTS guidelines, what is the pH threshold to commence NIV in a COPD exacerbation after 1 hour of optimal medical therapy?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="A"> pH &lt; 7.45</label>
+                    <label><input type="radio" name="q2" value="B"> pH &lt; 7.35</label>
+                    <label><input type="radio" name="q2" value="C"> pH &lt; 7.25</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. You have set up CPAP for cardiogenic pulmonary oedema on the Hamilton T1. What should the Psupport setting be?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="A"> 0 cmH2O</label>
+                    <label><input type="radio" name="q3" value="B"> 5 cmH2O</label>
+                    <label><input type="radio" name="q3" value="C"> 10 cmH2O</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>4. How does CPAP physiologically benefit a patient with cardiogenic pulmonary oedema?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q4" value="A"> It increases venous return to the right heart.</label>
+                    <label><input type="radio" name="q4" value="B"> It decreases left ventricular afterload and recruits alveoli.</label>
+                    <label><input type="radio" name="q4" value="C"> It primarily increases tidal volume to wash out carbon dioxide.</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>5. Why do we apply EPAP (PEEP) in a patient with a severe COPD exacerbation?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q5" value="A"> To splint airways open and counteract intrinsic auto-PEEP.</label>
+                    <label><input type="radio" name="q5" value="B"> To forcefully expand the chest wall and increase minute ventilation.</label>
+                    <label><input type="radio" name="q5" value="C"> To decrease their respiratory drive.</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn" onclick="submitQuiz()">Submit Answers</button>
+        </form>
+
+        <div id="quiz-result"></div>
+    </div>
+
+</div>
+
+<script>
+    // Tab switching logic
+    function openTab(tabName) {
+        const contents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].classList.remove("active");
+        }
+        
+        const buttons = document.getElementsByClassName("tab-button");
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        
+        document.getElementById(tabName).classList.add("active");
+        event.currentTarget.classList.add("active");
+
+        // Redraw canvas if physiology tab is opened
+        if(tabName === 'physiology') {
+            drawCanvas();
+        }
+    }
+
+    // Canvas Logic
+    const canvas = document.getElementById('pressureCanvas');
+    const ctx = canvas.getContext('2d');
+    const epapSlider = document.getElementById('epap-slider');
+    const psSlider = document.getElementById('ps-slider');
+    
+    const epapValDisplay = document.getElementById('epap-val');
+    const psValDisplay = document.getElementById('ps-val');
+    const ipapValDisplay = document.getElementById('ipap-val');
+
+    function drawCanvas() {
+        // Handle high DPI displays
+        const rect = canvas.parentNode.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = 300;
+
+        const epap = parseInt(epapSlider.value);
+        const ps = parseInt(psSlider.value);
+        const ipap = epap + ps;
+
+        epapValDisplay.textContent = epap;
+        psValDisplay.textContent = ps;
+        ipapValDisplay.textContent = ipap;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        const padding = 40;
+        
+        ctx.clearRect(0, 0, width, height);
+
+        // Map pressure (0-35) to Y coordinates
+        const maxPressure = 35;
+        function getScaleY(pressure) {
+            return height - padding - ((pressure / maxPressure) * (height - 2 * padding));
+        }
+
+        // Draw Grid and Axes
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for(let i=0; i<=maxPressure; i+=5) {
+            const y = getScaleY(i);
+            ctx.moveTo(padding, y);
+            ctx.lineTo(width, y);
+            // Y-axis labels
+            ctx.fillStyle = '#768692';
+            ctx.font = '12px Arial';
+            ctx.fillText(i, 10, y + 4);
+        }
+        ctx.stroke();
+
+        // Draw Axes
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padding, 0);
+        ctx.lineTo(padding, height - padding); // Y axis
+        ctx.lineTo(width, height - padding); // X axis
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.fillText("Time", width / 2, height - 10);
+        
+        ctx.save();
+        ctx.translate(15, height / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText("Pressure (cmH2O)", -40, -5);
+        ctx.restore();
+
+        // Draw Waveform
+        const startX = padding;
+        const cycleWidth = (width - padding) / 2; // Show 2 cycles
+        
+        ctx.strokeStyle = '#005eb8';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        
+        for (let i = 0; i < 2; i++) {
+            const offsetX = startX + (i * cycleWidth);
+            
+            // Expiration (baseline at EPAP)
+            if (i === 0) ctx.moveTo(offsetX, getScaleY(epap));
+            else ctx.lineTo(offsetX, getScaleY(epap));
+            
+            ctx.lineTo(offsetX + cycleWidth * 0.1, getScaleY(epap)); // Hold EPAP
+            
+            // Inspiration (rise to IPAP)
+            ctx.lineTo(offsetX + cycleWidth * 0.3, getScaleY(ipap)); 
+            
+            // Hold IPAP
+            ctx.lineTo(offsetX + cycleWidth * 0.5, getScaleY(ipap));
+            
+            // Expiration (fall to EPAP)
+            ctx.lineTo(offsetX + cycleWidth * 0.8, getScaleY(epap));
+            
+            // Hold EPAP
+            ctx.lineTo(offsetX + cycleWidth, getScaleY(epap));
+        }
+        ctx.stroke();
+
+        // Draw Reference Lines for EPAP and IPAP
+        ctx.setLineDash([5, 5]);
+        
+        // EPAP Line
+        ctx.strokeStyle = '#009639';
+        ctx.beginPath();
+        ctx.moveTo(padding, getScaleY(epap));
+        ctx.lineTo(width, getScaleY(epap));
+        ctx.stroke();
+        ctx.fillStyle = '#009639';
+        ctx.fillText("EPAP", width - 40, getScaleY(epap) - 5);
+
+        // IPAP Line
+        ctx.strokeStyle = '#da291c';
+        ctx.beginPath();
+        ctx.moveTo(padding, getScaleY(ipap));
+        ctx.lineTo(width, getScaleY(ipap));
+        ctx.stroke();
+        ctx.fillStyle = '#da291c';
+        ctx.fillText("IPAP", width - 40, getScaleY(ipap) - 5);
+
+        ctx.setLineDash([]); // Reset
+    }
+
+    // Event Listeners for Sliders
+    epapSlider.addEventListener('input', drawCanvas);
+    psSlider.addEventListener('input', drawCanvas);
+
+    // Initial Draw
+    window.onload = function() {
+        drawCanvas();
+    };
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+        if(document.getElementById('physiology').classList.contains('active')) {
+            drawCanvas();
+        }
+    });
+
+    // Quiz Logic
+    function submitQuiz() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
+        const q4 = document.querySelector('input[name="q4"]:checked');
+        const q5 = document.querySelector('input[name="q5"]:checked');
+        
+        const resultDiv = document.getElementById('quiz-result');
+
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+            resultDiv.style.display = "block";
+            resultDiv.className = "incorrect";
+            resultDiv.innerHTML = "Please answer all questions before submitting.";
+            return;
+        }
+
+        let score = 0;
+        let feedback = "<h3>Quiz Results:</h3><ul>";
+
+        if (q1.value === "B") {
+            score++;
+            feedback += "<li class='correct'>Q1 Correct. IPAP = PEEP + Psupport. 5 + 13 = 18.</li>";
+        } else {
+            feedback += "<li class='incorrect'>Q1 Incorrect. On the Hamilton, IPAP = PEEP + Psupport. You need a Psupport of 13 added to a PEEP of 5 to reach 18.</li>";
+        }
+
+        if (q2.value === "B") {
+            score++;
+            feedback += "<li class='correct'>Q2 Correct. pH &lt; 7.35 is the BTS threshold for starting NIV in COPD exacerbations.</li>";
+        } else {
+            feedback += "<li class='incorrect'>Q2 Incorrect. The correct threshold is pH &lt; 7.35.</li>";
+        }
+
+        if (q3.value === "A") {
+            score++;
+            feedback += "<li class='correct'>Q3 Correct. CPAP provides a constant pressure. Set PEEP to your desired level and Psupport to 0.</li>";
+        } else {
+            feedback += "<li class='incorrect'>Q3 Incorrect. For CPAP, you do not want any additional inspiratory pressure. Psupport must be 0.</li>";
+        }
+
+        if (q4.value === "B") {
+            score++;
+            feedback += "<li class='correct'>Q4 Correct. Positive intrathoracic pressure pushes fluid out of alveoli and reduces left ventricular transmural pressure (afterload).</li>";
+        } else {
+            feedback += "<li class='incorrect'>Q4 Incorrect. CPAP actually decreases venous return and it does not actively clear CO2 like BiPAP does.</li>";
+        }
+
+        if (q5.value === "A") {
+            score++;
+            feedback += "<li class='correct'>Q5 Correct. EPAP splints the small airways open during exhalation and offsets the intrinsic auto-PEEP created by gas trapping.</li>";
+        } else {
+            feedback += "<li class='incorrect'>Q5 Incorrect. EPAP counteracts auto-PEEP. Psupport is responsible for increasing tidal volume and minute ventilation.</li>";
+        }
+
+        feedback += `</ul><p>You scored ${score} out of 5.</p>`;
+        
+        resultDiv.style.display = "block";
+        resultDiv.className = score === 5 ? "card correct" : "card";
+        resultDiv.innerHTML = feedback;
+    }
+</script>
+
+</body>
+</html>
