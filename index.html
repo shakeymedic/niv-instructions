@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NIV on the HAMILTON-T1 | EMEvidence</title>
-<meta name="description" content="Interactive training aid for emergency medicine doctors and nurses: acute non-invasive ventilation on a HAMILTON-T1 style ventilator. Simulator, pre-use checks, set-up, modes, alarms, BTS/ICS clinical guidance, cases and quiz.">
+<title>HAMILTON-T1 Ventilator Trainer | EMEvidence</title>
+<meta name="description" content="HAMILTON-T1 ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.">
 <style>
 :root{
   --bg:#f2f5f9;--surface:#ffffff;--ink:#0f1b2d;--muted:#4a5b70;--line:#d6dfe9;
@@ -78,8 +78,10 @@ summary{cursor:pointer;font-weight:700;padding:10px 0}
 details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
 
 /* Hero */
-.hero{background:linear-gradient(135deg,#1e4a7d,#2563a8 60%,#2f74c0);color:#fff;padding:26px 0 22px}
-.hero h1{font-size:1.75rem;margin-bottom:.35em}
+.hero{background:linear-gradient(135deg,#1e4a7d,#2563a8 60%,#2f74c0);color:#fff;padding:16px 0 14px}
+.hero .kicker{margin-bottom:2px}
+.hero h1{font-size:1.6rem;margin-bottom:.25em}
+.hero p{margin-bottom:0}
 .hero p{color:#e3ecf8;max-width:860px}
 .hero .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .hero .chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:.85rem}
@@ -407,6 +409,16 @@ footer{background:#0f1b2d;color:#cbd5e1;margin-top:30px;padding:24px 0;font-size
 footer a{color:#9cc3ff}
 .toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#0f1b2d;color:#fff;padding:10px 16px;border-radius:10px;z-index:200;max-width:calc(100% - 32px);font-size:.9rem;box-shadow:0 8px 20px rgba(0,0,0,.3)}
 .toast[hidden]{display:none}
+.tbar{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 0}
+.tbar h2{font-size:1.25rem;margin:0 0 8px}
+.ttabs{display:flex;gap:6px;flex-wrap:wrap}
+.ttabs button{border:1px solid var(--line);border-bottom:0;background:var(--bg);color:var(--brand-d);font-weight:700;font-size:1rem;padding:10px 18px;border-radius:10px 10px 0 0}
+.ttabs button[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.ttabs button:hover{background:var(--brand-l)}
+.ttabs button[aria-selected="true"]:hover{background:var(--brand-d)}
+.tpanel-toc{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
+.tpanel-toc a{font-size:.85rem;font-weight:600;text-decoration:none;background:var(--brand-l);color:var(--brand-d);border-radius:999px;padding:4px 11px}
+@media (max-width:560px){.ttabs button{flex:1 1 0;padding:9px 8px;font-size:.92rem}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 </style>
 </head>
@@ -421,30 +433,17 @@ footer a{color:#9cc3ff}
 <nav class="topnav" aria-label="Page sections">
   <ul>
     <li><a href="#sim">Simulator</a></li>
-    <li><a href="#checks">Pre-use checks</a></li>
-    <li><a href="#setup">Set-up</a></li>
-    <li><a href="#modes">Modes</a></li>
-    <li><a href="#alarms">Alarms &amp; troubleshooting</a></li>
-    <li><a href="#clinical">Clinical</a></li>
-    <li><a href="#cases">Cases</a></li>
-    <li><a href="#quiz">Quiz</a></li>
-    <li><a href="#refs">References</a></li>
+    <li><a href="#niv" data-goto="niv">NIV teaching</a></li>
+    <li><a href="#invasive" data-goto="inv">Invasive ventilation teaching</a></li>
   </ul>
 </nav>
 
 <main id="main">
 <section class="hero">
   <div class="wrap">
-    <p class="kicker" style="color:#ffd24a">Emergency medicine · acute NIV</p>
-    <h1>Acute NIV on the HAMILTON-T1: an interactive training aid</h1>
-    <p>For ED doctors and nurses. Practise on an on-screen simulator, then work through the pre-use checks, circuit and mask set-up, the NIV modes, alarm troubleshooting and the BTS/ICS clinical standards.</p>
-    <div class="chips">
-      <span class="chip">Interactive ventilator simulation</span>
-      <span class="chip">Pre-use check walk-through</span>
-      <span class="chip">11 alarm scenarios</span>
-      <span class="chip">4 cases + 16-question quiz</span>
-      <span class="chip">BTS/ICS 2016 · BTS QS 2018</span>
-    </div>
+    <p class="kicker" style="color:#ffd24a">Emergency medicine · ventilation</p>
+    <h1>HAMILTON-T1 ventilator trainer</h1>
+    <p>Practise on an on-screen HAMILTON-T1 with every adult mode, then choose NIV or invasive ventilation teaching below the simulator. For ED doctors and nurses.</p>
   </div>
 </section>
 
@@ -457,7 +456,7 @@ footer a{color:#9cc3ff}
       <div>
         <div class="sim-banner" role="note">
           <span><strong>SIMULATION</strong>: a training recreation of the HAMILTON-T1 front panel and screen, built from the SW 3.0.x operator's manual. It is not Hamilton Medical software and is not endorsed by Hamilton Medical.</span>
-          <span class="bopts"><span id="simClock" aria-live="off">On NIV 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button></span>
+          <span class="bopts"><span id="simClock" aria-live="off">Ventilated 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button></span>
         </div>
         <div class="t1-wrap" id="device">
           <div class="t1-scaler" id="t1scaler">
@@ -520,7 +519,7 @@ footer a{color:#9cc3ff}
                 </div>
                 <button class="t1-knob" id="knob" aria-label="Press-and-turn knob. Arrow keys turn it, Enter or Space presses it"><span class="rot" id="knobRot"></span><span class="ring"></span></button>
               </div>
-              <div class="t1-lower" aria-hidden="true"><div class="latch"></div><div class="badge">EMEvidence<small>NIV TRAINING SIMULATOR</small></div><div class="bleed"></div></div>
+              <div class="t1-lower" aria-hidden="true"><div class="latch"></div><div class="badge">EMEvidence<small>VENTILATOR TRAINING SIMULATOR</small></div><div class="bleed"></div></div>
             </div>
           </div>
           </div>
@@ -531,7 +530,7 @@ footer a{color:#9cc3ff}
           <button id="kCW" aria-label="Turn knob clockwise">Turn + ⟳</button>
           <span class="hint">You can also drag round the knob, scroll on it, or focus it and use the arrow keys.</span>
         </div>
-        <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The patient scenarios were written for NIV: choosing an invasive mode assumes the patient has been intubated. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
       </div>
 
       <aside class="side" aria-label="Patient and scenario controls">
@@ -541,6 +540,10 @@ footer a{color:#9cc3ff}
             <option value="copd">AECOPD: pH 7.23, pCO2 9.6 kPa (bilevel NIV)</option>
             <option value="cpo">Cardiogenic pulmonary oedema (CPAP)</option>
             <option value="ohs">Obesity hypoventilation (needs higher EPAP)</option>
+            <optgroup label="Intubated (invasive ventilation)">
+              <option value="ards">ARDS: hypoxaemic, stiff lungs</option>
+              <option value="asthma">Severe asthma: air trapping</option>
+            </optgroup>
           </select>
           <div class="row" style="margin-top:8px;justify-content:space-between">
             <span style="font-size:.85rem;font-weight:700">Clinical clock</span>
@@ -584,6 +587,18 @@ footer a{color:#9cc3ff}
   </div>
 </section>
 
+<!-- ================= TEACHING TABS ================= -->
+<section class="tbar" id="teaching" aria-labelledby="teaching-h">
+  <div class="wrap">
+    <h2 id="teaching-h">Teaching</h2>
+    <div class="ttabs" role="tablist" aria-label="Choose the teaching">
+      <button role="tab" id="tab-niv" aria-controls="tp-niv" aria-selected="true" data-tp="niv">NIV</button>
+      <button role="tab" id="tab-inv" aria-controls="tp-inv" aria-selected="false" tabindex="-1" data-tp="inv">Invasive ventilation</button>
+    </div>
+  </div>
+</section>
+<div id="tp-niv" role="tabpanel" aria-labelledby="tab-niv">
+<div class="wrap"><nav class="tpanel-toc" aria-label="NIV teaching sections"><a href="#checks">Pre-use checks</a><a href="#setup">Set-up</a><a href="#modes">Modes</a><a href="#alarms">Alarms</a><a href="#clinical">Clinical</a><a href="#cases">Cases</a><a href="#quiz">Quiz</a><a href="#refs">References</a></nav></div>
 <!-- ================= PRE-USE CHECKS ================= -->
 <section id="checks" class="block" aria-labelledby="checks-h">
   <div class="wrap">
@@ -728,6 +743,11 @@ footer a{color:#9cc3ff}
         </ul>
         <p><b>Use for:</b> acute hypercapnic respiratory failure (COPD, OHS, neuromuscular or chest wall disease). This is the closest equivalent to "BiPAP S/T" with a backup rate, as BTS/ICS Figure 1 describes.</p>
       </div>
+    </div>
+    <div class="card">
+      <span class="tag">Also on the T1</span>
+      <h3 style="margin-top:.4em">HiFlowO2 (high-flow nasal oxygen)</h3>
+      <p>A continuous flow of air/oxygen through a nasal cannula: you set <b>Flow</b> (2–60 l/min for adults) and <b>Oxygen</b>. It is for patients who can breathe spontaneously and is <b>not life-supporting</b>. You can only select it in Standby, disconnection and apnea alarms are inactive, and Manual breath is disabled. The screen shows Oxygen and Flow trends and, with SpO2 on, the pleth (manual section 10.5). The manual warns that excessive flows could lead to barotrauma or pneumothorax, and that HiFlowO2 should not be used during intrahospital transport.</p>
     </div>
 
     <div class="card">
@@ -1007,11 +1027,231 @@ footer a{color:#9cc3ff}
     </div>
   </div>
 </section>
+</div>
+<div id="tp-inv" role="tabpanel" aria-labelledby="tab-inv" hidden>
+<div class="wrap"><nav class="tpanel-toc" aria-label="Invasive ventilation teaching sections"><a href="#inv-start">Starting</a><a href="#inv-modes">Modes</a><a href="#inv-asv">ASV and bilevel</a><a href="#inv-gas">Oxygen, CO2, trapping</a><a href="#inv-trouble">Troubleshooting</a><a href="#inv-cpr">CPR</a><a href="#inv-practice">Practise</a><a href="#inv-quiz">Quiz</a><a href="#inv-refs">References</a></nav></div>
+<!-- ================= INVASIVE TEACHING ================= -->
+<section id="inv-start" class="block" aria-labelledby="inv-start-h">
+  <div class="wrap">
+    <h2 id="inv-start-h">Starting invasive ventilation on the T1</h2>
+    <p class="lead">For the first hour after intubation in the ED, before ICU takes over. Use your trust's post-intubation checklist and local ventilation guidance alongside this.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0">Set-up sequence</h3>
+        <ol>
+          <li><b>Preoperational check</b> in Standby: leak test and flow sensor calibration (System &gt; Tests &amp; calib). It is the same check as for NIV: see the <a href="#checks" data-goto="niv">walk-through in the NIV tab</a>.</li>
+          <li><b>Patient group, sex and height</b> in the Standby window. The T1 calculates <b>ideal body weight (IBW)</b> from these, and IBW sets the starting Vt, the APRV and ASV starting values and the ASV targets. Measure height; do not guess from weight.</li>
+          <li><b>Choose a mode</b> (Modes, then Confirm), review the controls in the Controls window that opens, then Confirm again.</li>
+          <li><b>Set the alarm limits</b> (Alarms &gt; Limits). The high Pressure limit also sets <b>Plimit</b> (10 cmH2O below it), the highest pressure the T1 will use in the adaptive modes. The blue line on the pressure waveform shows Plimit.</li>
+          <li><b>Start ventilation</b>, check chest movement, SpO2, waveforms and blood pressure, confirm tube position (waveform capnography), then take a blood gas.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">A common starting point</h3>
+        <table>
+          <tbody>
+            <tr><th scope="row">Mode</th><td>(S)CMV+ (volume-targeted, adaptive pressure) or PCV+. Most passive, paralysed patients are started on a fully controlled mode.</td></tr>
+            <tr><th scope="row">Vt</th><td>6–8 ml/kg IBW. Use 6 ml/kg in ARDS (ARDSNet; FICM/ICS guideline: under 6 ml/kg).</td></tr>
+            <tr><th scope="row">Rate</th><td>Often 14–20 b/min. Match the patient's pre-intubation minute ventilation if they were compensating for a metabolic acidosis. Use a low rate in asthma and COPD.</td></tr>
+            <tr><th scope="row">PEEP</th><td>5 cmH2O to start; higher in hypoxaemia (see <a href="#inv-gas">Oxygenation</a>).</td></tr>
+            <tr><th scope="row">Oxygen</th><td>Start high after intubation, then titrate down to the SpO2 target.</td></tr>
+            <tr><th scope="row">I:E</th><td>1:2 is typical; 1:3 or longer when air trapping is a risk.</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.88rem;color:var(--muted);margin-top:8px">These are widely taught starting values, not a protocol. Check your local guidance.</p>
+      </div>
+    </div>
+    <div class="note warn"><b>Pplateau ≤ 30 cmH2O.</b> The ARDS Network trial used Vt 6 ml/kg predicted body weight with plateau pressure kept at or below 30 cmH2O, and showed lower mortality than 12 ml/kg. The T1 shows <b>Pplateau</b> and <b>Driving pressure</b> (Monitoring &gt; General 1) for mandatory, time-cycled breaths.</div>
+  </div>
+</section>
+
+<section id="inv-modes" class="block" aria-labelledby="inv-modes-h">
+  <div class="wrap">
+    <h2 id="inv-modes-h">The invasive modes on the T1</h2>
+    <p class="lead">Every T1 mode delivers pressure-controlled or pressure-supported breaths. The difference is what you set and what the ventilator adjusts. Names follow the SW 3.0.x manual (chapter 7).</p>
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th scope="col">Mode</th><th scope="col">Breaths</th><th scope="col">You set</th><th scope="col">The T1 adjusts</th></tr></thead>
+        <tbody>
+          <tr><td><b>(S)CMV+</b> (APVcmv)</td><td>Mandatory, volume-targeted. The patient can trigger extra mandatory breaths.</td><td>Vt, Rate, I:E (or TI), PEEP, Oxygen, Trigger, P-ramp</td><td>Inspiratory pressure, breath by breath, to reach Vt (at least 5 cmH2O above PEEP, never above Plimit)</td></tr>
+          <tr><td><b>SIMV+</b> (APVsimv)</td><td>Volume-targeted mandatory breaths, plus pressure-supported spontaneous breaths between them</td><td>Vt, Rate, timing, PEEP, ΔPsupport, ETS</td><td>Pressure of the mandatory breaths</td></tr>
+          <tr><td><b>VS</b> (volume support)</td><td>Spontaneous only</td><td>Vt, PEEP, Oxygen, Trigger, ETS</td><td>Pressure support, to reach Vt</td></tr>
+          <tr><td><b>PCV+</b></td><td>Mandatory, pressure-controlled</td><td>ΔPcontrol, Rate, I:E (or TI), PEEP, Oxygen</td><td>Nothing: Vt varies with compliance and resistance</td></tr>
+          <tr><td><b>PSIMV+</b></td><td>Pressure-controlled mandatory breaths plus spontaneous breaths. With <b>PSync</b>, a triggered breath in the mandatory window is flow cycled.</td><td>ΔPcontrol (ΔPinsp with PSync), ΔPsupport, Rate, TI, PEEP</td><td>Nothing</td></tr>
+          <tr><td><b>SPONT</b></td><td>Spontaneous, pressure supported (ΔPsupport 0 gives CPAP)</td><td>ΔPsupport, PEEP, Oxygen, Trigger, ETS</td><td>Nothing; Apnea backup if the patient stops</td></tr>
+          <tr><td><b>DuoPAP</b></td><td>Two CPAP levels, with spontaneous breathing at both</td><td>P high, T high, Rate, PEEP/CPAP, ΔPsupport</td><td>Synchronises the switch to P high with patient effort</td></tr>
+          <tr><td><b>APRV</b></td><td>Long P high with brief releases to P low; spontaneous breathing at any time</td><td>P high, P low, T high, T low</td><td>Nothing; APRV keeps its own settings, separate from other modes</td></tr>
+          <tr><td><b>ASV</b></td><td>Pressure-controlled mandatory and pressure-supported spontaneous breaths</td><td>%MinVol, PEEP, Oxygen (plus Plimit)</td><td>Rate, Vt, TI and pressure, within lung-protective rules</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.88rem;color:var(--muted);margin:8px 0 0">The T1 times mandatory breaths with Rate and TI, and shows either I:E or TI depending on the breath timing chosen in Configuration (manual 7.1.1). The trainer shows I:E in (S)CMV+ and PCV+ and TI in the SIMV modes.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0">Volume target or pressure target?</h3>
+        <p>In <b>(S)CMV+, SIMV+ and VS</b> you set the volume and the T1 finds the pressure. If the lungs get stiffer, pressure rises; if it reaches Plimit, Vt falls short and the <b>Pressure limitation</b> alarm appears.</p>
+        <p>In <b>PCV+ and PSIMV+</b> you set the pressure. If the lungs get stiffer or the tube blocks, <b>Vt falls</b>, so the Vt and ExpMinVol low alarms are your warning.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Apnea backup</h3>
+        <p>In the modes where the patient must trigger (SIMV+, PSIMV+, SPONT, VS, DuoPAP, APRV), set <b>Apnea time</b> and keep <b>Apnea backup</b> on (Controls &gt; Apnea). If the patient stops breathing, the T1 switches to backup ventilation and shows "Apnea ventilation". A sedated, paralysed patient on SPONT will be ventilated only by backup breaths. Try it in the simulator.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="inv-asv" class="block" aria-labelledby="inv-asv-h">
+  <div class="wrap">
+    <h2 id="inv-asv-h">ASV and the bilevel modes</h2>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag">Intelligent ventilation</span>
+        <h3 style="margin-top:.4em">ASV (Adaptive Support Ventilation)</h3>
+        <ul>
+          <li>You set <b>%MinVol</b>: the target minute ventilation as a percentage of normal for the patient's IBW (100% is normal; the trainer uses 0.1 l/kg/min). Also set PEEP, Oxygen and the high Pressure limit.</li>
+          <li>ASV chooses the rate and Vt it expects to need the least work of breathing, then adjusts pressure and mandatory rate breath by breath. Passive patients get mandatory breaths; active patients get supported breaths.</li>
+          <li>Lung-protective rules (ASV quick guide): Vt at least 4.4 ml/kg IBW (twice the estimated dead space); maximum rate set by expiratory time constant (at least 1 × RCexp inspiration and 2 × RCexp expiration); pressure never above Plimit; target volume no more than 1.5 × the Vt high limit.</li>
+          <li><b>ASV Graph</b> (Graphics): the green curve is the target minute volume, the dashed box is the safety frame, the circle is the target and the cross is the patient's actual breathing.</li>
+          <li>Adjusting: in a passive patient with a high pCO2, increase %MinVol in steps of 10–20%; in an active patient in distress, steps of 20% with 2–5 minutes between them (ASV quick guide).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Bilevel</span>
+        <h3 style="margin-top:.4em">DuoPAP and APRV</h3>
+        <p><b>DuoPAP</b> switches between P high and PEEP/CPAP. The manual describes it as resembling PCV+ at conventional settings with no spontaneous breathing, looking more like PSIMV+ at low rates, and like APRV when T high takes up almost the whole cycle. ΔPsupport is set above PEEP, so it only helps breaths at P high when PEEP + ΔPsupport is above P high.</p>
+        <p><b>APRV</b> holds P high for a long T high and releases briefly to P low. For a patient with no spontaneous breathing it is similar to pressure-controlled inverse ratio ventilation. The first time you select it, the T1 proposes P high 20, P low 5, T high 5.4 s and T low 0.6 s for IBW over 60 kg. A short T low leaves air in the lungs on purpose, so watch AutoPEEP.</p>
+        <p style="font-size:.9rem;color:var(--muted)">APRV is a specialist mode. In the ED, use it only under ICU guidance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="inv-gas" class="block" aria-labelledby="inv-gas-h">
+  <div class="wrap">
+    <h2 id="inv-gas-h">Oxygenation, CO2 and air trapping</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3 style="margin-top:0">Oxygenation</h3>
+        <p>Driven by <b>Oxygen</b> and <b>mean airway pressure</b> (mostly PEEP). In hypoxaemia, raise PEEP as well as Oxygen, watching blood pressure and Pplateau. Common targets: SpO2 88–95% in ARDS (ARDSNet), 94–98% for most other acutely ill patients (BTS oxygen guideline), 88–92% if at risk of hypercapnic failure.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">CO2</h3>
+        <p>Driven by <b>alveolar minute ventilation</b>: rate × (Vt − dead space). If you lower Vt to protect the lungs, raise the rate to keep minute ventilation. In ARDS a modestly raised pCO2 is usually accepted rather than giving large tidal volumes.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Air trapping (AutoPEEP)</h3>
+        <p>If expiration is too short for the lungs to empty, the next breath starts on top of trapped air. Expiratory flow does not return to zero before the next breath, <b>AutoPEEP</b> rises (Monitoring), delivered Vt falls in pressure-controlled breaths, and blood pressure can fall. Treat with a <b>lower rate</b> and a <b>longer expiratory time</b> (I:E 1:3 or 1:4). In severe asthma, accept a raised pCO2 to allow this.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="inv-trouble" class="block" aria-labelledby="inv-trouble-h">
+  <div class="wrap">
+    <h2 id="inv-trouble-h">Troubleshooting a ventilated patient</h2>
+    <div class="note bad"><b>If the patient is deteriorating and the cause is not obvious:</b> call for help, disconnect from the ventilator and hand-ventilate with 100% oxygen through a bag and the tube, with waveform capnography attached. Then work through DOPES.</div>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0">DOPES</h3>
+        <ul>
+          <li><b>D</b>isplacement of the tube: check capnography, tube length at the teeth, chest movement.</li>
+          <li><b>O</b>bstruction: kinked tube, secretions (pass a suction catheter), biting.</li>
+          <li><b>P</b>neumothorax: unequal chest movement, rising pressures, falling blood pressure.</li>
+          <li><b>E</b>quipment: circuit disconnection or leak, flow sensor, oxygen supply, ventilator failure.</li>
+          <li><b>S</b>tacked breaths: air trapping (see AutoPEEP above). Briefly disconnecting lets trapped air out.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">T1 alarms worth knowing</h3>
+        <ul>
+          <li><b>Pressure high</b>: the breath is cut short at the high Pressure limit. Think obstruction, coughing, biting, bronchospasm, pneumothorax.</li>
+          <li><b>Pressure limitation</b>: inspiratory pressure has been held at Plimit. In the adaptive modes this means the T1 needs more than Plimit to reach Vt. Lungs stiffer? Tube partly blocked? Vt too high?</li>
+          <li><b>Disconnection on patient side</b> (invasive modes): expired volume is much less than inspired volume.</li>
+          <li><b>Vt low / ExpMinVol low</b>: leak, disconnection, or stiffer lungs in a pressure-controlled mode.</li>
+          <li><b>Inspiratory volume limitation</b>: delivered Vt is more than 1.5 times the Vt high alarm limit. The T1 ends the breath, and the APV modes lower the pressure for the next breath by 3 cmH2O.</li>
+          <li><b>Apnea</b> / <b>Apnea ventilation</b>: no breaths within the Apnea time; backup ventilation starts if it is enabled.</li>
+        </ul>
+        <p style="font-size:.9rem;color:var(--muted)">In the simulator, open the alarm buffer and touch an alarm for its help text. Use <b>Inject a problem</b> to practise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="inv-cpr" class="block" aria-labelledby="inv-cpr-h">
+  <div class="wrap">
+    <h2 id="inv-cpr-h">CPR ventilation</h2>
+    <div class="card">
+      <p>Touch <b>Modes</b>, then the red <b>CPR</b> button, review the controls and Confirm. You can start it from Standby or during ventilation (manual section 10.9).</p>
+      <ul>
+        <li>Default mode APVcmv: Rate 10, I:E 1:5, PEEP 5, Plimit 45, Oxygen 100%, Vt 6 ml/kg IBW (PCV+ can be configured instead, with ΔPcontrol 15).</li>
+        <li>Flow trigger is Off and P-ramp is fixed at 50 ms, so chest compressions do not trigger breaths.</li>
+        <li>The ExpMinVol, fTotal and Vt alarm limits go to their minimum and maximum. The CPR ON alarm and the <b>CPR Timer</b> show while it is on.</li>
+        <li>To stop: select and confirm another mode (alarm limits return to their previous settings), or enter Standby. "Start CPR" restarts it from Standby.</li>
+      </ul>
+      <p style="font-size:.9rem;color:var(--muted)">Follow Resuscitation Council UK guidance for ventilation during CPR; this section only describes the T1 function.</p>
+    </div>
+  </div>
+</section>
+
+<section id="inv-practice" class="block" aria-labelledby="inv-practice-h">
+  <div class="wrap">
+    <h2 id="inv-practice-h">Practise on the simulator</h2>
+    <p class="lead">Choose an <b>Intubated</b> patient in the Patient list beside the simulator. Each starts in Standby on (S)CMV+ at typical post-intubation settings, with its own guided tasks.</p>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag red">ARDS</span>
+        <h3 style="margin-top:.4em">Hypoxaemic, stiff lungs</h3>
+        <ol>
+          <li>Start ventilation and open Monitoring &gt; General 1. Note the high driving pressure at 8 ml/kg.</li>
+          <li>Lower Vt to about 6 ml/kg IBW and raise the rate to keep minute ventilation.</li>
+          <li>Raise PEEP and bring Oxygen down towards 40%, keeping SpO2 88–95%.</li>
+          <li>Take a blood gas. Then try PCV+ with the same pressures and see how Vt changes.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <span class="tag amb">Severe asthma</span>
+        <h3 style="margin-top:.4em">Air trapping</h3>
+        <ol>
+          <li>Start ventilation at Rate 18, I:E 1:2. Watch the expiratory flow fail to reach zero, AutoPEEP rise and the blood pressure fall.</li>
+          <li>Lower the rate and lengthen expiration (I:E 1:4) until AutoPEEP is below 2 cmH2O.</li>
+          <li>Take a blood gas: a raised pCO2 is expected and usually accepted.</li>
+        </ol>
+      </div>
+    </div>
+    <p style="font-size:.88rem;color:var(--muted)">The physiology is a simplified single-compartment model for teaching. It does not model haemodynamics in detail, harm from excessive PEEP, or recruitment over time.</p>
+  </div>
+</section>
+
+<section id="inv-quiz" class="block" aria-labelledby="inv-quiz-h">
+  <div class="wrap">
+    <h2 id="inv-quiz-h">Quiz: invasive ventilation</h2>
+    <div class="card row" style="justify-content:space-between"><span class="score" id="invQuizScore" aria-live="polite">Score: 0 / 0</span><button class="btn sm ghost" id="invQuizReset">Reset quiz</button></div>
+    <div id="invQuizList"></div>
+  </div>
+</section>
+
+<section id="inv-refs" class="block" aria-labelledby="inv-refs-h">
+  <div class="wrap">
+    <h2 id="inv-refs-h">References and sources</h2>
+    <div class="card">
+      <ol>
+        <li>Hamilton Medical AG. <i>HAMILTON-T1 Operator's Manual</i>, software 3.0.x (10103179/03 USA, April 2024): chapter 7 (modes), section 10.5 (HiFlowO2), section 10.9 (CPR ventilation), monitored parameters. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">hamilton-medical.com (PDF)</a></li>
+        <li>Hamilton Medical AG. <i>ASV quick guide</i> (lung-protective rules, %MinVol adjustment, weaning).</li>
+        <li>Hamilton Medical AG. <i>HAMILTON-T1 Quick Guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">hamilton-medical.com (PDF)</a></li>
+        <li>The Acute Respiratory Distress Syndrome Network. Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and the acute respiratory distress syndrome. <i>N Engl J Med</i> 2000;342:1301–8. <a href="https://doi.org/10.1056/NEJM200005043421801">doi:10.1056/NEJM200005043421801</a></li>
+        <li>Griffiths MJD, McAuley DF, Perkins GD, et al. Guidelines on the management of acute respiratory distress syndrome. <i>BMJ Open Respir Res</i> 2019;6:e000420. <a href="https://doi.org/10.1136/bmjresp-2019-000420">doi:10.1136/bmjresp-2019-000420</a></li>
+        <li>O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. <i>Thorax</i> 2017;72(Suppl 1):ii1–ii90. <a href="https://doi.org/10.1136/thoraxjnl-2016-209729">doi:10.1136/thoraxjnl-2016-209729</a></li>
+      </ol>
+      <p style="font-size:.9rem;color:var(--muted)">This independent educational resource is not affiliated with or endorsed by Hamilton Medical. Content reviewed against the sources above in October 2026.</p>
+    </div>
+  </div>
+</section>
+</div>
 </main>
 
 <footer>
   <div class="wrap">
-    <p><b>Educational disclaimer.</b> This page is a training aid for healthcare professionals. It is <b>not a substitute for manufacturer training, the HAMILTON-T1 operator's manual, or your local standard operating procedure</b>, and it must not be used to make clinical decisions about an individual patient. The simulator is illustrative. Its physiology, alarm logic and screen layout are simplified and do not reproduce the device's behaviour. Device details vary by software version, options and configuration. Always follow your trust's NIV policy and seek senior advice.</p>
+    <p><b>Educational disclaimer.</b> This page is a training aid for healthcare professionals. It is <b>not a substitute for manufacturer training, the HAMILTON-T1 operator's manual, or your local standard operating procedure</b>, and it must not be used to make clinical decisions about an individual patient. The simulator is illustrative. Its physiology, alarm logic and screen layout are simplified and do not reproduce the device's behaviour. Device details vary by software version, options and configuration. Always follow your trust's NIV and ventilation policies and seek senior advice.</p>
     <p>© <span id="yr"></span> <a href="https://emevidence.org">EMEvidence</a>. British English. Last content review: October 2026.</p>
   </div>
 </footer>
@@ -1168,7 +1408,10 @@ let helpFor = null;    // alarm id whose troubleshooting help is shown
 const PROFILES = {
   copd:{name:'AECOPD', paco2:9.6, hco3:30, floor:6.5, rrBase:30, vtBase:0.32, C:0.022, tau:0.5, vd:0.25, s0:0.45, sPeep:0.005, neuralTi:0.8, effort:9, hr:112, bp:'148/86', fio2Pre:0.28, ipeep:true, R:18},
   cpo: {name:'Cardiogenic pulmonary oedema', paco2:6.4, hco3:22, floor:4.8, rrBase:34, vtBase:0.35, C:0.03, tau:0.25, vd:0.15, s0:0.87, sPeep:0.011, neuralTi:0.7, effort:12, hr:124, bp:'182/104', fio2Pre:0.6, R:9},
-  ohs: {name:'Obesity hypoventilation', paco2:9.0, hco3:32, floor:6.5, rrBase:26, vtBase:0.30, C:0.018, tau:0.35, vd:0.2, s0:0.5, sPeep:0.01, neuralTi:1.0, effort:8, hr:104, bp:'156/92', fio2Pre:0.28, needEpap:8, R:12}
+  ohs: {name:'Obesity hypoventilation', paco2:9.0, hco3:32, floor:6.5, rrBase:26, vtBase:0.30, C:0.018, tau:0.35, vd:0.2, s0:0.5, sPeep:0.01, neuralTi:1.0, effort:8, hr:104, bp:'156/92', fio2Pre:0.28, needEpap:8, R:12},
+  /* intubated, sedated and paralysed: no respiratory effort; before ventilation starts they are being hand-ventilated */
+  ards:{name:'ARDS (intubated)', paco2:6.5, hco3:22, floor:4.5, rrBase:20, vtBase:0.42, C:0.025, tau:0.3, vd:0.18, s0:0.95, sPeep:0.03, neuralTi:1.0, effort:0, hr:118, bp:'104/62', fio2Pre:1.0, R:12, sedated:true},
+  asthma:{name:'Severe asthma (intubated)', paco2:8.0, hco3:25, floor:5.0, rrBase:14, vtBase:0.5, C:0.05, tau:1.3, vd:0.18, s0:0.75, sPeep:0, neuralTi:1.0, effort:0, hr:128, bp:'112/64', fio2Pre:1.0, R:26, sedated:true}
 };
 let P = null;
 function resetPatient(id) {
@@ -1199,7 +1442,7 @@ const B = {phase:'exp', t:0, now:0, br:null, lastStart:0, lastMand:-1e9, nextEff
   vEndInsp:0, Vee:0, apvP:10, apvLim:false, vsP:10, nBreaths:0, simvC0:0, simvDue:true, ovl:null, vlimit:false};
 /* ASV state: targets from Table 15-16 */
 const A = {p:15, ti:1, fTarget:15, vtTarget:0.5, mvTarget:7, vtMin:0.3, vtMax:1, fMin:10, fMax:60, atMax:false, started:0};
-const M = {ppeak:null, peep:null, vte:null, vti:null, mv:null, ftot:null, fspont:null, fcontrol:null, vleak:null, mvleak:null, o2:null, ti:null, te:null, pmean:null, inspFlow:null, ie:null, autopeep:null};
+const M = {ppeak:null, peep:null, vte:null, vti:null, mv:null, ftot:null, fspont:null, fcontrol:null, vleak:null, mvleak:null, o2:null, ti:null, te:null, pmean:null, inspFlow:null, ie:null, autopeep:null, pplat:null, dpress:null};
 const SAMPLE_DT = 0.02, WINDOW_S = 12;
 const NBUF = Math.round(WINDOW_S / SAMPLE_DT);
 const bufP = new Float32Array(NBUF), bufF = new Float32Array(NBUF), bufV = new Float32Array(NBUF), bufPl = new Float32Array(NBUF), bufTrig = new Uint8Array(NBUF);
@@ -1334,7 +1577,7 @@ function startBreath(kind) {
   const iPeep = B.Vee / pr.C;
   const dPlung = Math.max(0, dPeff - iPeep);
   const obstructed = kind === 'spont' && !isInvasive(m) && pr.needEpap && s.peep < pr.needEpap && Math.random() < 0.4;
-  const passive = auto || P.apnoea;
+  const passive = auto || P.apnoea || P.pr.sedated;
   let Ti = 0, tiMaxHit = false, VT;
   if (pc) Ti = kind === 'manual' && !mt ? 1.0 : mt.ti;
   if (P.disc) VT = 0.01;
@@ -1409,6 +1652,8 @@ function endInsp() {
   M.inspFlow = br.Fp + br.inspLeak;
   M.pmean = br.peepM + br.dPeff * br.Ti / (br.Ti + te);
   M.autopeep = B.Vee / P.pr.C;
+  /* Pplateau and driving pressure (Vt / static compliance) are shown for mandatory, time-cycled breaths */
+  if (br.kind !== 'spont') { M.dpress = br.VT / P.pr.C; M.pplat = Math.min(M.ppeak, br.peepM + (B.Vee + br.VT) / P.pr.C); }
   B.vEndInsp = B.Vee + br.VT;
   B.phase = 'exp'; B.t = 0;
   /* per-breath alarm counters */
@@ -1488,7 +1733,7 @@ function adaptASV(br) {
 
 function effortHappens() {
   const pr = P.pr, m = V.mode;
-  if (P.apnoea || V.ambient) return;
+  if (P.apnoea || V.ambient || pr.sedated) return;
   let effort = pr.effort * (1 - 0.5 * P.fatigue) * (P.deteriorate ? 0.7 : 1);
   if (pr.ipeep && V.set.peep < 4) effort *= 0.6;
   if (pr.needEpap && !isInvasive(m) && V.set.peep < pr.needEpap && Math.random() < 0.4) effort *= 0.35;
@@ -2188,7 +2433,7 @@ function renderWindow() {
       rows1 = [['Oxygen', sb ? null : measuredO2(), 0, '%'], ['Flow', sb ? null : V.set.hflow, 0, 'l/min']];
       rows2 = [['fTotal', null, 0, 'b/min'], ['Pprox', null, 0, 'cmH2O']];
     } else {
-      rows1 = [['Ppeak', M.ppeak, 0, 'cmH2O'], ['Pmean', M.pmean, 0, 'cmH2O'], ['PEEP/CPAP', M.peep, 0, 'cmH2O'], ['AutoPEEP', niv ? null : M.autopeep, 1, 'cmH2O'], ['VTI', M.vti, 0, 'ml'], [niv ? 'VTE NIV' : 'VTE', M.vte, 0, 'ml'], [niv ? 'MinVol NIV' : 'ExpMinVol', M.mv, 1, 'l/min'], ['VLeak', M.vleak, 0, '%'], ['MVLeak', M.mvleak, 1, 'l/min']];
+      rows1 = [['Ppeak', M.ppeak, 0, 'cmH2O'], ...(niv ? [] : [['Pplateau', M.pplat, 0, 'cmH2O'], ['Driving pressure', M.dpress, 0, 'cmH2O']]), ['Pmean', M.pmean, 0, 'cmH2O'], ['PEEP/CPAP', M.peep, 0, 'cmH2O'], ['AutoPEEP', niv ? null : M.autopeep, 1, 'cmH2O'], ['VTI', M.vti, 0, 'ml'], [niv ? 'VTE NIV' : 'VTE', M.vte, 0, 'ml'], [niv ? 'MinVol NIV' : 'ExpMinVol', M.mv, 1, 'l/min'], ['VLeak', M.vleak, 0, '%'], ['MVLeak', M.mvleak, 1, 'l/min']];
       rows2 = [['fTotal', M.ftot, 0, 'b/min'], ['fControl', M.fcontrol, 0, 'b/min'], ['fSpont', M.fspont, 0, 'b/min'], ['TI', M.ti, 2, 's'], ['TE', M.te, 2, 's'], ['I:E', M.ie, 1, '1:x'], ['Insp Flow', M.inspFlow, 0, 'l/min'], ['Oxygen', sb ? null : measuredO2(), 0, '%']];
       if (V.mode === 'ASV' || APV.includes(V.mode) || V.mode === 'VS') rows2.push(['ΔPinsp', V.mode === 'ASV' ? A.p : V.mode === 'VS' ? B.vsP : B.apvP, 0, 'cmH2O']);
     }
@@ -2200,7 +2445,7 @@ function renderWindow() {
   } else if (win === 'tools') {
     h = X + tabs([['tools', 'Utilities'], ['cfg', 'Configuration']]) + `<div class="wbody" style="top:48px">${winTab === 'cfg' ? '<p class="wnote">Configuration needs an access code and is only available in Standby. Not simulated.</p>' : '<div class="wrow"><button class="wb" disabled>HPO / LPO</button><button class="wb" disabled>Set Oxygen alarm limits manually</button><button class="wb" disabled>Export logs</button></div><p class="wnote">Utilities include the oxygen source mode (high- or low-pressure O2), manual Oxygen alarm limits and log export. Not simulated. The suctioning tool is disabled in NIV and NIV-ST.</p>'}</div>`;
   } else if (win === 'events') {
-    h = X + tabs([['all', 'All']]) + `<div class="wbody" style="top:48px"><table class="wtable"><thead><tr><th>Clock</th><th>On NIV</th><th>Event</th></tr></thead><tbody>${history.map(e => `<tr><td>${e.wall}</td><td>${e.time}</td><td>${e.p === 'hi' ? '🔴 ' : e.p === 'med' || e.p === 'low' ? '🟡 ' : ''}${esc(e.t)}</td></tr>`).join('') || '<tr><td colspan="3">No events</td></tr>'}</tbody></table></div>`;
+    h = X + tabs([['all', 'All']]) + `<div class="wbody" style="top:48px"><table class="wtable"><thead><tr><th>Clock</th><th>${P.pr.sedated ? 'Ventilated' : 'On NIV'}</th><th>Event</th></tr></thead><tbody>${history.map(e => `<tr><td>${e.wall}</td><td>${e.time}</td><td>${e.p === 'hi' ? '🔴 ' : e.p === 'med' || e.p === 'low' ? '🟡 ' : ''}${esc(e.t)}</td></tr>`).join('') || '<tr><td colspan="3">No events</td></tr>'}</tbody></table></div>`;
   } else if (win === 'system') {
     const tl = [['info', 'Info'], ['tests', 'Tests & calib'], ['sensors', 'Sensors'], ['settings', 'Settings']];
     h = X + tabs(tl);
@@ -2666,6 +2911,9 @@ function fullReset(id) {
   resetPatient(id || 'copd');
   Object.assign(V, {power:true, selftest:0, standby:true, ambient:false, mode:'NIV-ST', set:{...DEFAULT_SET}, lim:{...DEFAULT_LIM}, backupOn:true, cpr:null, psync:false, sigh:false, aprvInit:false, gfx:V.gfx === 'asv' ? 'wave' : V.gfx, locked:false, night:false, o2Enrich:0, audioPause:0, manualReq:false, neb:0, startSuppress:0, standbySince:B.now, testRun:null, tests:{leak:null, flow:null, o2:'ok'}});
   if (id === 'cpo') { V.mode = 'NIV'; V.set.ps = 0; V.set.peep = 5; V.set.o2 = 60; }
+  /* intubated patients: (S)CMV+ with typical post-intubation settings for the learner to adjust */
+  if (P.pr.sedated) { V.mode = 'APVcmv'; Object.assign(V.set, {vt:Math.round(calcIBW() * 8 / 10) * 10, rate:18, ie:0.5, peep:5, o2:100}); }
+  TASKS = P.pr.sedated ? TASKS_INV[id] : TASKS_NIV;
   E = null; D = null; active.clear(); inactive.clear(); history.length = 0; helpFor = null; cursor = -1;
   for (const k in M) M[k] = null;
   Object.assign(B, {phase:'exp', t:0, br:null, starts:[], types:[], apnoeaVent:false, missLog:[], tiMaxLog:[], autoLog:[], lowVtCount:0, highVtCount:0, lossPeepT:0, highPeepCount:0, highPT:0, vols:[], apvP:10, vsP:10, ovl:null, Vee:0, vEndInsp:0, nBreaths:0, vlimit:false, apvLim:false});
@@ -2675,8 +2923,9 @@ function fullReset(id) {
   $('#prompts').innerHTML = '';
   $('#dlg').hidden = true;
   setPhysical([]);
-  TASKS.forEach(t => t.done = false); leakSeen = false;
-  addPrompt('Patient: ' + P.pr.name + '. ' + (id === 'cpo' ? 'Set up CPAP: NIV mode with ΔPsupport 0. Titrate PEEP/CPAP and Oxygen.' : 'Set up NIV-ST and titrate towards the BTS/ICS targets.') + ' The ventilator is in Standby. Run the preop check (leak test and flow sensor) first.');
+  TASKS.forEach(t => { t.done = false; t.since = null; }); leakSeen = false;
+  if (P.pr.sedated) addPrompt('Patient: ' + P.pr.name + '. Just intubated in the ED, sedated and paralysed, and being hand-ventilated with 100% oxygen. The ventilator is in Standby with (S)CMV+ at typical starting settings (Vt 8 ml/kg IBW, Rate 18, I:E 1:2, PEEP 5, Oxygen 100%). Run the preop check, start ventilation, then adjust: ' + (id === 'ards' ? 'lung-protective ventilation, PEEP and oxygen.' : 'watch AutoPEEP and give the lungs time to empty.'));
+  else addPrompt('Patient: ' + P.pr.name + '. ' + (id === 'cpo' ? 'Set up CPAP: NIV mode with ΔPsupport 0. Titrate PEEP/CPAP and Oxygen.' : 'Set up NIV-ST and titrate towards the BTS/ICS targets.') + ' The ventilator is in Standby. Run the preop check (leak test and flow sensor) first.');
   win = 'standby';
   renderEvents(); renderTasks(); renderAll(); updatePatientPanel();
 }
@@ -2693,7 +2942,7 @@ function patientTick(dtReal) {
   const dp = ventOn && !P.disc && !hfo ? P.dpAvg : 0;
   let rr = pr.rrBase - 0.45 * dp + 8 * P.fatigue + (P.spo2 < 88 ? 4 : 0) - (P.id === 'cpo' && ventOn && !P.disc ? 0.5 * V.set.peep + P.improve * 40 : 0);
   if (P.deteriorate) rr += 4;
-  P.rr = P.apnoea ? 0 : clamp(rr, 10, 45);
+  P.rr = P.apnoea || pr.sedated ? 0 : clamp(rr, 10, 45);
   P.missFrac = frac(B.missLog); P.tiMaxFrac = frac(B.tiMaxLog); P.autoFrac = frac(B.autoLog);
   let VA;
   if (!ventOn || P.disc) VA = P.VAbase * (1 - 0.3 * P.fatigue);
@@ -2702,14 +2951,15 @@ function patientTick(dtReal) {
     const eff = clamp(1 - 0.5 * P.missFrac - 0.15 * P.tiMaxFrac - 0.3 * P.autoFrac, 0.3, 1);
     VA = Math.max(0.2, (P.vtAvg - pr.vd)) * Math.max(P.rr, (M.ftot || P.rr)) * eff;
   }
-  if (P.apnoea) VA = ventOn && !P.disc && !hfo && (mandTiming() !== null || B.apnoeaVent) ? VA * (isNIV() ? 0.6 : 1) : 0.2;
+  if (P.apnoea || pr.sedated && ventOn) VA = ventOn && !P.disc && !hfo && (mandTiming() !== null || B.apnoeaVent) ? VA * (isNIV() ? 0.6 : 1) : 0.2;
   const r = VA / P.VAbase;
   let target = pr.floor + (pr.paco2 - pr.floor) * Math.exp(-0.5 * (r - 1));
   target = Math.min(target, pr.paco2 + 4);
   if (P.id !== 'cpo' && P.spo2 > 94) target += 0.6;
   if (P.deteriorate) target += 2.5;
   P.paco2 += (target - P.paco2) * Math.min(1, dtMin / 40);
-  if (r < 1.3 || P.deteriorate) P.fatigue = clamp(P.fatigue + (P.deteriorate ? 0.01 : 0.003) * dtMin, 0, 1);
+  if (pr.sedated) P.fatigue = 0;
+  else if (r < 1.3 || P.deteriorate) P.fatigue = clamp(P.fatigue + (P.deteriorate ? 0.01 : 0.003) * dtMin, 0, 1);
   else P.fatigue = clamp(P.fatigue - 0.003 * dtMin, 0, 1);
   if (P.id === 'cpo' && ventOn && !P.disc) P.improve = Math.min(0.1, P.improve + 0.0006 * dtMin);
   let fio2, peep;
@@ -2730,6 +2980,15 @@ function patientTick(dtReal) {
   trendTick();
 }
 function appearance() {
+  if (P.pr.sedated) {
+    if (V.standby) return 'Intubated, sedated and paralysed. Being hand-ventilated with a bag while you set up the ventilator.';
+    const b = [];
+    if (P.disc) b.push('circuit disconnected from the tube: no chest movement');
+    else if (P.fit !== 'good') b.push('audible leak at the tube or circuit');
+    if (M.autopeep !== null && M.autopeep > 5) b.push('chest looks hyperinflated, breath sounds quiet');
+    if (P.spo2 < 88) b.push('dusky');
+    return b.length ? 'Patient: ' + b.join('; ') + '.' : 'Intubated, sedated and paralysed. Chest rises with each ventilator breath.';
+  }
   if (P.apnoea) return 'Unresponsive. No respiratory effort seen.';
   const ph = phOf(P.paco2, P.hco3);
   const bits = [];
@@ -2745,26 +3004,33 @@ function appearance() {
   if (!bits.length) return V.standby ? 'On controlled oxygen, breathless, waiting for NIV.' : 'More settled, chest moving with each breath.';
   return 'Patient: ' + bits.join('; ') + '.';
 }
+/* illustrative: air trapping raises intrathoracic pressure and lowers blood pressure in the intubated patients */
+function bpNow() {
+  if (!P.pr.sedated || V.standby || M.autopeep === null) return P.pr.bp;
+  const [sy, di] = P.pr.bp.split('/').map(Number), drop = Math.max(0, M.autopeep - 3);
+  return Math.round(Math.max(55, sy - 4 * drop)) + '/' + Math.round(Math.max(30, di - 2.5 * drop));
+}
 function updatePatientPanel() {
   $('#pSpo2').textContent = fmt(P.spo2);
   $('#pRR').textContent = fmt(P.rr);
   $('#pHR').textContent = fmt(P.hr);
-  $('#pBP').textContent = P.pr.bp;
+  $('#pBP').textContent = bpNow();
   $('#pAppear').textContent = appearance();
-  $('#simClock').textContent = 'On NIV ' + clockStr();
+  $('#simClock').textContent = (P.pr.sedated ? 'Ventilated ' : 'On NIV ') + clockStr();
   const t = P.onNivMin;
   const due = (t >= 55 && !P.abgs.some(a => a.min >= 50 && a.min <= 120)) || (t >= 235 && !P.abgs.some(a => a.min >= 220));
   $('#abgDue').hidden = !due;
 }
 $('#btnABG').addEventListener('click', () => {
   const ph = phOf(P.paco2, P.hco3);
-  const settings = V.standby ? 'pre-NIV, FiO2 ' + Math.round(P.pr.fio2Pre * 100) + '%' : (isHFO() ? `HiFlowO2 ${V.set.hflow} l/min O2 ${measuredO2()}%` : `${modeLabel()} ${V.mode === 'APRV' ? 'P high ' + V.set.aphi + ' P low ' + V.set.plo : 'PEEP ' + V.set.peep + ' ΔP ' + fmt(setDP())} O2 ${measuredO2()}%`);
+  const settings = V.standby ? (P.pr.sedated ? 'hand-ventilated' : 'pre-NIV') + ', FiO2 ' + Math.round(P.pr.fio2Pre * 100) + '%' : (isHFO() ? `HiFlowO2 ${V.set.hflow} l/min O2 ${measuredO2()}%` : `${modeLabel()} ${V.mode === 'APRV' ? 'P high ' + V.set.aphi + ' P low ' + V.set.plo : 'PEEP ' + V.set.peep + ' ΔP ' + fmt(setDP())} O2 ${measuredO2()}%`);
   P.abgs.push({min: P.onNivMin, ph, paco2: P.paco2, pao2: P.pao2, settings});
   $('#abgBody').innerHTML = P.abgs.map(a => `<tr><td>${String(Math.floor(a.min / 60)).padStart(2, '0')}:${String(Math.floor(a.min % 60)).padStart(2, '0')}</td><td>${a.ph.toFixed(2)}</td><td>${a.paco2.toFixed(1)}</td><td>${a.pao2.toFixed(1)}</td><td>${esc(a.settings)}</td></tr>`).join('');
   const prev = P.abgs.length > 1 ? P.abgs[P.abgs.length - 2] : null;
   let msg = `Blood gas: pH ${ph.toFixed(2)}, pCO2 ${P.paco2.toFixed(1)} kPa, pO2 ${P.pao2.toFixed(1)} kPa.`;
-  if (!V.standby && prev && ph <= prev.ph + 0.01 && P.onNivMin > 50) msg += ' No improvement: check technical issues (leak, synchrony, pressures) and get a specialist review within 30 min (BTS QS 6).';
-  if (!V.standby && ph < 7.25 && P.onNivMin > 50) msg += ' Red flag: pH < 7.25 on NIV. Consider invasive ventilation if it is within the ceiling of care.';
+  if (!P.pr.sedated && !V.standby && prev && ph <= prev.ph + 0.01 && P.onNivMin > 50) msg += ' No improvement: check technical issues (leak, synchrony, pressures) and get a specialist review within 30 min (BTS QS 6).';
+  if (P.pr.sedated && !V.standby && ph < 7.2) msg += P.id === 'asthma' ? ' In severe asthma a raised pCO2 is often accepted (permissive hypercapnia) to avoid air trapping; discuss targets with the ICU team.' : ' Respiratory acidosis: consider a higher rate to raise minute ventilation, keeping Vt lung-protective.';
+  if (!P.pr.sedated && !V.standby && ph < 7.25 && P.onNivMin > 50) msg += ' Red flag: pH < 7.25 on NIV. Consider invasive ventilation if it is within the ceiling of care.';
   addPrompt(msg);
   updateTasks();
 });
@@ -2795,7 +3061,7 @@ function autoPrompts() {
 }
 
 /* ---------- guided tasks ---------- */
-const TASKS = [
+const TASKS_NIV = [
   {id:'preop', t:'Run the leak test and flow sensor calibration (System > Tests & calib)', test:() => V.tests.leak === 'ok' && V.tests.flow === 'ok'},
   {id:'start', t:'Start ventilation from Standby', test:() => !V.standby},
   {id:'mode', t:'Use NIV-ST for hypercapnic failure (or NIV with ΔPsupport 0 for CPAP)', test:() => (P.id === 'cpo' ? (V.mode === 'NIV' && V.set.ps === 0) : V.mode === 'NIV-ST')},
@@ -2805,6 +3071,28 @@ const TASKS = [
   {id:'leak', t:'Inject a mask leak, then fix it', test:() => false},
   {id:'abg1', t:'Take a blood gas at about 1 h on NIV', test:() => P.abgs.some(a => a.min >= 50 && a.min <= 90)}
 ];
+const ibwMl = k => k * calcIBW();
+const TASKS_INV = {
+  ards: [
+    {id:'preop', t:'Run the leak test and flow sensor calibration (System > Tests & calib)', test:() => V.tests.leak === 'ok' && V.tests.flow === 'ok'},
+    {id:'start', t:'Start ventilation from Standby', test:() => !V.standby},
+    {id:'mode', t:'Use a mode with mandatory breaths: the patient is paralysed', test:() => !V.standby && isInvasive() && mandTiming() !== null},
+    {id:'vt', hold:15, t:'Ventilate at about 6 ml/kg IBW (VTE 5.5–6.5 ml/kg) with Pplateau 30 cmH2O or less', test:() => !V.standby && M.vte !== null && M.vte >= ibwMl(5.5) && M.vte <= ibwMl(6.5) && M.pplat !== null && M.pplat <= 30},
+    {id:'peep', hold:15, t:'Use PEEP to bring Oxygen down to 40% or less with SpO2 88–95%', test:() => !V.standby && measuredO2() <= 40 && P.spo2 >= 88 && P.spo2 <= 95.5},
+    {id:'co2', hold:15, t:'Raise the rate so ExpMinVol is at least 7 l/min after lowering Vt', test:() => !V.standby && M.mv !== null && M.mv >= 7 && M.vte <= ibwMl(6.5)},
+    {id:'abg1', t:'Take a blood gas after about 30 min of ventilation', test:() => P.abgs.some(a => a.min >= 25)}
+  ],
+  asthma: [
+    {id:'preop', t:'Run the leak test and flow sensor calibration (System > Tests & calib)', test:() => V.tests.leak === 'ok' && V.tests.flow === 'ok'},
+    {id:'start', t:'Start ventilation from Standby', test:() => !V.standby},
+    {id:'mode', t:'Use a mode with mandatory breaths: the patient is paralysed', test:() => !V.standby && isInvasive() && mandTiming() !== null},
+    {id:'autopeep', hold:15, t:'Lengthen expiration (lower Rate, shorter I:E) until AutoPEEP is below 2 cmH2O', test:() => !V.standby && M.autopeep !== null && M.autopeep < 2 && M.ftot !== null},
+    {id:'vt', hold:15, t:'Keep VTE at 6–8 ml/kg IBW', test:() => !V.standby && M.vte !== null && M.vte >= ibwMl(5.5) && M.vte <= ibwMl(8.5)},
+    {id:'spo2', hold:15, t:'Titrate Oxygen to SpO2 94–98%', test:() => !V.standby && P.spo2 >= 94 && P.spo2 <= 98.5},
+    {id:'abg1', t:'Take a blood gas after about 30 min of ventilation', test:() => P.abgs.some(a => a.min >= 25)}
+  ]
+};
+let TASKS = TASKS_NIV;
 let leakSeen = false;
 function updateTasks(flag) {
   if (!P) return;
@@ -2812,7 +3100,8 @@ function updateTasks(flag) {
   TASKS.forEach(t => {
     if (t.done) return;
     if (t.id === 'leak') { if (leakSeen && P.fit === 'good' && !P.disc && !V.standby) t.done = true; }
-    else if (t.test()) t.done = true;
+    else if (t.test()) { if (!t.hold) t.done = true; else { if (t.since == null) t.since = B.now; if (B.now - t.since >= t.hold) t.done = true; } }   /* hold: must stay true for that many seconds */
+    else t.since = null;
   });
   renderTasks();
 }
@@ -3140,6 +3429,43 @@ const QUIZ = [
   {q:'What SpO2 target does BTS/ICS recommend during NIV for acute hypercapnic respiratory failure?', o:['94–98%','88–92%','85–88%','> 98%'], a:1, e:'Recommendation 4 (Grade A): adjust oxygen to achieve SaO2 88–92% in all causes of AHRF treated with NIV.'},
   {q:'A patient with acute asthma has a pCO2 of 7.2 kPa and pH 7.30. What does BTS/ICS advise?', o:['Start NIV-ST','NIV should not be used. Refer to ICU to consider invasive ventilation','Start CPAP 10','Start HiFlowO2 and discharge'], a:1, e:'Recommendation 39 (Grade C): NIV should not be used in acute asthma with AHRF. Figure 1: refer to ICU.'}
 ];
+const INV_QUIZ = [
+  {q:'On the HAMILTON-T1, what is Plimit?', o:['The high Pressure alarm limit minus 10 cmH2O','PEEP plus 10 cmH2O','The plateau pressure target','A fixed 30 cmH2O'], a:0, e:'Plimit is always 10 cmH2O below the high Pressure alarm limit; changing one changes the other. The adaptive modes never use more than Plimit (except sigh breaths).'},
+  {q:'A patient on (S)CMV+ develops stiffer lungs. What does the T1 do?', o:['Raises inspiratory pressure to keep Vt, up to Plimit','Keeps the pressure the same so Vt falls straight away','Switches to PCV+','Increases the rate'], a:0, e:'APV adjusts pressure between breaths to reach the target Vt. Once it needs more than Plimit, Vt falls short and the Pressure limitation alarm appears.'},
+  {q:'A patient on PCV+ has a partly blocked tube. What is the first sign on the ventilator?', o:['Falling Vt and minute volume','Rising peak pressure above the set ΔPcontrol','A Pressure limitation alarm','Rising PEEP'], a:0, e:'In pressure-controlled modes the pressure is fixed, so obstruction or stiffer lungs show as a lower Vt. Set the Vt and ExpMinVol low alarms sensibly.'},
+  {q:'What did the ARDS Network trial use in the lower tidal volume group?', o:['6 ml/kg predicted body weight with plateau pressure ≤ 30 cmH2O','8 ml/kg actual body weight','10 ml/kg with PEEP 5','4 ml/kg with plateau pressure ≤ 20 cmH2O'], a:0, e:'ARDSNet (NEJM 2000) compared 6 ml/kg predicted body weight (plateau ≤ 30 cmH2O) with 12 ml/kg and found lower mortality with the lower volume.'},
+  {q:'How does the T1 work out ideal body weight?', o:['From height and sex','From the weight you enter','From the measured tidal volume','From age and sex'], a:0, e:'IBW comes from patient height and sex in the Standby or Patient window. It sets the starting Vt and the ASV and APRV starting values, so measure the height.'},
+  {q:'A ventilated patient with severe asthma has AutoPEEP of 9 cmH2O and a falling blood pressure. Which change helps most?', o:['Lower the rate and lengthen expiration','Raise the rate to clear CO2','Increase Vt','Shorten the expiratory time'], a:0, e:'Air trapping needs more time to exhale: a lower rate and a longer expiratory time (I:E 1:3 to 1:4). A raised pCO2 is usually accepted. Briefly disconnecting lets trapped air out in an emergency.'},
+  {q:'A ventilated patient suddenly desaturates with high airway pressures. What do you do first?', o:['Call for help, disconnect and hand-ventilate with 100% oxygen, then work through DOPES','Increase PEEP by 5','Silence the alarm and repeat the blood gas','Switch to SPONT'], a:0, e:'Taking the ventilator out of the picture tells you quickly whether the problem is the patient, the tube or the machine. DOPES: Displacement, Obstruction, Pneumothorax, Equipment, Stacked breaths.'},
+  {q:'In ASV, what does %MinVol 100% mean?', o:['The normal minute ventilation for the patient\'s IBW','100% oxygen','The maximum Vt','The rate is set by the patient alone'], a:0, e:'%MinVol is the target minute ventilation as a percentage of normal for IBW. Increase it in steps of 10–20% if a passive patient has a high pCO2 (ASV quick guide).'},
+  {q:'With CPR ventilation on, what happens to the flow trigger?', o:['It is set to Off and P-ramp is fixed at 50 ms','It becomes more sensitive','It is unchanged','It switches to a pressure trigger'], a:0, e:'Manual section 10.9.1: flow trigger Off and P-ramp 50 ms, so compressions do not trigger breaths. Default settings are Rate 10, I:E 1:5, PEEP 5, Oxygen 100%.'},
+  {q:'You lower Vt from 8 to 6 ml/kg IBW in ARDS and the pCO2 rises. What is the usual next step?', o:['Increase the rate to restore minute ventilation','Put Vt back to 8 ml/kg','Increase PEEP','Lower the Oxygen'], a:0, e:'CO2 clearance depends on alveolar minute ventilation. Raise the rate (watching for air trapping) and accept a modestly raised pCO2 rather than larger tidal volumes.'},
+  {q:'A paralysed patient is put on SPONT with Apnea backup on. What happens?', o:['After the Apnea time, backup ventilation starts and "Apnea ventilation" shows','The T1 delivers CPAP and nothing else, silently','The T1 switches to ASV','Ventilation stops and only a low-priority message shows'], a:0, e:'With backup on, the T1 switches to backup ventilation after the Apnea time. With backup off, a high-priority Apnea alarm sounds instead. Use a mode with mandatory breaths for a paralysed patient.'},
+  {q:'In DuoPAP, PEEP is 5, ΔPsupport 10 and P high 20. Are spontaneous breaths at P high supported?', o:['No: PEEP + ΔPsupport (15) is below P high','Yes, by 10 cmH2O above P high','Yes, by 5 cmH2O','Only with PSync'], a:0, e:'ΔPsupport is set above PEEP, so at P high it only helps when PEEP + ΔPsupport is greater than P high (manual 7.3.4).'},
+  {q:'When does the T1 raise "Inspiratory volume limitation"?', o:['When delivered Vt is more than 1.5 times the Vt high alarm limit','When Vt is below the Vt low limit','When Plimit is reached','When the leak is above 30%'], a:0, e:'The breath is ended and pressure drops to PEEP; the APV modes reduce the pressure for the next breath by 3 cmH2O.'}
+];
+function makeQuiz(Q, listSel, scoreSel, resetSel, pre) {
+  const ans = Q.map(() => null);
+  const render = () => {
+    $(listSel).innerHTML = Q.map((q, i) => `<div class="card" id="${pre}${i}"><p><span class="qnum">Q${i + 1}.</span> ${esc(q.q)}</p><div class="opts">${q.o.map((o, j) => {
+      const a = ans[i]; let cls = '';
+      if (a !== null) { if (j === q.a) cls = 'right'; else if (j === a) cls = 'wrong'; }
+      return `<button class="opt ${cls}" data-q="${i}" data-j="${j}" ${a !== null ? 'disabled' : ''}>${esc(o)}</button>`;
+    }).join('')}</div>${ans[i] !== null ? `<div class="fb ${ans[i] === q.a ? 'right' : 'wrong'}"><b>${ans[i] === q.a ? 'Correct.' : 'Incorrect.'}</b> ${esc(q.e)}</div>` : ''}</div>`).join('');
+    const answered = ans.filter(x => x !== null).length, correct = ans.filter((x, i) => x === Q[i].a).length;
+    $(scoreSel).textContent = `Score: ${correct} / ${answered} answered (of ${Q.length})`;
+  };
+  $(listSel).addEventListener('click', e => {
+    const b = e.target.closest('.opt[data-q]'); if (!b || b.disabled) return;
+    const i = +b.dataset.q; ans[i] = +b.dataset.j; render();
+    const fb = document.getElementById(pre + i).querySelector('.fb'); if (fb) fb.setAttribute('tabindex', '-1');
+  });
+  $(resetSel).addEventListener('click', () => { ans.fill(null); render(); });
+  render();
+}
+/* invasive quiz: answer positions are shuffled once per page load so the right answer is not always first */
+INV_QUIZ.forEach(q => { const right = q.o[q.a], o = q.o.slice(); for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; } q.o = o; q.a = o.indexOf(right); });
+makeQuiz(INV_QUIZ, '#invQuizList', '#invQuizScore', '#invQuizReset', 'iqz');
 const quizAns = QUIZ.map(() => null);
 function renderQuiz() {
   $('#quizList').innerHTML = QUIZ.map((q, i) => `<div class="card" id="qz${i}"><p><span class="qnum">Q${i + 1}.</span> ${esc(q.q)}</p><div class="opts">${q.o.map((o, j) => {
@@ -3156,6 +3482,37 @@ $('#quizList').addEventListener('click', e => {
   const card = document.getElementById('qz' + i); const fb = card.querySelector('.fb'); if (fb) fb.setAttribute('tabindex', '-1');
 });
 $('#quizReset').addEventListener('click', () => { quizAns.fill(null); renderQuiz(); });
+
+/* ======================= teaching tabs ======================= */
+function showTab(id, focus) {
+  const inv = id === 'inv';
+  $('#tp-niv').hidden = inv; $('#tp-inv').hidden = !inv;
+  $$('.ttabs [role="tab"]').forEach(b => { const on = b.dataset.tp === id; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+  try { localStorage.setItem('t1tab', id); } catch (e) {}
+  if (!inv && typeof drawExplorer === 'function') drawExplorer();
+}
+$('.ttabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) showTab(b.dataset.tp); });
+$('.ttabs').addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  e.preventDefault(); showTab($('#tab-niv').getAttribute('aria-selected') === 'true' ? 'inv' : 'niv', true);
+});
+/* links to a section inside a hidden panel open that panel first */
+function goToHash(h) {
+  if (!h || h === '#') return;
+  if (h === '#niv' || h === '#invasive') { showTab(h === '#niv' ? 'niv' : 'inv'); $('#teaching').scrollIntoView(); return; }
+  const el = document.getElementById(h.slice(1)); if (!el) return;
+  const pn = el.closest('[role="tabpanel"]');
+  if (pn) { showTab(pn.id === 'tp-inv' ? 'inv' : 'niv'); el.scrollIntoView(); }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  const h = a.getAttribute('href'), g = a.dataset.goto;
+  if (h === '#niv' || h === '#invasive' || g) { e.preventDefault(); if (g && h !== '#niv' && h !== '#invasive') showTab(g); goToHash(h); try { window.history.replaceState(null, '', h); } catch (er) {} return; }
+  const el = document.getElementById(h.slice(1));
+  if (el && el.closest('[role="tabpanel"]') && el.closest('[role="tabpanel"]').hidden) { e.preventDefault(); goToHash(h); try { window.history.replaceState(null, '', h); } catch (er) {} }
+});
+window.addEventListener('hashchange', () => goToHash(location.hash));
+(() => { let t = 'niv'; try { t = localStorage.getItem('t1tab') || 'niv'; } catch (e) {} showTab(t === 'inv' ? 'inv' : 'niv'); if (location.hash) setTimeout(() => goToHash(location.hash), 0); })();
 
 /* ======================= init ======================= */
 renderChecks();
