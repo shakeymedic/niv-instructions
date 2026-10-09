@@ -245,6 +245,13 @@ details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
 .wctl.conflict .c{box-shadow:0 0 0 4px #ffde00;background:#fff6a8}
 .wctl.ro .c{border-style:dashed;color:#555}
 .wgrid{display:flex;flex-wrap:wrap;gap:4px 2px}
+.wrow.tgl{margin-top:6px;gap:6px;font-size:15px}
+.wrow.tgl>span{min-width:110px}
+.dynlung.asv{background:#000}
+.dynlung .asv-side{position:absolute;left:342px;top:20px;right:6px;display:flex;flex-direction:column;gap:10px;font-size:13px;color:#ddd;line-height:1.15}
+.dynlung .asv-side b{display:block;font-weight:400;font-size:24px;color:#fff}
+.dynlung .asv-side small{display:block;font-size:11px;color:#aaa}
+.mmp.cprt .v{color:#ff9a1f;font-size:46px}
 .wnote{font-size:13px;color:#444;margin:6px 0;line-height:1.3}
 .wtable{width:100%;border-collapse:collapse;font-size:15px}
 .wtable td,.wtable th{padding:5px 6px;border-bottom:1px solid #d4d4d4;text-align:left}
@@ -524,7 +531,7 @@ footer a{color:#9cc3ff}
           <button id="kCW" aria-label="Turn knob clockwise">Turn + ⟳</button>
           <span class="hint">You can also drag round the knob, scroll on it, or focus it and use the arrow keys.</span>
         </div>
-        <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). Only the NIV and NIV-ST modes are simulated; the other modes are shown greyed out. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The patient scenarios were written for NIV: choosing an invasive mode assumes the patient has been intubated. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
       </div>
 
       <aside class="side" aria-label="Patient and scenario controls">
@@ -1027,19 +1034,45 @@ $('#yr').textContent = new Date().getFullYear();
 
 /* ======================= device definitions (HAMILTON-T1 SW 3.0.x, adult/ped) ======================= */
 /* @@SPEC_CTRL@@ */
+/* ranges and defaults are Table 15-9 (adult/ped); the manual gives no control increments, so the step sizes are the trainer's choice */
+const IE_LIST = [1/9, 1/8, 1/7, 1/6, 1/5, 1/4, 1/3.5, 1/3, 1/2.5, 1/2, 1/1.5, 1, 1.5, 2, 2.5, 3, 3.5, 4];
+const ieStr = r => { const t = v => String(+v.toFixed(1)); return r >= 1 ? t(r) + ':1' : '1:' + t(1 / r); };
 const CTRL = {
   peep:  {label:'PEEP/CPAP', unit:'cmH2O', min:0, max:35, step:1},
   ps:    {label:'ΔPsupport', unit:'cmH2O', min:0, max:60, step:1},
   pinsp: {label:'ΔPinsp', unit:'cmH2O', min:3, max:60, step:1},
+  pcontrol:{label:'ΔPcontrol', unit:'cmH2O', min:5, max:60, step:1},
+  vt:    {label:'Vt', unit:'ml', min:20, max:2000, step:v => v >= 100 ? 10 : 5},
   o2:    {label:'Oxygen', unit:'%', min:21, max:100, step:1},
-  rate:  {label:'Rate', unit:'b/min', min:5, max:80, step:1},
+  rate:  {label:'Rate', unit:'b/min', min:1, max:80, step:1},
   ti:    {label:'TI', unit:'s', min:0.1, max:12, step:0.1, dp:1},
+  ie:    {label:'I:E', unit:'', list:IE_LIST},
+  phi:   {label:'P high', unit:'cmH2O', min:0, max:60, step:1},
+  thigh: {label:'T high', unit:'s', min:0.1, max:40, step:0.1, dp:1},
+  aphi:  {label:'P high', unit:'cmH2O', min:0, max:60, step:1},
+  plo:   {label:'P low', unit:'cmH2O', min:0, max:35, step:1},
+  athigh:{label:'T high', unit:'s', min:0.1, max:40, step:0.1, dp:1},
+  tlow:  {label:'T low', unit:'s', min:0.2, max:40, step:0.1, dp:1},
+  minvol:{label:'%MinVol', unit:'%', min:25, max:350, step:5},
+  hflow: {label:'Flow', unit:'l/min', min:2, max:60, step:1},
+  plim:  {label:'Plimit', unit:'cmH2O', min:5, max:60, step:1},
   trig:  {label:'Flow trigger', unit:'l/min', min:0.5, max:20, step:0.5, dp:1},
   ets:   {label:'ETS', unit:'%', min:5, max:80, step:1},
-  pramp: {label:'P-ramp', unit:'ms', min:0, max:200, step:10},
+  pramp: {label:'P-ramp', unit:'ms', min:0, max:200, step:v => v >= 200 ? 50 : 10},
   timax: {label:'TI max', unit:'s', min:0.5, max:3, step:0.1, dp:1},
   height:{label:'Pat. height', unit:'cm', min:30, max:250, step:1}
 };
+/* mode-dependent ranges (Table 15-9): Rate minimum, P-ramp maximum, trigger Off */
+function ctrlDef(key, mk) {
+  const d = CTRL[key];
+  if (key === 'rate') {
+    const min = ['APVcmv', 'PCV+', 'CPR'].includes(mk) ? 4 : ['PSIMV+', 'NIV-ST'].includes(mk) ? 5 : mk === 'APVsimv' && V.backupOn ? 10 : 1;
+    return {...d, min};
+  }
+  if (key === 'pramp' && !['ASV', 'NIV', 'NIV-ST', 'SPONT'].includes(mk)) return {...d, max:2000};
+  if (key === 'trig' && ['APVcmv', 'PCV+'].includes(mk)) return {...d, off0:true};
+  return d;
+}
 /* alarm limits (Table 15-13). Resolution: ExpMinVol 0.1 (<1), 0.5 (>=1), 1 (>=10); Vt 5 (<100), 10 (<500), 50 (>=500) */
 const mvStep = (v, dir) => (dir > 0 ? v : v - 0.001) >= 10 ? 1 : (dir > 0 ? v : v - 0.001) >= 1 ? 0.5 : 0.1;
 const vtStep = (v, dir) => (dir > 0 ? v : v - 0.001) >= 500 ? 50 : (dir > 0 ? v : v - 0.001) >= 100 ? 10 : 5;
@@ -1059,20 +1092,57 @@ const LIMIT_PAGES = {
   1: [['phigh','plow'], ['mvhigh','mvlow'], ['fhigh','flow'], ['vthigh','vtlow'], ['apnoea',null]],
   2: [['o2hi','o2lo']]
 };
+/* Controls per mode follow the Table 7-2 matrix and the "Ventilator controls" figures (pp. 135-152).
+   Which three controls sit on the main display, and which tab each control is on, are not listed in the manual: the trainer's choice.
+   'sigh' and 'psync' are On/Off switches shown under the round controls. */
 const MODE_CTRLS = {
-  'NIV':    {basic:['ps','peep','o2'], more:['trig','ets','pramp','timax'], main:['ps','peep','o2']},
-  'NIV-ST': {basic:['pinsp','peep','rate','ti','o2'], more:['trig','ets','pramp','timax'], main:['pinsp','peep','o2']}
+  'APVcmv':  {basic:['vt','rate','ie','peep','o2','plim'], more:['trig','pramp','sigh'], main:['vt','peep','o2']},
+  'APVsimv': {basic:['vt','rate','ti','ps','peep','o2','plim'], more:['trig','ets','pramp','sigh'], main:['vt','peep','o2']},
+  'PCV+':    {basic:['pcontrol','rate','ie','peep','o2','plim'], more:['trig','pramp','sigh'], main:['pcontrol','peep','o2']},
+  'PSIMV+':  {basic:['pcontrol','rate','ti','ps','peep','o2','plim'], more:['psync','trig','ets','pramp','sigh'], main:['pcontrol','peep','o2']},
+  'DuoPAP':  {basic:['phi','rate','thigh','peep','ps','o2','plim'], more:['trig','ets','pramp'], main:['phi','peep','o2']},
+  'APRV':    {basic:['aphi','plo','athigh','tlow','o2','plim'], more:['trig','pramp'], main:['aphi','plo','o2']},
+  'VS':      {basic:['vt','peep','o2','plim'], more:['trig','ets','pramp'], main:['vt','peep','o2']},
+  'SPONT':   {basic:['ps','peep','o2','plim'], more:['trig','ets','pramp','sigh'], main:['ps','peep','o2']},
+  'ASV':     {basic:['minvol','peep','o2','plim'], more:['trig','ets','pramp','sigh'], main:['minvol','peep','o2']},
+  'NIV':     {basic:['ps','peep','o2','plim'], more:['trig','ets','pramp','timax','sigh'], main:['ps','peep','o2']},
+  'NIV-ST':  {basic:['pinsp','peep','rate','ti','o2','plim'], more:['trig','ets','pramp','timax','sigh'], main:['pinsp','peep','o2']},
+  'HiFlowO2':{basic:['hflow','o2'], more:[], main:['hflow','o2']},
+  'CPR':     {basic:['vt','rate','ie','peep','o2','plim'], more:[], main:['vt','peep','o2']}
 };
+const TOGGLES = {sigh:'Sigh', psync:'PSync'};
+/* PSIMV+ with PSync: ΔPinsp for mandatory and spontaneous breaths (7.3.3) */
+function modeCtrls(mk, psync) {
+  const c = MODE_CTRLS[mk];
+  if (mk === 'PSIMV+' && psync) return {basic:['pinsp','rate','ti','peep','o2','plim'], more:c.more, main:['pinsp','peep','o2']};
+  return c;
+}
+/* group headings as shown on a T1 Modes window in the KIDS SOP photo (older software); VS is listed with the APV modes in 7.2 */
 const MODE_GROUPS = [
-  ['Volume controlled (adaptive)', ['APVcmv', 'APVsimv']],
+  ['Volume controlled (adaptive)', ['APVcmv', 'APVsimv', 'VS']],
   ['Pressure controlled (biphasic)', ['PCV+', 'PSIMV+', 'SPONT', 'DuoPAP', 'APRV']],
-  ['Intelligent Ventilation', ['ASV']],
+  ['Intelligent ventilation', ['ASV']],
   ['Noninvasive', ['NIV', 'NIV-ST', 'HiFlowO2']]
 ];
-const SIMULATED = ['NIV', 'NIV-ST'];
+/* Configuration offers "(S)CMV+/SIMV+" or "APVcmv/APVsimv" names; (S)CMV+/SIMV+ is the default (manual p. 278) */
+const MODE_NAME = {APVcmv:'(S)CMV+', APVsimv:'SIMV+'};
+const mName = m => MODE_NAME[m] || m;
+const APV = ['APVcmv', 'APVsimv'];
+const NIVMODES = ['NIV', 'NIV-ST'];
+const INVASIVE = ['APVcmv', 'APVsimv', 'VS', 'PCV+', 'PSIMV+', 'DuoPAP', 'APRV', 'SPONT', 'ASV'];
+const BACKUP_MODES = ['APVsimv', 'SPONT', 'DuoPAP', 'APRV', 'NIV', 'VS'];   /* Apnea backup available (5.6.3); VS is not in that list or the Table 7-2 matrix, so including it is the trainer's assumption */
+const SIGH_MODES = ['APVcmv', 'APVsimv', 'PCV+', 'PSIMV+', 'SPONT', 'ASV', 'NIV', 'NIV-ST'];
+const isNIV = m => NIVMODES.includes(m === undefined ? V.mode : m);
+const isHFO = m => (m === undefined ? V.mode : m) === 'HiFlowO2';
+const isInvasive = m => INVASIVE.includes(m === undefined ? V.mode : m);
+const modeKey = () => V.cpr ? 'CPR' : V.mode;
+const modeLabel = () => V.cpr ? 'CPR/' + mName(V.mode) : mName(V.mode);
+const isSIMV = () => V.mode === 'APVsimv' || (V.mode === 'PSIMV+' && !V.psync);
 
-/* control defaults from Table 15-9 (TI is IBW-based on the device; 1.0 s is the trainer's choice) */
-const DEFAULT_SET = {peep:5, ps:15, pinsp:15, o2:50, rate:12, ti:1.0, trig:5, ets:25, pramp:70, timax:1.5, height:174};
+/* control defaults from Table 15-9. TI is IBW-based on the device; 1.0 s is the trainer's choice, as is DuoPAP T high 1.0 s.
+   Vt 560 ml = 8 ml/kg x IBW 70 kg; APRV values are Table 7-2 for IBW > 60 kg. */
+const DEFAULT_SET = {peep:5, ps:15, pinsp:15, pcontrol:15, vt:560, o2:50, rate:12, ti:1.0, ie:0.25, phi:20, thigh:1.0, aphi:20, plo:5, athigh:5.4, tlow:0.6,
+  minvol:100, hflow:15, plim:30, trig:5, ets:25, pramp:70, timax:1.5, height:174};
 /* alarm defaults from Table 15-13 for IBW 70 kg (Vt 560 ml, Rate 12), rounded to the limit resolution */
 const DEFAULT_LIM = {phigh:40, plow:5, mvhigh:10, mvlow:4, fhigh:40, flow:0, vthigh:850, vtlow:280, apnoea:20};
 const O2_BAND = 5;      /* with high-pressure O2, Oxygen alarm limits are automatic at the setting ± 5 (manual 5.7.1) */
@@ -1083,7 +1153,7 @@ const NEB_MIN = 30;
 /* ventilator state */
 const V = {
   power:true, selftest:0, standby:true, ambient:false, mode:'NIV-ST', set:{...DEFAULT_SET}, lim:{...DEFAULT_LIM},
-  backupOn:true, sex:'Male', locked:false, night:false, o2Enrich:0, audioPause:0, manualReq:false, neb:0,
+  backupOn:true, sigh:false, psync:false, cpr:null, aprvInit:false, sex:'Male', locked:false, night:false, o2Enrich:0, audioPause:0, manualReq:false, neb:0,
   standbySince:0, startSuppress:0, gfx:'wave', spo2On:true, sound:false, loud:5,
   tests:{leak:null, flow:null, o2:'ok'}, testRun:null
 };
@@ -1118,18 +1188,87 @@ function calcSpo2(fio2, peep) { const pao2 = calcPao2(fio2, peep); P.pao2 = pao2
 function phOf(paco2, hco3) { return 6.1 + Math.log10(hco3 / (0.2265 * paco2)); }
 
 /* ======================= breath engine ======================= */
+/* Every T1 mode delivers pressure-controlled breaths (the APV modes and ASV adapt the pressure between breaths to reach a volume target).
+   Mandatory breaths are time cycled; spontaneous breaths are flow cycled by ETS. The patient is a single-compartment lung
+   (compliance C, inspiratory and expiratory time constants) with its own breathing effort. All values are illustrative. */
 const LEAKK = {good:1.2, moderate:6, large:24};
-const B = {phase:'exp', t:0, now:0, br:null, lastStart:0, nextEffort:1.2, starts:[], types:[], apnoeaVent:false, consecTrig:0,
-  dip:0, missLog:[], tiMaxLog:[], autoLog:[], lowVtCount:0, highVtCount:0, lossPeepT:0, highPeepCount:0, peepNow:0, coughSpike:null, trigFlash:0};
-const M = {ppeak:null, peep:null, vte:null, vti:null, mv:null, ftot:null, fspont:null, vleak:null, mvleak:null, o2:null, ti:null, te:null, pmean:null, inspFlow:null, ie:null};
+/* a well-fitted mask leaks a little; a cuffed tube (invasive modes) is treated as leak-free until a leak is added */
+const leakK = () => P.disc ? 0 : P.fit === 'good' && isInvasive() ? 0 : LEAKK[P.fit];
+const B = {phase:'exp', t:0, now:0, br:null, lastStart:0, lastMand:-1e9, nextEffort:1.2, starts:[], types:[], vols:[], apnoeaVent:false, consecTrig:0,
+  dip:0, missLog:[], tiMaxLog:[], autoLog:[], lowVtCount:0, highVtCount:0, lossPeepT:0, highPeepCount:0, peepNow:0, trigFlash:0,
+  vEndInsp:0, Vee:0, apvP:10, apvLim:false, vsP:10, nBreaths:0, simvC0:0, simvDue:true, ovl:null, vlimit:false};
+/* ASV state: targets from Table 15-16 */
+const A = {p:15, ti:1, fTarget:15, vtTarget:0.5, mvTarget:7, vtMin:0.3, vtMax:1, fMin:10, fMax:60, atMax:false, started:0};
+const M = {ppeak:null, peep:null, vte:null, vti:null, mv:null, ftot:null, fspont:null, fcontrol:null, vleak:null, mvleak:null, o2:null, ti:null, te:null, pmean:null, inspFlow:null, ie:null, autopeep:null};
 const SAMPLE_DT = 0.02, WINDOW_S = 12;
 const NBUF = Math.round(WINDOW_S / SAMPLE_DT);
-const bufP = new Float32Array(NBUF), bufF = new Float32Array(NBUF), bufV = new Float32Array(NBUF), bufTrig = new Uint8Array(NBUF);
+const bufP = new Float32Array(NBUF), bufF = new Float32Array(NBUF), bufV = new Float32Array(NBUF), bufPl = new Float32Array(NBUF), bufTrig = new Uint8Array(NBUF);
 let bufIdx = 0, sampleAcc = 0, trigMark = 0;
 
+function baseP() { return V.mode === 'APRV' ? V.set.plo : V.set.peep; }
+/* default Rate by IBW (Table 15-9) */
+function rateByIBW() { const w = calcIBW(); return w >= 60 ? 12 : w >= 40 ? 15 : w >= 30 ? 17 : w >= 20 ? 20 : 25; }
+/* Apnea backup: NIV backs up with PCV+, the other modes with APVsimv (Table 7-2). With "Automatic" the device derives the
+   backup controls from IBW; the manual does not list the values, so these are the trainer's choice. */
+function backupSet() {
+  const ibw = calcIBW(), rate = rateByIBW();
+  if (V.mode === 'NIV') return {mode:'PCV+', dp:Math.max(V.set.ps, 10), rate, ti:1.0};
+  return {mode:'APVsimv', dp:B.apvP, rate:Math.max(10, rate), ti:1.0, vt:Math.round(ibw * 8 / 10) * 10};
+}
+/* timing of mandatory breaths: I:E in APVcmv and PCV+ (the default breath timing), otherwise Rate and TI (7.1.1, Table 7-2) */
+function mandTiming() {
+  const s = V.set, m = V.mode;
+  if (B.apnoeaVent) { const bk = backupSet(); return {cycle:60 / bk.rate, ti:bk.ti}; }
+  if (m === 'APRV') return {cycle:s.athigh + s.tlow, ti:s.athigh};
+  if (m === 'DuoPAP') { const c = 60 / s.rate; return {cycle:c, ti:Math.min(s.thigh, c - 0.2)}; }
+  if (m === 'ASV') return {cycle:60 / A.fTarget, ti:A.ti};
+  if (m === 'APVcmv' || m === 'PCV+') { const c = 60 / s.rate; return {cycle:c, ti:c * s.ie / (1 + s.ie)}; }
+  if (m === 'APVsimv' || m === 'PSIMV+' || m === 'NIV-ST') { const c = 60 / s.rate; return {cycle:c, ti:Math.min(s.ti, c * 0.8)}; }
+  return null;   /* SPONT, NIV, HiFlowO2: no mandatory breaths */
+}
+/* pressure above the baseline for mandatory breaths */
+function mandDP() {
+  const s = V.set, m = V.mode;
+  if (B.apnoeaVent) return backupSet().dp;
+  if (APV.includes(m)) return B.apvP;
+  if (m === 'ASV') return A.p;
+  if (m === 'PCV+') return s.pcontrol;
+  if (m === 'PSIMV+') return V.psync ? s.pinsp : s.pcontrol;
+  if (m === 'NIV-ST') return s.pinsp;
+  if (m === 'DuoPAP') return Math.max(0, s.phi - s.peep);
+  if (m === 'APRV') return Math.max(0, s.aphi - s.plo);
+  return 0;
+}
+/* pressure support for spontaneous breaths */
+function spontDP() {
+  const s = V.set, m = V.mode;
+  if (m === 'NIV-ST' || (m === 'PSIMV+' && V.psync)) return s.pinsp;
+  if (m === 'ASV') return A.p;
+  if (m === 'VS') return B.vsP;
+  if (m === 'APRV') return 0;
+  if (['SPONT', 'NIV', 'APVsimv', 'PSIMV+', 'DuoPAP'].includes(m)) return s.ps;
+  return mandDP();
+}
+/* the main inspiratory pressure above PEEP in the current mode (used for prompts and the blood gas log) */
 function setDP() {
-  if (V.mode === 'NIV') return V.set.ps;
-  return V.set.pinsp;
+  const m = V.mode;
+  if (m === 'NIV' || m === 'SPONT') return V.set.ps;
+  if (m === 'NIV-ST') return V.set.pinsp;
+  if (m === 'VS') return B.vsP;
+  if (isHFO()) return 0;
+  return mandDP();
+}
+/* the set total inspiratory pressure (PEEP + ΔP, or P high), for Check Plimit. Null where the pressure is adaptive (APV, ASV). */
+function totalP(m, s, psync) {
+  switch (m) {
+    case 'PCV+': return s.peep + s.pcontrol;
+    case 'PSIMV+': return psync ? s.peep + s.pinsp : s.peep + Math.max(s.pcontrol, s.ps);
+    case 'DuoPAP': return Math.max(s.phi, s.peep + s.ps);
+    case 'APRV': return s.aphi;
+    case 'SPONT': case 'NIV': return s.peep + s.ps;
+    case 'NIV-ST': return s.peep + s.pinsp;
+    default: return null;
+  }
 }
 function measuredO2() {
   if (P.o2fail) return 21;
@@ -1139,112 +1278,229 @@ function measuredO2() {
 function pushLog(arr, v) { arr.push(v); if (arr.length > 12) arr.shift(); }
 function frac(arr) { return arr.length ? arr.filter(Boolean).length / arr.length : 0; }
 
-function startBreath(type) {
-  const pr = P.pr, s = V.set;
-  const setPeep = s.peep;
-  let dP = setDP();
-  if (B.apnoeaVent && V.mode === 'NIV') dP = Math.max(V.set.ps, 10); // simulator simplification for backup breaths
-  const plimit = V.lim.phigh - 10;
-  const limited = setPeep + dP > plimit;
-  const target = Math.min(setPeep + dP, plimit);
-  let k = P.disc ? 0 : LEAKK[P.fit];
+/* what a patient trigger produces in each mode */
+function triggeredKind() {
+  const m = V.mode;
+  if (B.apnoeaVent) return 'spont';
+  if (m === 'APVcmv' || m === 'PCV+') return 'amand';
+  if (isSIMV()) return B.simvDue ? 'amand' : 'spont';
+  if (m === 'DuoPAP') {   /* the switch to P high is synchronised with an effort near the end of the low phase */
+    const mt = mandTiming();
+    return B.now - B.lastMand >= mt.cycle - Math.min(1, 0.25 * (mt.cycle - mt.ti)) ? 'amand' : 'spont';
+  }
+  return 'spont';
+}
+function recordStart(type, vol) {
+  B.starts.push(B.now); B.types.push(type); B.vols.push(vol);
+  if (B.starts.length > 9) { B.starts.shift(); B.types.shift(); B.vols.shift(); }
+  if (B.starts.length >= 2) {
+    const n = B.starts.length, span = Math.max(0.5, B.starts[n - 1] - B.starts[0]);
+    M.ftot = clamp(60 * (n - 1) / span, 0, 99);
+    M.fspont = M.ftot * (B.types.slice(1).filter(x => x === 'spont').length / (n - 1));
+    M.fcontrol = M.ftot - M.fspont;
+    const vv = B.vols.slice(1);
+    M.mv = M.ftot * vv.reduce((a, b) => a + b, 0) / vv.length;
+  }
+}
+
+/* kinds: 'mand' (ventilator triggered), 'amand' (patient-triggered mandatory), 'spont' (pressure supported, flow cycled),
+   'manual' (Manual breath key), 'auto' (auto-triggering: delivered as whatever a trigger gives in this mode) */
+function startBreath(kind) {
+  const pr = P.pr, s = V.set, m = V.mode;
+  const auto = kind === 'auto';
+  if (auto) kind = triggeredKind();
+  const pc = kind !== 'spont';
+  /* gas left in the lung when the next breath starts (gas trapping when expiration is short) */
+  B.Vee = B.br && B.phase === 'exp' ? B.vEndInsp * Math.exp(-B.t / B.br.tauE) : 0;
+  B.nBreaths++;
+  const sigh = V.sigh && SIGH_MODES.includes(m) && !V.cpr && !B.apnoeaVent && B.nBreaths % 50 === 0;
+  const mt = mandTiming();
+  const base = baseP();
+  let dP = kind === 'spont' ? spontDP() : (kind === 'manual' && !mt) ? Math.max(spontDP(), 10) : mandDP();
+  /* Sigh: every 50th breath, 150% Vt in volume-targeted modes or 10 cmH2O more in pressure modes; it may reach high Pressure - 3 */
+  if (sigh) dP = APV.includes(m) || m === 'ASV' ? dP * 1.5 : dP + 10;
+  const lim = V.lim.phigh - (sigh ? 3 : 10);
+  const limited = base + dP > lim + 0.01;
+  const target = Math.min(base + dP, lim);
+  let k = leakK();
   let inspLeak = k * Math.sqrt(Math.max(target, 0.5));
-  let expLeak = k * Math.sqrt(Math.max(setPeep, 0.5));
-  let peepM = setPeep;
-  if (expLeak > 30) peepM = Math.max(0, setPeep - (expLeak - 30) * 0.15);
-  if (P.kink) peepM = setPeep + 6;
-  let dPeff = Math.max(0, target - setPeep);
+  let expLeak = k * Math.sqrt(Math.max(base, 0.5));
+  let peepM = base;
+  if (expLeak > 30) peepM = Math.max(0, base - (expLeak - 30) * 0.15);
+  if (P.kink) peepM = base + 6;
+  let dPeff = Math.max(0, target - base);
   if (inspLeak > 85) dPeff = Math.max(0, dPeff - (inspLeak - 85) * 0.35);
   if (P.disc) { peepM = 0.3; dPeff = 1.2; inspLeak = 110; expLeak = 100; }
-  const obstructed = type === 'spont' && pr.needEpap && setPeep < pr.needEpap && Math.random() < 0.4;
-  let VT;
+  const iPeep = B.Vee / pr.C;
+  const dPlung = Math.max(0, dPeff - iPeep);
+  const obstructed = kind === 'spont' && !isInvasive(m) && pr.needEpap && s.peep < pr.needEpap && Math.random() < 0.4;
+  const passive = auto || P.apnoea;
+  let Ti = 0, tiMaxHit = false, VT;
+  if (pc) Ti = kind === 'manual' && !mt ? 1.0 : mt.ti;
   if (P.disc) VT = 0.01;
-  else if (type === 'spont') {
-    let vtb = pr.vtBase * (1 - 0.5 * Math.min(1, dPeff / 20)) * (1 - 0.4 * P.fatigue);
+  else if (kind === 'spont') {
+    let vtb = pr.vtBase * (1 - 0.5 * Math.min(1, dPlung / 20)) * (1 - 0.4 * P.fatigue);
     if (obstructed) vtb *= 0.4;
-    VT = vtb + pr.C * dPeff * (obstructed ? 0.4 : 1);
+    VT = vtb + pr.C * dPlung * (obstructed ? 0.4 : 1);
   } else {
-    VT = pr.C * dPeff * 1.15 + (type === 'auto' ? 0 : 0.03);
+    const g = t => 1 - Math.exp(-t / pr.tau);
+    VT = pr.C * dPlung * (passive ? 1 : 1.15) * Math.min(1, g(Ti) / g(1)) + (passive ? 0 : 0.03);
   }
   if (P.kink) VT *= 0.7;
   VT = Math.max(0.005, VT * rnd(0.95, 1.05));
+  /* Inspiratory volume limitation (invasive modes only): delivered volume above 1.5 x the high Vt limit ends inspiration */
+  B.vlimit = false;
+  if (isInvasive(m) && !V.cpr && V.lim.vthigh <= ALIM.vthigh.max && VT * 1000 > 1.5 * V.lim.vthigh) { VT = 1.5 * V.lim.vthigh / 1000; B.vlimit = true; }
   const tau = pr.tau;
-  let Ti, tiMaxHit = false;
-  if (type === 'mand' || type === 'manual') {
-    Ti = V.mode === 'NIV-ST' ? s.ti : 1.0;
-  } else {
-    const Fp = VT / tau * 60;                          // l/min
+  if (!pc) {
+    const timax = isNIV(m) ? s.timax : 3;   /* TI max is a setting in NIV and NIV-ST; elsewhere 3 s is the trainer's internal limit */
+    const Fp = VT / tau * 60;
     const thr = s.ets / 100 * (Fp + inspLeak);
-    const Leff = inspLeak * 0.5;                       // partial compensation (illustrative)
-    if (thr <= Leff + 0.5) { Ti = s.timax; tiMaxHit = true; }
+    const Leff = inspLeak * 0.5;
+    if (thr <= Leff + 0.5) { Ti = timax; tiMaxHit = true; }
     else {
       const t = tau * Math.log(Fp / (thr - Leff));
-      Ti = clamp(t, 0.25, s.timax); tiMaxHit = t >= s.timax;
+      Ti = clamp(t, 0.25, timax); tiMaxHit = t >= timax;
     }
   }
   Ti = Math.max(0.2, Ti);
   let cough = null;
-  if (P.cough && Math.random() < 0.55) cough = {at: Ti * rnd(0.25, 0.6), p: target + rnd(18, 26)};
-  B.br = {type, Ti, target: peepM + dPeff, peepM, dPeff, VT, inspLeak, expLeak, Fp: VT / tau * 60, tau, tauE: tau * 1.8,
-          pramp: Math.min(s.pramp / 1000, Ti / 3), limited, tiMaxHit, cough, obstructed, maxP: 0, spiked:false, vEnd:0};
+  if (P.cough && Math.random() < 0.55) cough = {at: Math.min(Ti, 1.5) * rnd(0.25, 0.6), p: target + rnd(18, 26)};
+  B.br = {kind, auto, sigh, Ti, target: peepM + dPeff, base, peepM, dPeff, VT, inspLeak, expLeak, Fp: VT / tau * 60, tau, tauE: tau * 1.8,
+          pramp: Math.min(s.pramp / 1000, Ti / 3), limited, tiMaxHit, cough, obstructed, maxP: 0, spiked:false};
   B.phase = 'insp'; B.t = 0;
-  const now = B.now;
-  B.starts.push(now); B.types.push(type); if (B.starts.length > 9) { B.starts.shift(); B.types.shift(); }
-  B.lastStart = now;
-  if (type === 'spont') { trigMark = 1; B.trigFlash = 0.35; }
+  B.lastStart = B.now;
+  if (pc) { B.lastMand = B.now; if (kind === 'mand' || kind === 'amand') B.simvDue = false; }
+  recordStart(kind === 'spont' ? 'spont' : 'mand', VT);
+  if (!auto && (kind === 'spont' || kind === 'amand')) { trigMark = 1; B.trigFlash = 0.35; }
   pushLog(B.tiMaxLog, tiMaxHit);
-  pushLog(B.autoLog, type === 'auto');
+  pushLog(B.autoLog, auto);
   B.peepNow = peepM;
   M.peep = peepM;
-  if (peepM < setPeep - 3) B.lowPeepBr = (B.lowPeepBr || 0) + 1; else B.lowPeepBr = 0;
-  if (B.starts.length >= 2) {
-    const iv = []; for (let i = 1; i < B.starts.length; i++) iv.push(B.starts[i] - B.starts[i - 1]);
-    const mean = iv.reduce((a, b) => a + b, 0) / iv.length;
-    M.ftot = clamp(60 / mean, 0, 99);
-    M.fspont = M.ftot * (B.types.slice(1).filter(x => x === 'spont').length / (B.types.length - 1));
+  if (peepM < base - 3) B.lowPeepBr = (B.lowPeepBr || 0) + 1; else B.lowPeepBr = 0;
+  if (kind === 'manual') addPrompt('Manual breath delivered.');
+}
+/* a spontaneous breath taken on top of a pressure level (APRV, and DuoPAP at P high) */
+function startOverlay(effort) {
+  const pr = P.pr, s = V.set, m = V.mode;
+  const sup = m === 'DuoPAP' ? Math.max(0, s.peep + s.ps - s.phi) : 0;   /* ΔPsupport is above PEEP: it only helps at P high if PEEP + ΔPsupport > P high */
+  const vol = Math.max(0.05, pr.vtBase * (1 - 0.4 * P.fatigue) * 0.8 + pr.C * sup);
+  B.ovl = {t:0, dur:pr.neuralTi, vol, sup};
+  P.vtAvg = P.vtAvg * 0.85 + vol * 0.15;
+  /* in APRV the trigger setting is only used to count spontaneous breaths */
+  if (!V.cpr && V.set.trig > 0 && effort >= V.set.trig) {
+    B.lastStart = B.now; recordStart('spont', vol); trigMark = 1; B.trigFlash = 0.35;
+    if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnea ventilation ended', 'low'); } }
+    clear('apnea');
   }
-  if (type === 'manual') addPrompt('Manual breath delivered.');
 }
 function endInsp() {
-  const br = B.br;
+  const br = B.br, m = V.mode;
   const leakVol = br.inspLeak / 60 * br.Ti;
   M.ppeak = Math.max(br.maxP, br.peepM);
   M.vte = br.VT * 1000;
   M.vti = (br.VT + leakVol) * 1000;
   M.vleak = P.disc ? 100 : clamp(leakVol / (br.VT + leakVol) * 100, 0, 100);
-  const te = Math.max(0.5, (M.ftot ? 60 / M.ftot : 4) - br.Ti);
+  const mt = mandTiming();
+  const bilevel = (m === 'APRV' || m === 'DuoPAP') && br.kind !== 'spont';
+  const te = bilevel ? Math.max(0.2, mt.cycle - br.Ti) : Math.max(0.5, (M.ftot ? 60 / M.ftot : 4) - br.Ti);
   M.mvleak = P.disc ? 99 : (br.inspLeak * br.Ti + br.expLeak * te) / (br.Ti + te);
   M.ti = br.Ti; M.te = te; M.ie = te / br.Ti;
   M.inspFlow = br.Fp + br.inspLeak;
-  M.mv = M.ftot ? M.ftot * br.VT : null;
   M.pmean = br.peepM + br.dPeff * br.Ti / (br.Ti + te);
-  br.vEnd = br.VT * (1 - Math.exp(-br.Ti / br.tau)) / Math.max(0.01, 1 - Math.exp(-br.Ti / br.tau));
+  M.autopeep = B.Vee / P.pr.C;
+  B.vEndInsp = B.Vee + br.VT;
   B.phase = 'exp'; B.t = 0;
-  // per-breath alarm counters
+  /* per-breath alarm counters */
   if (V.lim.vtlow > 0 && M.vte < V.lim.vtlow) B.lowVtCount++; else B.lowVtCount = 0;
   if (V.lim.vthigh <= ALIM.vthigh.max && M.vte > V.lim.vthigh) B.highVtCount++; else B.highVtCount = 0;
-  if (B.br.peepM > V.set.peep + 5) B.highPeepCount++; else B.highPeepCount = 0;
+  if (br.peepM > br.base + 5) B.highPeepCount++; else B.highPeepCount = 0;
   P.dpAvg = P.dpAvg * 0.7 + br.dPeff * 0.3;
   P.vtAvg = P.vtAvg * 0.7 + br.VT * 0.3;
-  if (br.limited) raise('plimit');
-  else clear('plimit');
+  /* adaptive pressure: APV modes (and APVsimv backup) on mandatory breaths, ASV on every breath */
+  if (br.kind !== 'spont' && (APV.includes(m) || (B.apnoeaVent && backupSet().mode === 'APVsimv'))) adaptAPV(br);
+  if (m === 'ASV' && !B.apnoeaVent) adaptASV(br);
+  if (m === 'VS' && br.kind === 'spont' && !B.apnoeaVent) adaptVS(br);
+  if (br.limited || ((APV.includes(m) || m === 'VS') && B.apvLim)) raise('plimit'); else clear('plimit');
   if (M.ppeak < V.lim.plow) raise('plow'); else clear('plow');
+  /* Disconnection on patient side: VTE < 1/8 of VTI with VTI > 50 ml, invasive modes only (suppressed in CPR) */
+  if (isInvasive(m) && !V.cpr && M.vti > 50 && M.vte < M.vti / 8) raise('discpat'); else clear('discpat');
+  if (B.vlimit) raise('vlimit'); else clear('vlimit');
+}
+/* APV: pressure adjusted between breaths towards the target Vt, at least 5 cmH2O, never above Plimit (7.2).
+   The 3 cmH2O-per-breath step is the ASV specification (Table 15-16), used here for APV as well. */
+function adaptAPV(br) {
+  if (br.sigh || P.disc) return;
+  const tgt = (B.apnoeaVent ? backupSet().vt : V.set.vt) / 1000;
+  const maxP = Math.max(5, V.lim.phigh - 10 - V.set.peep);
+  const want = br.VT > 0.02 ? B.apvP * tgt / br.VT : B.apvP + 3;
+  const np = B.apvP + clamp(want - B.apvP, -3, 3);
+  B.apvLim = np > maxP + 0.01 && br.VT < tgt * 0.95;
+  B.apvP = clamp(np, 5, maxP);
+}
+/* VS: flow-cycled breaths whose pressure support adapts to deliver the set Vt (quick guide, mode table) */
+function adaptVS(br) {
+  if (br.sigh || P.disc) return;
+  const tgt = V.set.vt / 1000, maxP = Math.max(5, V.lim.phigh - 10 - V.set.peep);
+  const want = br.VT > 0.02 ? B.vsP * tgt / br.VT : B.vsP + 3;
+  const np = B.vsP + clamp(want - B.vsP, -3, 3);
+  B.apvLim = np > maxP + 0.01 && br.VT < tgt * 0.95;
+  B.vsP = clamp(np, 5, maxP);
+}
+/* ASV (Table 15-16): target minute volume = IBW x normal minute ventilation x %MinVol/100. Normal minute ventilation is only
+   shown as a graph in the manual (Figure 7-18); 0.1 l/kg/min for adults is the trainer's reading. The target rate uses the
+   Otis equation with VDaw = 2.2 ml/kg; the exact ASV 1.1 rule is not published in the manual, so targets are approximate. */
+function asvTargets() {
+  const ibw = calcIBW(), s = V.set, pr = P.pr;
+  A.mvTarget = ibw * 0.1 * s.minvol / 100;
+  const vd = 0.0022 * ibw, rce = pr.tau * 1.8, a = 2 * Math.PI * Math.PI / 60;
+  let f = 15;
+  for (let i = 0; i < 40; i++) { const va = Math.max(0.05, A.mvTarget - f * vd); f = (Math.sqrt(1 + 2 * a * rce * va / vd) - 1) / (a * rce); }
+  A.vtMin = 0.0044 * ibw;
+  const vtHi = V.lim.vthigh <= ALIM.vthigh.max ? 1.5 * V.lim.vthigh / 1000 : 99;
+  A.vtMax = Math.max(A.vtMin, Math.min(0.015 * ibw, vtHi, pr.C * Math.max(5, V.lim.phigh - 10 - s.peep) * 1.15));
+  const tiMin = Math.max(0.5, rce), teMin = Math.max(0.5, 2 * rce);
+  A.fMin = 5;    /* ASV quick guide, Appendix I D: the lowest target rate for adult patients is fixed at 5 b/min */
+  A.fMax = Math.max(A.fMin, Math.min(60, 60 / (tiMin + teMin), A.mvTarget / A.vtMin));
+  f = clamp(f, A.fMin, A.fMax);
+  let vt = A.mvTarget / f;
+  if (vt > A.vtMax) { vt = A.vtMax; f = clamp(A.mvTarget / vt, A.fMin, A.fMax); }
+  if (vt < A.vtMin) { vt = A.vtMin; f = clamp(A.mvTarget / vt, A.fMin, A.fMax); }
+  A.fTarget = f; A.vtTarget = vt;
+  const c = 60 / f;
+  A.ti = clamp(c / 3, Math.max(tiMin, c / 5), Math.min(ibw >= 30 ? 2 : 1.5, c / 2, c - teMin));
+}
+function asvInit() {
+  const ibw = calcIBW();
+  const row = ibw >= 100 ? [20, 1.5, 15] : ibw >= 90 ? [18, 1.5, 15] : ibw >= 40 ? [15, 1, 15] : ibw >= 30 ? [15, 1, 18] : [15, 1, 20];   /* Table 7-3, adult rows */
+  A.p = row[0]; asvTargets(); A.ti = row[1]; A.fTarget = row[2]; A.started = B.now; A.atMax = false;
+}
+function adaptASV(br) {
+  const fT = A.fTarget, tiT = A.ti;
+  asvTargets();
+  if (B.now - A.started < 12) { A.fTarget = fT; A.ti = tiT; }   /* initial test breaths at the Table 7-3 pattern */
+  if (br.sigh || P.disc) return;
+  const maxP = Math.max(5, V.lim.phigh - 10 - V.set.peep);
+  const want = br.VT > 0.02 ? A.p * A.vtTarget / br.VT : A.p + 3;
+  A.p = clamp(A.p + clamp(want - A.p, -3, 3), 5, maxP);
+  A.atMax = A.p >= maxP - 0.01;
 }
 
 function effortHappens() {
-  const pr = P.pr;
+  const pr = P.pr, m = V.mode;
   if (P.apnoea || V.ambient) return;
   let effort = pr.effort * (1 - 0.5 * P.fatigue) * (P.deteriorate ? 0.7 : 1);
   if (pr.ipeep && V.set.peep < 4) effort *= 0.6;
-  if (pr.needEpap && V.set.peep < pr.needEpap && Math.random() < 0.4) effort *= 0.35;
+  if (pr.needEpap && !isInvasive(m) && V.set.peep < pr.needEpap && Math.random() < 0.4) effort *= 0.35;
   if (P.disc) return; // mask off: patient breathes room air; ventilator sees only leak
+  if (m === 'APRV' || (m === 'DuoPAP' && B.phase === 'insp' && B.br && B.br.kind !== 'spont')) { startOverlay(effort); return; }
   if (B.phase === 'insp' || B.t < 0.25) return;
-  const triggered = effort >= V.set.trig;
+  const triggered = !V.cpr && V.set.trig > 0 && effort >= V.set.trig;
   pushLog(B.missLog, !triggered);
   if (triggered) {
     if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnea ventilation ended', 'low'); } }
     clear('apnea');
-    startBreath('spont');
+    startBreath(triggeredKind());
   } else {
     B.dip = 0.35;
     if (B.apnoeaVent) B.consecTrig = 0;
@@ -1253,14 +1509,20 @@ function effortHappens() {
 
 function engineStep(dt) {
   if (!P) return;
-  if (!V.power || V.standby || V.ambient) {
+  if (!V.power || V.standby || V.ambient || isHFO()) {
     B.now += dt; sampleAcc += dt;
     while (sampleAcc >= SAMPLE_DT) { sampleAcc -= SAMPLE_DT; writeSample(0, 0, 0); }
     return;
   }
   B.now += dt; B.t += dt;
   if (B.trigFlash > 0) B.trigFlash -= dt;
-  const s = V.set;
+  if (B.ovl) { B.ovl.t += dt; if (B.ovl.t >= 2 * B.ovl.dur) B.ovl = null; }
+  const s = V.set, m = V.mode;
+  if (B.now >= B.nextEffort) {
+    const rr = Math.max(4, P.rr);
+    B.nextEffort = B.now + 60 / rr * rnd(0.9, 1.1);
+    effortHappens();
+  }
   if (B.phase === 'insp') {
     const br = B.br;
     if (br.cough && !br.spiked && B.t >= br.cough.at) {
@@ -1269,58 +1531,72 @@ function engineStep(dt) {
     }
     if (B.phase === 'insp' && B.t >= br.Ti) endInsp();
   } else {
-    if (B.now >= B.nextEffort) {
-      const rr = Math.max(4, P.rr);
-      B.nextEffort = B.now + 60 / rr * rnd(0.9, 1.1);
-      effortHappens();
+    const since = B.now - B.lastStart, mt = mandTiming();
+    if (V.manualReq && B.t > 0.3) { V.manualReq = false; startBreath('manual'); }
+    else if (B.apnoeaVent) { if (since >= mt.cycle) startBreath('mand'); }
+    else if (m === 'APRV' || m === 'DuoPAP') { if (B.now - B.lastMand >= mt.cycle) startBreath('mand'); }
+    else if (isSIMV()) {
+      /* each SIMV interval starts with Tmand: a trigger then gives a mandatory breath; without one, a mandatory breath at the end of Tmand.
+         The length of Tmand is not given in the manual: a quarter of the interval is the trainer's choice. */
+      if (B.now - B.simvC0 >= 2 * mt.cycle) { B.simvC0 = B.now; B.simvDue = true; }
+      else if (B.now - B.simvC0 >= mt.cycle) { B.simvC0 += mt.cycle; B.simvDue = true; }
+      if (B.simvDue && B.now - B.simvC0 >= mt.cycle * 0.25) startBreath('mand');
     }
-    if (B.phase === 'exp') {
-      const since = B.now - B.lastStart;
-      if (V.manualReq && B.t > 0.3) { V.manualReq = false; startBreath('manual'); }
-      else if (V.mode === 'NIV-ST' && since >= 60 / s.rate) startBreath('mand');
-      else if (V.mode === 'NIV') {
-        if (since >= V.lim.apnoea) {
-          if (V.backupOn) { if (!B.apnoeaVent) { B.apnoeaVent = true; B.consecTrig = 0; raise('apvent'); } }
-          else raise('apnea');
-        }
-        if (B.apnoeaVent && since >= 60 / 12) startBreath('mand');
-      }
-      if (B.phase === 'exp' && B.t > 0.4) {
-        let lam = 0;
-        const k = P.disc ? 0 : LEAKK[P.fit];
-        const expLeak = k * Math.sqrt(Math.max(s.peep, 0.5));
-        if (P.disc) lam = 0.45;
-        else if (expLeak > 30) lam = 0.35;
-        else if (s.trig <= 1 && expLeak > 6) lam = 0.3;
-        else if (s.trig <= 0.5) lam = 0.06;
-        if (Math.random() < lam * dt) startBreath('auto');
-      }
+    else if (mt && since >= mt.cycle) startBreath('mand');
+    /* apnea: no breath within the Apnea time in the modes that have Apnea backup */
+    if (B.phase === 'exp' && BACKUP_MODES.includes(m) && !V.cpr && !B.apnoeaVent && B.now - B.lastStart >= V.lim.apnoea) {
+      if (V.backupOn) { B.apnoeaVent = true; B.consecTrig = 0; raise('apvent'); startBreath('mand'); }
+      else raise('apnea');
+    }
+    if (B.phase === 'exp' && B.t > 0.4 && !V.cpr && s.trig > 0 && m !== 'APRV' && m !== 'DuoPAP') {
+      let lam = 0;
+      const k = leakK();
+      const expLeak = k * Math.sqrt(Math.max(s.peep, 0.5));
+      if (P.disc) lam = 0.45;
+      else if (expLeak > 30) lam = 0.35;
+      else if (s.trig <= 1 && expLeak > 6) lam = 0.3;
+      else if (s.trig <= 0.5) lam = 0.06;
+      if (Math.random() < lam * dt) startBreath('auto');
     }
   }
   sampleAcc += dt;
   while (sampleAcc >= SAMPLE_DT) { sampleAcc -= SAMPLE_DT; writeSample(...currentPFV()); }
 }
 function currentPFV() {
-  const br = B.br; if (!br) return [V.set.peep, 0, 0];
+  const br = B.br; if (!br) return [baseP(), 0, 0];
   const t = B.t;
+  let p, f, v;
   if (B.phase === 'insp') {
     const rise = br.pramp > 0.01 ? Math.min(1, t / br.pramp) : 1;
-    let p = br.peepM + br.dPeff * rise;
+    p = br.peepM + br.dPeff * rise;
     if (br.pramp < 0.05 && t < 0.12) p += br.dPeff * 0.08 * Math.sin(t / 0.12 * Math.PI);
     if (br.cough && br.spiked && t - br.cough.at < 0.25 && t >= br.cough.at) p = br.cough.p;
     br.maxP = Math.max(br.maxP, p);
-    const f = (br.Fp * Math.exp(-t / br.tau)) * Math.min(1, (t + 0.02) / (br.pramp + 0.04)) + br.inspLeak;
-    const v = br.VT * (1 - Math.exp(-t / br.tau)) / Math.max(0.01, 1 - Math.exp(-br.Ti / br.tau));
-    return [p, f, Math.min(br.VT, v) * 1000];
+    f = (br.Fp * Math.exp(-t / br.tau)) * Math.min(1, (t + 0.02) / (br.pramp + 0.04)) + br.inspLeak;
+    v = Math.min(br.VT, br.VT * (1 - Math.exp(-t / br.tau)) / Math.max(0.01, 1 - Math.exp(-br.Ti / br.tau))) * 1000;
+  } else {
+    p = Math.max(0, br.peepM + br.dPeff * Math.exp(-t / 0.06));
+    const decay = Math.exp(-t / br.tauE);
+    f = -(B.vEndInsp / br.tauE * 60) * decay + br.expLeak * 0.6;
+    if (B.dip > 0) { f -= 12 * Math.sin((0.35 - B.dip) / 0.35 * Math.PI); B.dip -= SAMPLE_DT; }
+    v = Math.max(0, br.VT - B.vEndInsp * (1 - decay)) * 1000;
   }
-  const pk = Math.max(0, br.peepM + br.dPeff * Math.exp(-t / 0.06));
-  let f = -(br.VT / br.tauE * 60) * Math.exp(-t / br.tauE) + br.expLeak * 0.6;
-  if (B.dip > 0) { f -= 12 * Math.sin((0.35 - B.dip) / 0.35 * Math.PI); B.dip -= SAMPLE_DT; }
-  const v = br.VT * Math.exp(-t / br.tauE) * 1000;
-  return [pk, f, v];
+  if (B.ovl) {
+    const o = B.ovl, ph = Math.PI * o.t / o.dur;
+    f += o.vol * Math.PI / (2 * o.dur) * Math.sin(ph) * 60;
+    v += o.vol * (1 - Math.cos(ph)) / 2 * 1000;
+    if (o.t < o.dur) p += o.sup > 0 ? o.sup * Math.sin(ph) * 0.8 : -1.2 * Math.sin(ph);
+  }
+  return [p, f, v];
+}
+/* plethysmogram (SpO2 option): a stylised pulse wave at the simulated heart rate */
+function plethNow() {
+  if (!V.spo2On || !P || !V.power) return 0;
+  const ph = (B.now * P.hr / 60) % 1;
+  return ph < 0.18 ? Math.sin(ph / 0.18 * Math.PI / 2) : Math.exp(-(ph - 0.18) * 3.2) * (1 + 0.12 * Math.sin((ph - 0.18) * 14));
 }
 function writeSample(p, f, v) {
-  bufP[bufIdx] = p; bufF[bufIdx] = f; bufV[bufIdx] = v; bufTrig[bufIdx] = trigMark; trigMark = 0;
+  bufP[bufIdx] = p; bufF[bufIdx] = f; bufV[bufIdx] = v; bufPl[bufIdx] = plethNow(); bufTrig[bufIdx] = trigMark; trigMark = 0;
   bufIdx = (bufIdx + 1) % NBUF;
 }
 
@@ -1378,7 +1654,13 @@ const ALARMS = {
   mains:   {t:'Loss of external power', p:'low'},
   battmed: {t:'Battery low', p:'med'},
   batthi:  {t:'Battery low', p:'hi'},
-  battdead:{t:'Battery totally discharged', p:'hi'}
+  battdead:{t:'Battery totally discharged', p:'hi'},
+  discpat: {t:'Disconnection on patient side', p:'hi', mmp:'vte'},
+  vlimit:  {t:'Inspiratory volume limitation', p:'med', mmp:'vte'},
+  irv:     {t:'IRV', p:'low'},
+  maxleak: {t:'Maximum leak compensation', p:'low'},
+  asvtarget:{t:'ASV: Cannot meet target', p:'low', mmp:'mv'},
+  cpron:   {t:'CPR ON', p:'low'}
 };
 /* on-screen help: summarised from Table 9-2 of the manual */
 const HELP = {
@@ -1404,7 +1686,13 @@ const HELP = {
   mains:'<ul><li>The ventilator is running on battery after loss of the primary power supply.</li><li>Check the power connection and the battery charge.</li></ul>',
   battmed:'<ul><li>The battery is low. Connect to mains (AC) power.</li></ul>',
   batthi:'<ul><li>The battery is nearly empty. Connect to mains (AC) power now and prepare alternative ventilation.</li></ul>',
-  battdead:'<ul><li>The battery is below 5%: the ventilator enters the Ambient state and the patient breathes room air.</li><li>Ventilate the patient by other means. Connect to mains power.</li></ul>'
+  battdead:'<ul><li>The battery is below 5%: the ventilator enters the Ambient state and the patient breathes room air.</li><li>Ventilate the patient by other means. Connect to mains power.</li></ul>',
+  discpat:'<ul><li>VTE is less than one-eighth of VTI (invasive modes only).</li><li>Check the circuit between the patient and the flow sensor for a disconnection. Check for a large leak at the endotracheal tube (cuff).</li></ul>',
+  vlimit:'<ul><li>Delivered volume exceeded 1.5 times the high Vt limit: inspiration was ended. Disabled in noninvasive modes.</li><li>Check the patient and the settings (for example, reduce ΔPsupport). Check the high Vt limit.</li></ul>',
+  irv:'<ul><li>The set inspiratory time is longer than the expiratory time (I:E above 1:1).</li><li>Check the Rate, TI or I:E settings.</li></ul>',
+  maxleak:'<ul><li>The set Vt cannot be reached because of a leak (APV modes only).</li><li>Inspect the circuit and the endotracheal tube for leaks. Consider another mode.</li></ul>',
+  asvtarget:'<ul><li>ASV cannot deliver the target minute volume within its lung-protective limits.</li><li>Check Plimit (the high Pressure limit) and the high Vt limit. Check the patient. Consider another mode.</li></ul>',
+  cpron:'<ul><li>CPR ventilation is active: ExpMinVol, fTotal and Vt limits are at their minimum and maximum settings and the trigger is off.</li><li>To stop CPR ventilation, enter Standby or select another mode.</li></ul>'
 };
 const PRI_ORDER = {hi:3, med:2, low:1};
 const active = new Map();
@@ -1428,10 +1716,20 @@ let msgCycle = 0;
 function topAlarms() {
   return [...active.keys()].map(id => ({id, ...ALARMS[id]})).sort((a, b) => PRI_ORDER[b.p] - PRI_ORDER[a.p]);
 }
+const PATIENT_ALARMS = ['phigh','plow','plimit','chkplim','losspeep','highpeep','exobs','mvlow','mvhigh','vtlow','vthigh','fhigh','flow','apnea','apvent','discpat','vlimit','irv','maxleak','asvtarget'];
 function evalAlarms() {
   if (!P || !V.power || V.standby || V.ambient) return;
-  const L = V.lim;
-  if (B.peepNow < V.set.peep - 3) B.lossPeepT += 0.25; else B.lossPeepT = 0;
+  const L = V.lim, m = V.mode, s = V.set;
+  const o2m = measuredO2();
+  if (P.o2fail && s.o2 > 21) { raise('o2fail'); raise('lowo2'); }
+  else { clear('o2fail'); if (V.o2Enrich <= 0 && o2m < s.o2 - O2_BAND) raise('lowo2'); else clear('lowo2'); }
+  if (V.o2Enrich <= 0 && o2m > s.o2 + O2_BAND) raise('higho2'); else clear('higho2');
+  if (V.cpr) raise('cpron'); else clear('cpron');
+  if (B.plimchgT > 0) { B.plimchgT -= 0.25; if (B.plimchgT <= 0) clear('plimchg'); }
+  /* HiFlowO2: no breath monitoring; disconnection and apnea alarms are inactive (10.5) */
+  if (isHFO()) { PATIENT_ALARMS.forEach(clear); return; }
+  const base = baseP();
+  if (B.peepNow < base - 3) B.lossPeepT += 0.25; else B.lossPeepT = 0;
   if (B.lossPeepT > 10 || B.lowPeepBr >= 2) raise('losspeep'); else clear('losspeep');
   if (B.highPeepCount >= 2) raise('highpeep'); else clear('highpeep');
   if (P.kink && B.highPeepCount >= 2) raise('exobs'); else if (!P.kink) clear('exobs');
@@ -1439,15 +1737,20 @@ function evalAlarms() {
   if (B.lowVtCount >= 2) raise('vtlow'); else clear('vtlow');
   if (B.highVtCount >= 2) raise('vthigh'); else clear('vthigh');
   if (M.ftot !== null && B.now > 15) { if (M.ftot > L.fhigh) raise('fhigh'); else clear('fhigh'); if (L.flow > 0 && M.ftot < L.flow) raise('flow'); else clear('flow'); }
-  if (V.set.peep + setDP() > L.phigh - 10) raise('chkplim'); else clear('chkplim');
-  if (B.plimchgT > 0) { B.plimchgT -= 0.25; if (B.plimchgT <= 0) clear('plimchg'); }
-  const o2m = measuredO2();
-  if (P.o2fail && V.set.o2 > 21) { raise('o2fail'); raise('lowo2'); }
-  else { clear('o2fail'); if (V.o2Enrich <= 0 && o2m < V.set.o2 - O2_BAND) raise('lowo2'); else clear('lowo2'); }
-  if (V.o2Enrich <= 0 && o2m > V.set.o2 + O2_BAND) raise('higho2'); else clear('higho2');
+  /* Check Plimit: set total pressure above Plimit; not in the APV modes or ASV */
+  const tp = totalP(m, s, V.psync);
+  if (tp !== null && tp > L.phigh - 10) raise('chkplim'); else clear('chkplim');
+  /* IRV: set I:E above 1:1. Not in PSIMV+ PSync, SPONT, NIV, NIV-ST or HiFlowO2 (p. 218). The manual does not mention APRV, ASV or VS; the trainer leaves them out. */
+  const mt = mandTiming();
+  const irvMode = ['APVcmv', 'APVsimv', 'PCV+', 'DuoPAP'].includes(m) || (m === 'PSIMV+' && !V.psync);
+  if (irvMode && mt && !B.apnoeaVent && mt.ti > mt.cycle - mt.ti) raise('irv'); else clear('irv');
+  /* Maximum leak compensation: APV modes, set Vt not reached because of a leak */
+  if (APV.includes(m) && B.apvLim && (M.vleak || 0) > 30) raise('maxleak'); else clear('maxleak');
+  if (m === 'ASV' && M.mv !== null && B.now - A.started > 60 && A.atMax && M.mv < 0.9 * A.mvTarget) raise('asvtarget'); else clear('asvtarget');
+  if (!isInvasive(m) || V.cpr) { clear('discpat'); clear('vlimit'); }
   if (B.highPT) { B.highPT -= 0.25; if (B.highPT <= 0) { B.highPT = 0; clear('phigh'); } }
-  if (V.mode !== 'NIV') { clear('apnea'); clear('apvent'); B.apnoeaVent = false; }
-  if (!V.backupOn) clear('apvent');
+  if (!BACKUP_MODES.includes(m) || V.cpr) { clear('apnea'); clear('apvent'); B.apnoeaVent = false; }
+  if (!V.backupOn) { clear('apvent'); B.apnoeaVent = false; }
 }
 function powerTick(dtReal) {
   if (P.mains) { P.batt = Math.min(100, P.batt + dtReal * 0.5); clear('mains'); clear('battmed'); clear('batthi'); clear('battdead'); return; }
@@ -1536,19 +1839,84 @@ function waveOpts() {
 }
 function drawWaves() {
   if (!V.power || V.selftest > 0) { CV.forEach(cv => prepCanvas(cv).clearRect(0, 0, 470, 160)); return; }
+  /* HiFlowO2: Oxygen and Flow trends, and the plethysmogram if SpO2 is on (10.5.1) */
+  if (isHFO()) {
+    drawTrend(CV[0], TR.o2, {ymin:0, ymax:100, colour:'#3fd16b', label:'Oxygen', unit:'%', ticks:[0, 50, 100]});
+    drawTrend(CV[1], TR.flow, {ymin:0, ymax:60, colour:'#e44fd0', label:'Flow', unit:'l/min', ticks:[0, 30, 60]});
+    if (V.spo2On) drawWave(CV[2], bufPl, {ymin:0, ymax:1.3, colour:'#3ec6ff', label:'Pleth', unit:'', ticks:[]});
+    else prepCanvas(CV[2]).clearRect(0, 0, 470, 160);
+    return;
+  }
   const o = waveOpts();
   drawWave(CV[0], bufP, o.paw);
   if (V.gfx === 'wave') { drawWave(CV[1], bufV, o.vol); drawWave(CV[2], bufF, o.flow); }
+  else if (V.gfx === 'asv' && V.mode === 'ASV') drawASVGraph();
   else drawDynLung();
 }
-
+/* trend of one value per simulated minute over the last hour */
+const TR = {o2:[], flow:[], lastMin:-1};
+function trendTick() {
+  const mi = Math.floor(P.simMin);
+  if (mi === TR.lastMin) return;
+  TR.lastMin = mi;
+  const on = V.power && !V.standby && isHFO();
+  TR.o2.push(on ? measuredO2() : null); TR.flow.push(on ? V.set.hflow : null);
+  if (TR.o2.length > 60) { TR.o2.shift(); TR.flow.shift(); }
+}
+function drawTrend(cv, arr, opt) {
+  const ctx = prepCanvas(cv);
+  ctx.clearRect(0, 0, 470, 160);
+  const L = 54, R = 462, T = 26, Bm = 140;
+  const {ymin, ymax, colour, label, unit, ticks} = opt;
+  const y = v => Bm - (clamp(v, ymin, ymax) - ymin) / (ymax - ymin) * (Bm - T);
+  ctx.font = '13px "Segoe UI",system-ui,sans-serif'; ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  ctx.fillText(label + ' trend', 8, 11); ctx.fillStyle = '#cfcfcf'; ctx.font = '11px "Segoe UI",system-ui,sans-serif'; ctx.fillText(unit + '   1 h', 8 + ctx.measureText(label + ' trend').width * 1.2 + 6, 11);
+  ctx.strokeStyle = '#d9d9d9'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(L, T - 4); ctx.lineTo(L, Bm); ctx.lineTo(R, Bm); ctx.stroke();
+  ctx.textAlign = 'right'; ctx.fillStyle = '#e6e6e6';
+  ticks.forEach(tv => ctx.fillText(String(tv), L - 6, y(tv)));
+  ctx.textAlign = 'center';
+  [-60, -45, -30, -15, 0].forEach(mn => { const x = L + (mn + 60) / 60 * (R - L); ctx.fillText(mn ? String(mn) : '0', x, Bm + 11); });
+  ctx.strokeStyle = colour; ctx.lineWidth = 2; ctx.beginPath();
+  let pen = false;
+  arr.forEach((v, i) => {
+    const x = L + (60 - arr.length + i + 1) / 60 * (R - L);
+    if (v === null) { pen = false; return; }
+    if (!pen) { ctx.moveTo(x, y(v)); pen = true; } else ctx.lineTo(x, y(v));
+  });
+  ctx.stroke();
+}
+/* ---------- ASV Graph (Intelligent panel, ASV only; Figure 7-17) ---------- */
+function drawASVGraph() {
+  const el = $('#dynlung');
+  const L = 64, R = 330, T = 22, Bt = 270, fAx = 60;
+  const vAx = niceTop(Math.max(A.vtMax * 1000 * 1.15, 600), [600, 800, 1000, 1200, 1600, 2000, 2500]);
+  const x = f => L + clamp(f, 0, fAx) / fAx * (R - L), y = v => Bt - clamp(v, 0, vAx) / vAx * (Bt - T);
+  const mv = A.mvTarget * 1000;
+  let curve = '';
+  for (let f = Math.max(1, mv / vAx); f <= fAx; f += 0.5) curve += (curve ? 'L' : 'M') + x(f).toFixed(1) + ' ' + y(mv / f).toFixed(1);
+  const vtNow = B.vols.length ? B.vols.slice(-4).reduce((a, b) => a + b, 0) / Math.min(4, B.vols.length) * 1000 : null;
+  const cur = !V.standby && M.ftot !== null && vtNow !== null ? `<g transform="translate(${x(M.ftot).toFixed(1)} ${y(vtNow).toFixed(1)})" stroke="#ffde00" stroke-width="3"><path d="M-9 0H9M0 -9V9"/><circle r="4" fill="#ffde00"/></g>` : '';
+  const axisT = [0, 20, 40, 60].map(f => `<text x="${x(f)}" y="${Bt + 16}" fill="#ddd" font-size="12" text-anchor="middle">${f}</text>`).join('') +
+    [0, vAx / 2, vAx].map(v => `<text x="${L - 6}" y="${y(v) + 4}" fill="#ddd" font-size="12" text-anchor="end">${Math.round(v)}</text>`).join('');
+  el.className = 'dynlung asv';
+  el.innerHTML = `<svg viewBox="0 0 462 316" aria-hidden="true">
+    <path d="M${L} ${T - 6}V${Bt}H${R + 6}" stroke="#ddd" fill="none"/>${axisT}
+    <text x="8" y="16" fill="#fff" font-size="13">Vt (ml)</text><text x="${R}" y="${Bt + 32}" fill="#fff" font-size="13" text-anchor="end">f (b/min)</text>
+    <path d="${curve}" stroke="#3fd16b" stroke-width="2" fill="none"/>
+    <rect x="${x(A.fMin)}" y="${y(A.vtMax * 1000)}" width="${x(A.fMax) - x(A.fMin)}" height="${y(A.vtMin * 1000) - y(A.vtMax * 1000)}" stroke="#e6e6e6" stroke-dasharray="5 4" fill="none"/>
+    <circle cx="${x(A.fTarget)}" cy="${y(A.vtTarget * 1000)}" r="9" stroke="#3fd16b" stroke-width="3" fill="none"/>${cur}
+  </svg>
+  <div class="asv-side"><span>Target MinVol<b>${fmt(A.mvTarget, 1)}</b><small>l/min</small></span><span>fControl<b>${V.standby ? '--' : fmt(M.fcontrol)}</b><small>b/min</small></span><span>fSpont<b>${V.standby ? '--' : fmt(M.fspont)}</b><small>b/min</small></span><span>ΔPinsp<b>${V.standby ? '--' : fmt(A.p)}</b><small>cmH2O</small></span></div>`;
+}
 /* ---------- Dynamic Lung (Intelligent panel) ---------- */
 function drawDynLung() {
-  const el = $('#dynlung');
+  const el = $('#dynlung'); el.className = 'dynlung';
   const vNow = bufV[(bufIdx - 1 + NBUF) % NBUF] || 0;
   const k = P.disc && !V.standby ? 0.72 : 1 + clamp(vNow / 1000, 0, 0.6) * 0.35;
   const trig = B.trigFlash > 0;
   const ibw = calcIBW();
+  const inv = isInvasive() && !V.standby && !P.disc;
   const spo2 = V.spo2On && !V.standby ? fmt(P.spo2) : '---';
   const pulse = V.spo2On && !V.standby ? fmt(P.hr) : '---';
   const beat = V.spo2On && !V.standby ? (1 + 0.06 * Math.max(0, Math.sin(B.now * P.hr / 60 * Math.PI * 2))) : 1;
@@ -1564,19 +1932,20 @@ function drawDynLung() {
       <path d="M-104 96 Q0 ${trig ? 70 : 84} 104 96" stroke="${trig ? '#ffffff' : '#1b6f99'}" stroke-width="${trig ? 6 : 4}" fill="none"/>
     </g></svg>
     <div class="dl-pat">${esc(V.sex)}<br>${V.set.height} cm<br>IBW: ${ibw} kg</div>
-    <div class="dl-note">${SIMULATED.includes(V.mode) ? 'In NIV, resistance and compliance values cannot be relied on (leak).' : ''}</div>
-    <div class="dl-row"><span>Rinsp<b>---</b><small>cmH2O/(l/s)</small></span><span>Cstat<b>---</b><small>ml/cmH2O</small></span><span>PetCO2<b>---</b><small>mmHg</small></span><span>SpO2<b>${spo2}</b><small>%</small></span><span>Pulse<b>${pulse}</b><small>1/min</small></span></div>`;
+    <div class="dl-note">${isNIV() ? 'In NIV, resistance and compliance values cannot be relied on (leak).' : ''}</div>
+    <div class="dl-row"><span>Rinsp<b>${inv ? fmt(P.pr.R) : '---'}</b><small>cmH2O/(l/s)</small></span><span>Cstat<b>${inv ? fmt(P.pr.C * 1000, 1) : '---'}</b><small>ml/cmH2O</small></span><span>PetCO2<b>---</b><small>mmHg</small></span><span>SpO2<b>${spo2}</b><small>%</small></span><span>Pulse<b>${pulse}</b><small>1/min</small></span></div>`;
 }
 
 /* ======================= screen rendering ======================= */
 function valStr(scope, key, v) {
   if (key === 'o2hi' || key === 'o2lo') return fmt(v);
-  const d = scope === 'lim' ? ALIM[key] : CTRL[key];
-  if (scope === 'lim' && d.off0 && v <= 0) return 'Off';
+  const d = defFor(scope, key);
+  if (d.list) return ieStr(v);
+  if (d.off0 && v <= 0) return 'Off';
   if (scope === 'lim' && d.offMax && v > d.max) return 'Off';
   return fmt(v, d.dp || 0);
 }
-function defFor(scope, key) { return scope === 'lim' ? ALIM[key] : CTRL[key]; }
+function defFor(scope, key) { return scope === 'lim' ? ALIM[key] : ctrlDef(key, scope === 'draft' && D ? (D.cpr ? 'CPR' : D.mode) : modeKey()); }
 function curVal(scope, key) {
   if (scope === 'lim') return V.lim[key];
   if (scope === 'draft') return D.set[key];
@@ -1592,37 +1961,49 @@ function ctlHTML(cls, key, scope, val, extra) {
     return `<button class="${cls} enrich" data-kf data-scope="ctrl" data-key="o2" aria-label="O2 enrichment 100% active"><span class="c">100<small>%</small></span><span class="lb">${Math.floor(V.o2Enrich / 60)}:${String(Math.floor(V.o2Enrich % 60)).padStart(2, '0')}</span></button>`;
   }
   return `<button class="${cls} ${act ? 'act' : ''} ${extra && extra.cls ? extra.cls : ''}" data-kf data-scope="${scope}" data-key="${key}" aria-pressed="${act}" aria-label="${esc(lb)} ${valStr(scope, key, v)} ${esc(d.unit)}">
-    <span class="c">${valStr(scope, key, v)}<small>${esc(d.unit)}</small></span><span class="rng"><i>${fmt(d.min, d.dp || 0)}</i><i>${fmt(d.max, d.dp || 0)}</i></span><span class="lb">${esc(lb)}</span></button>`;
+    <span class="c">${valStr(scope, key, v)}<small>${esc(d.unit)}</small></span><span class="rng"><i>${d.list ? ieStr(d.list[0]) : d.off0 && scope !== 'lim' ? 'Off' : fmt(d.min, d.dp || 0)}</i><i>${d.list ? ieStr(d.list[d.list.length - 1]) : fmt(d.max, d.dp || 0)}</i></span><span class="lb">${esc(lb)}</span></button>`;
 }
 function renderRcol() {
   if (!V.power || V.selftest > 0) { $('#rcol').innerHTML = ''; return; }
-  const mc = MODE_CTRLS[V.mode].main;
+  const mc = modeCtrls(modeKey(), V.psync).main;
   let h = mc.map((k, i) => ctlHTML('mctl', k, 'ctrl', V.set[k]).replace('class="mctl', `style="top:${8 + i * 120}px" class="mctl`)).join('');
   h += `<button class="rbtn ${win === 'controls' || win === 'draft' ? 'open' : ''}" data-kf data-open="controls" style="top:380px">Controls</button>`;
   h += `<button class="rbtn ${win === 'alarms' ? 'open' : ''}" data-kf data-open="alarms" style="top:432px">Alarms</button>`;
   $('#rcol').innerHTML = h;
 }
+/* default MMPs (Table 15-14); CPR MMPs (10.9.3); HiFlowO2 shows Oxygen and Flow (10.5) */
 const MMP_DEF = [
   {id:'ppeak', n:'Ppeak', u:'cmH2O', dp:0},
   {id:'mv', n:'ExpMinVol', nniv:'MinVol NIV', u:'l/min', dp:1},
   {id:'vte', n:'VTE', nniv:'VTE NIV', u:'ml', dp:0},
   {id:'ftot', n:'fTotal', u:'b/min', dp:0}
 ];
+const MMP_CPR = [MMP_DEF[0], MMP_DEF[2], MMP_DEF[3], {id:'cprt', n:'CPR Timer', u:'mm:ss'}];
+const MMP_HFO = [{id:'o2m', n:'Oxygen', u:'%', dp:0}, {id:'hflow', n:'Flow', u:'l/min', dp:0}];
+function mmpVal(id) {
+  if (id === 'o2m') return measuredO2();
+  if (id === 'hflow') return V.set.hflow;
+  return M[id];
+}
 function renderMMP() {
   const el = $('#mmps');
   if (!V.power || V.selftest > 0) { el.innerHTML = ''; return; }
-  const niv = SIMULATED.includes(V.mode);
+  const niv = isNIV();
   const pri = {};
   topAlarms().forEach(a => { if (a.mmp && !pri[a.mmp]) pri[a.mmp] = a.p; });
-  el.innerHTML = MMP_DEF.map((m, i) => {
-    const v = V.standby ? null : M[m.id];
+  el.innerHTML = (V.cpr ? MMP_CPR : isHFO() ? MMP_HFO : MMP_DEF).map((m, i) => {
+    if (m.id === 'cprt') {
+      const t = V.standby ? 0 : Math.max(0, B.now - V.cpr.t0);
+      return `<button class="mmp cprt" data-open="alarms" style="top:${i * 106}px" aria-label="CPR timer"><span class="v">${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}</span><span class="n">CPR Timer</span><span class="u">mm:ss</span></button>`;
+    }
+    const v = V.standby ? null : mmpVal(m.id);
     const p = pri[m.id];
     return `<button class="mmp ${p ? 'alarm ' + p : ''}" data-open="alarms" style="top:${i * 106}px" aria-label="${m.n} ${fmt(v, m.dp)} ${m.u}. Touch for alarm limits">
       <span class="v">${v === null ? '--' : fmt(v, m.dp)}</span><span class="n">${niv && m.nniv ? m.nniv : m.n}</span><span class="u">${m.u}</span></button>`;
   }).join('') + (V.spo2On ? `<button class="mmp-spo2" data-open="alarms" data-tab="2"><b>${V.standby ? '--' : fmt(P.spo2)}%</b><span>SpO2</span></button>` : '');
 }
 function renderModeName() {
-  $('#modeName').textContent = (!V.power || V.selftest > 0) ? '' : V.mode;
+  $('#modeName').textContent = (!V.power || V.selftest > 0) ? '' : modeLabel();
   $('#btnModes').classList.toggle('open', win === 'modes');
   $('#btnModes').style.visibility = V.power && V.selftest <= 0 ? '' : 'hidden';
   $('#btnModeName').style.visibility = V.power && V.selftest <= 0 ? '' : 'hidden';
@@ -1670,7 +2051,7 @@ function renderLEDs() {
   $('#scrOffTxt').innerHTML = V.power ? 'HAMILTON-T1<small>Self-test in progress…</small>' : '';
   $('#t1').classList.toggle('off', !V.power);
 }
-function renderAll() { renderModeName(); renderRcol(); renderMMP(); renderAlarmBar(); renderBstat(); renderLEDs(); if (win) renderWindow(); else $('#win').hidden = true; applyCursor(); $('#dynlung').hidden = V.gfx !== 'lung' || !V.power; CV[1].style.display = CV[2].style.display = V.gfx === 'wave' ? '' : 'none'; }
+function renderAll() { V.set.plim = V.lim.phigh - 10; renderModeName(); renderRcol(); renderMMP(); renderAlarmBar(); renderBstat(); renderLEDs(); if (win) renderWindow(); else $('#win').hidden = true; applyCursor(); const lungish = (V.gfx === 'lung' || (V.gfx === 'asv' && V.mode === 'ASV')) && !isHFO(); $('#dynlung').hidden = !lungish || !V.power; CV[1].style.display = CV[2].style.display = lungish ? 'none' : ''; }
 
 /* ---------- windows ---------- */
 function openWin(id, tab) {
@@ -1744,38 +2125,50 @@ function renderWindow() {
           <button class="pt-ic" data-kf data-sex="Female" aria-pressed="${V.sex === 'Female'}" aria-label="Female"><svg viewBox="0 0 18 30"><circle cx="9" cy="4" r="3.6"/><path d="M6 9h6l4 12h-3.5l-.5 8h-2.2l-.4-8h-.8l-.4 8H6l-.5-8H2z"/></svg></button>
           ${ctlHTML('wctl', 'height', 'standby', V.set.height, {label:'Pat. height'})}
           <span class="ibw">${calcIBW()}<small>IBW (kg)</small></span></span>
-        <span class="l">Mode</span><span class="wrow"><b style="font-size:20px;min-width:90px">${V.mode}</b><button class="wb" data-kf data-open="modes">Modes</button><button class="wb" data-kf data-open="controls">Controls</button><button class="wb" data-kf data-open="alarms">Alarms</button></span>
+        <span class="l">Mode</span><span class="wrow"><b style="font-size:20px;min-width:90px">${esc(modeLabel())}</b><button class="wb" data-kf data-open="modes">Modes</button><button class="wb" data-kf data-open="controls">Controls</button><button class="wb" data-kf data-open="alarms">Alarms</button></span>
         <span class="l">Before use</span><span class="wrow"><button class="wb" data-kf data-open="system" data-tab="tests">Preop check</button><span class="wnote">Leak test ${testMark(V.tests.leak)} · Flow sensor ${testMark(V.tests.flow)} · O2 sensor ${testMark(V.tests.o2)}</span></span>
       </div>
-      <div class="wfoot" style="justify-content:center"><button class="wb wide cur" data-kf id="sbStart">Start ventilation</button></div>`;
+      <div class="wfoot" style="justify-content:center"><button class="wb wide cur" data-kf id="sbStart">${V.cpr ? 'Start CPR' : isHFO() ? 'Start therapy' : 'Start ventilation'}</button></div>`;
   } else if (win === 'modes') {
-    const sel = D ? D.mode : V.mode;
+    const sel = D && !D.cpr ? D.mode : null;
     h = X + `<div class="wbody" style="top:6px;left:44px">${MODE_GROUPS.map(([g, ms]) => `<div class="wgrp">${g}</div><div class="wrow">${ms.map(m => {
-      const en = SIMULATED.includes(m);
-      return `<button class="wb ${V.mode === m ? 'green' : ''} ${sel === m && m !== V.mode ? 'cur' : ''}" data-kf data-mode="${m}" ${en ? '' : 'disabled title="Not simulated in this trainer"'}>${m}</button>`;
+      const lock = !V.standby && m !== V.mode && (isHFO(m) || isHFO());
+      const act = m === V.mode && !V.cpr;
+      return `<button class="wb ${act ? 'green' : ''} ${sel === m && !act ? 'cur' : ''}" data-kf data-mode="${m}" ${lock ? 'disabled title="Select in Standby"' : ''}>${esc(mName(m))}</button>`;
     }).join('')}</div>`).join('')}
-      <p class="wnote">Only NIV and NIV-ST are simulated here. Modes available on a real device depend on its options and configuration.</p></div>
-      <div class="wfoot" style="justify-content:space-between"><button class="wb red" disabled title="CPR ventilation not simulated">CPR</button><span class="wrow"><button class="wb" data-kf id="mCancel">Cancel</button>${D && D.mode !== V.mode ? '<button class="wb green" data-kf id="mConfirm">Confirm</button>' : ''}</span></div>`;
+      <p class="wnote">HiFlowO2 can only be selected in Standby. Neonatal modes (nCPAP, nCPAP-PC) and the INTELLiVENT-ASV option are not included in this adult trainer.</p></div>
+      <div class="wfoot" style="justify-content:space-between"><button class="wb red" data-kf id="mCPR" ${isHFO() ? 'disabled title="CPR ventilation is not available with HiFlowO2"' : ''}>CPR</button><span class="wrow"><button class="wb" data-kf id="mCancel">Cancel</button>${D && !D.cpr && (D.mode !== V.mode || V.cpr) ? '<button class="wb green" data-kf id="mConfirm">Confirm</button>' : ''}</span></div>`;
   } else if (win === 'controls' || win === 'draft') {
     const isDraft = win === 'draft';
     const mode = isDraft ? D.mode : V.mode;
+    const mk = isDraft ? (D.cpr ? 'CPR' : D.mode) : modeKey();
+    const psync = isDraft ? D.psync : V.psync;
     const src = isDraft ? D.set : V.set;
-    const tl = [['basic', 'Basic'], ['more', 'More']]; if (mode === 'NIV') tl.push(['apnoea', 'Apnea']); tl.push(['patient', 'Patient']);
+    const mc = modeCtrls(mk, psync);
+    const tl = [['basic', 'Basic']];
+    if (mc.more.length) tl.push(['more', 'More']);
+    if (BACKUP_MODES.includes(mk)) tl.push(['apnoea', 'Apnea']);
+    tl.push(['patient', 'Patient']);
     if (!tl.some(t => t[0] === winTab)) winTab = 'basic';
-    h = X + `<div class="wtitle">${isDraft ? 'New mode: <b>' + esc(mode) + '</b> (not active until confirmed)' : 'Controls · ' + esc(mode)}</div>` + tabs(tl, true);
+    const title = isDraft ? (D.cpr ? '<b>CPR ventilation</b>: review, then Confirm' : 'New mode: <b>' + esc(mName(mode)) + '</b> (not active until confirmed)') : 'Controls · ' + esc(modeLabel());
+    h = X + `<div class="wtitle">${title}</div>` + tabs(tl, true);
     let body = '';
     if (winTab === 'apnoea') {
-      body = `<div class="wrow" style="margin-top:6px"><span>Backup</span><button class="wb ${V.backupOn ? 'green' : ''}" data-kf data-backup="on">On</button><button class="wb ${!V.backupOn ? 'green' : ''}" data-kf data-backup="off">Off</button></div>
-        <p class="wnote">With Apnea backup on, if no breath is triggered within the Apnea time (set in Alarms &gt; Limits 1), the ventilator switches to backup ventilation, shows the low-priority alarm "Apnea ventilation", and returns to the original mode after two consecutive patient-triggered breaths ("Apnea ventilation ended"). With backup off, a high-priority "Apnea" alarm is generated instead. In this simulation, backup breaths use your ΔPsupport (minimum 10 cmH2O) at 12 b/min.</p>`;
+      const bk = mk === 'NIV' ? 'PCV+' : 'SIMV+ (APVsimv)';
+      body = `<div class="wrow" style="margin-top:6px"><span>Backup</span><button class="wb ${V.backupOn ? 'green' : ''}" data-kf data-backup="on">On</button><button class="wb ${!V.backupOn ? 'green' : ''}" data-kf data-backup="off">Off</button><span class="wnote" style="margin:0 0 0 10px">Backup mode: <b>${bk}</b> · Automatic</span></div>
+        <p class="wnote">With Apnea backup on, if no breath occurs within the Apnea time (Alarms &gt; Limits 1), the ventilator switches to backup ventilation in ${bk}, shows the low-priority alarm "Apnea ventilation", and returns to ${esc(mName(mk))} after two consecutive patient-triggered breaths ("Apnea ventilation ended"). With backup off, a high-priority "Apnea" alarm is generated instead. With Automatic on, the device sets the backup controls from IBW; the manual does not list them, so in this trainer backup breaths are ${mk === 'NIV' ? 'ΔPsupport (at least 10 cmH2O)' : 'Vt 8 ml/kg IBW'} at the default rate for IBW.</p>`;
     } else if (winTab === 'patient') {
       body = `<div class="wrow" style="margin-top:6px"><span style="min-width:80px">Sex</span><button class="wb ${V.sex === 'Male' ? 'green' : ''}" data-kf data-sex="Male">Male</button><button class="wb ${V.sex === 'Female' ? 'green' : ''}" data-kf data-sex="Female">Female</button></div>
         <div class="wrow" style="margin-top:6px">${ctlHTML('wctl', 'height', isDraft ? 'draft' : 'ctrl', src.height)}<span class="ibw">${calcIBW()}<small>IBW (kg)</small></span></div>`;
     } else {
-      const keys = MODE_CTRLS[mode][winTab];
-      const ipap = src.peep + (mode === 'NIV' ? src.ps : src.pinsp);
-      const plim = V.lim.phigh - 10;
-      body = `<div class="wgrid">${keys.map(k => ctlHTML('wctl', k, isDraft ? 'draft' : 'ctrl', src[k], {cls: ipap > plim && (k === 'ps' || k === 'pinsp' || k === 'peep') ? 'conflict' : ''})).join('')}</div>
-        <p class="wnote">Total inspiratory pressure = PEEP/CPAP + ${mode === 'NIV' ? 'ΔPsupport' : 'ΔPinsp'} = <b>${ipap}</b> cmH2O. Plimit = Pressure high alarm − 10 = <b>${plim}</b> cmH2O.${ipap > plim ? ' <b>Total pressure exceeds Plimit: delivered pressure will be limited.</b>' : ''}${winTab === 'more' ? ' Flow trigger: a lower value is more sensitive. ETS: the % of peak inspiratory flow at which inspiration ends.' : ''}</p>`;
+      const all = mc[winTab] || [];
+      const keys = all.filter(k => !TOGGLES[k]), tg = all.filter(k => TOGGLES[k]);
+      const scope = isDraft ? 'draft' : 'ctrl';
+      const tp = totalP(mode, src, psync), plim = src.plim;
+      const PRESS = ['ps', 'pinsp', 'pcontrol', 'peep', 'phi', 'aphi'];
+      body = `<div class="wgrid">${keys.map(k => ctlHTML('wctl', k, scope, src[k], {cls: tp !== null && tp > plim && PRESS.includes(k) ? 'conflict' : ''})).join('')}</div>
+        ${tg.map(k => { const on = isDraft ? D[k] : V[k]; return `<div class="wrow tgl"><span>${TOGGLES[k]}</span><button class="wb ${on ? 'green' : ''}" data-kf data-toggle="${k}" data-val="1">On</button><button class="wb ${!on ? 'green' : ''}" data-kf data-toggle="${k}" data-val="0">Off</button></div>`; }).join('')}
+        <p class="wnote">${controlsNote(mode, mk, src, psync, winTab, tp, plim, isDraft)}</p>`;
     }
     h += `<div class="wbody withv">${body}</div>`;
     if (isDraft) h += `<div class="wfoot"><button class="wb" data-kf id="dCancel">Cancel</button><button class="wb green" data-kf id="dConfirm">Confirm</button></div>`;
@@ -1789,13 +2182,21 @@ function renderWindow() {
       h += bufferHTML();
     }
   } else if (win === 'monitoring') {
-    const sb = V.standby;
-    const rows1 = [['Ppeak', M.ppeak, 0, 'cmH2O'], ['Pmean', M.pmean, 0, 'cmH2O'], ['PEEP/CPAP', M.peep, 0, 'cmH2O'], ['VTI', M.vti, 0, 'ml'], ['VTE NIV', M.vte, 0, 'ml'], ['MinVol NIV', M.mv, 1, 'l/min'], ['VLeak', M.vleak, 0, '%'], ['MVLeak', M.mvleak, 1, 'l/min']];
-    const rows2 = [['fTotal', M.ftot, 0, 'b/min'], ['fSpont', M.fspont, 0, 'b/min'], ['TI', M.ti, 2, 's'], ['TE', M.te, 2, 's'], ['I:E', M.ie, 1, '1:x'], ['Insp Flow', M.inspFlow, 0, 'l/min'], ['Oxygen', sb ? null : measuredO2(), 0, '%']];
+    const sb = V.standby, niv = isNIV();
+    let rows1, rows2;
+    if (isHFO()) {
+      rows1 = [['Oxygen', sb ? null : measuredO2(), 0, '%'], ['Flow', sb ? null : V.set.hflow, 0, 'l/min']];
+      rows2 = [['fTotal', null, 0, 'b/min'], ['Pprox', null, 0, 'cmH2O']];
+    } else {
+      rows1 = [['Ppeak', M.ppeak, 0, 'cmH2O'], ['Pmean', M.pmean, 0, 'cmH2O'], ['PEEP/CPAP', M.peep, 0, 'cmH2O'], ['AutoPEEP', niv ? null : M.autopeep, 1, 'cmH2O'], ['VTI', M.vti, 0, 'ml'], [niv ? 'VTE NIV' : 'VTE', M.vte, 0, 'ml'], [niv ? 'MinVol NIV' : 'ExpMinVol', M.mv, 1, 'l/min'], ['VLeak', M.vleak, 0, '%'], ['MVLeak', M.mvleak, 1, 'l/min']];
+      rows2 = [['fTotal', M.ftot, 0, 'b/min'], ['fControl', M.fcontrol, 0, 'b/min'], ['fSpont', M.fspont, 0, 'b/min'], ['TI', M.ti, 2, 's'], ['TE', M.te, 2, 's'], ['I:E', M.ie, 1, '1:x'], ['Insp Flow', M.inspFlow, 0, 'l/min'], ['Oxygen', sb ? null : measuredO2(), 0, '%']];
+      if (V.mode === 'ASV' || APV.includes(V.mode) || V.mode === 'VS') rows2.push(['ΔPinsp', V.mode === 'ASV' ? A.p : V.mode === 'VS' ? B.vsP : B.apvP, 0, 'cmH2O']);
+    }
     const rows3 = [['SpO2', V.spo2On ? P.spo2 : null, 0, '%'], ['Pulse', V.spo2On ? P.hr : null, 0, '1/min'], ['PetCO2', null, 0, 'mmHg']];
     const rows = winTab === '1' ? rows1 : winTab === '2' ? rows2 : rows3;
+    const note = isHFO() ? 'In HiFlowO2 only Oxygen and Flow are monitored (Pprox needs a flow sensor; not simulated).' : niv ? 'In noninvasive modes VTE is replaced by VTE NIV and ExpMinVol by MinVol NIV: leak-adjusted estimates. Use VLeak and MVLeak to judge mask fit. AutoPEEP is not reliable in NIV.' : 'AutoPEEP rises when expiration is too short for the lung to empty (watch it in APRV and at high rates). Simulated values.';
     h = X + tabs([['1', 'General 1'], ['2', 'General 2'], ['3', 'SpO2']]) + `<div class="wbody" style="top:48px"><div class="mon-cols">${rows.map(r => `<div><span>${r[0]}<small>${r[3]}</small></span><b>${sb ? '--' : fmt(r[1], r[2])}</b></div>`).join('')}</div>
-      <p class="wnote">In noninvasive modes VTE is replaced by VTE NIV and ExpMinVol by MinVol NIV: leak-adjusted estimates. Use VLeak and MVLeak to judge mask fit. Simulated values.</p></div>`;
+      <p class="wnote">${note}</p></div>`;
   } else if (win === 'tools') {
     h = X + tabs([['tools', 'Utilities'], ['cfg', 'Configuration']]) + `<div class="wbody" style="top:48px">${winTab === 'cfg' ? '<p class="wnote">Configuration needs an access code and is only available in Standby. Not simulated.</p>' : '<div class="wrow"><button class="wb" disabled>HPO / LPO</button><button class="wb" disabled>Set Oxygen alarm limits manually</button><button class="wb" disabled>Export logs</button></div><p class="wnote">Utilities include the oxygen source mode (high- or low-pressure O2), manual Oxygen alarm limits and log export. Not simulated. The suctioning tool is disabled in NIV and NIV-ST.</p>'}</div>`;
   } else if (win === 'events') {
@@ -1832,11 +2233,88 @@ function renderWindow() {
   } else if (win === 'gfx') {
     h = X + `<div class="htabs"><button disabled>Trends</button><button disabled>Loops</button><button data-kf data-gfx="lung" aria-selected="${V.gfx === 'lung'}">Graphics</button><button data-kf data-gfx="wave" aria-selected="${V.gfx === 'wave'}">Waveforms</button></div><div class="wbody" style="top:48px"><div class="wrow">
       <button class="wb ${V.gfx === 'wave' ? 'green' : ''}" data-kf data-gfx="wave">Paw, Volume, Flow</button>
-      <button class="wb ${V.gfx === 'lung' ? 'green' : ''}" data-kf data-gfx="lung">Dynamic Lung</button></div>
-      <p class="wnote">Trends and loops are not simulated; the real device also offers the Vent Status panel and, in ASV, the ASV Graph. Paw: red line = Pressure high alarm limit, blue line = Plimit (10 cmH2O below it). Pink marks show patient-triggered breaths in this trainer.</p></div>`;
+      <button class="wb ${V.gfx === 'lung' ? 'green' : ''}" data-kf data-gfx="lung">Dynamic Lung</button>${V.mode === 'ASV' ? `<button class="wb ${V.gfx === 'asv' ? 'green' : ''}" data-kf data-gfx="asv">ASV Graph</button>` : ''}</div>
+      <p class="wnote">Trends (except in HiFlowO2) and loops are not simulated; the real device also offers the Vent Status panel. Paw: red line = Pressure high alarm limit, blue line = Plimit (10 cmH2O below it). Pink marks show patient-triggered breaths in this trainer.</p></div>`;
   }
   w.innerHTML = h;
   if (win === 'alarms' && winTab === 'buffer') bindHelp();
+}
+
+/* the text under the controls: derived timing, pressure totals and how the mode works */
+function controlsNote(mode, mk, s, psync, tab, tp, plim, isDraft) {
+  if (tab === 'more') {
+    if (mk === 'CPR') return '';
+    if (mode === 'APRV') return 'In APRV the trigger is only used to count spontaneous breaths. P-ramp sets the rise to P high.';
+    return 'Flow trigger: a lower value is more sensitive' + (['APVcmv', 'PCV+'].includes(mode) ? '; it can be set to Off in this mode' : '') + '. ETS: the % of peak inspiratory flow at which a spontaneous breath ends.' + (TOGGLES.sigh && SIGH_MODES.includes(mode) ? ' Sigh: every 50th breath is a sigh breath.' : '');
+  }
+  const parts = [];
+  const live = !isDraft && !V.standby;
+  if (mode === 'APVcmv' || mode === 'PCV+') { const c = 60 / s.rate, ti = c * s.ie / (1 + s.ie); parts.push(`TI ${ti.toFixed(2)} s · TE ${(c - ti).toFixed(2)} s.`); }
+  if (['APVsimv', 'PSIMV+', 'NIV-ST'].includes(mode)) { const c = 60 / s.rate, ti = Math.min(s.ti, c * 0.8); parts.push(`I:E ${ieStr(ti / (c - ti))} · TE ${(c - ti).toFixed(2)} s.`); }
+  if (mode === 'DuoPAP') parts.push(`Time at PEEP/CPAP ${Math.max(0, 60 / s.rate - s.thigh).toFixed(2)} s. ΔPsupport is above PEEP, so it only supports breaths at P high when PEEP + ΔPsupport (${s.peep + s.ps}) is above P high (${s.phi}).`);
+  if (mode === 'APRV') parts.push(`Rate ${(60 / (s.athigh + s.tlow)).toFixed(1)} b/min (from T high + T low). APRV settings are kept separately from the other modes.`);
+  if (mk === 'CPR') parts.push('CPR ventilation (Table 10-3): flow trigger Off, P-ramp fixed at 50 ms; ExpMinVol, fTotal and Vt alarm limits go to their minimum and maximum; the CPR ON alarm shows while it is on.');
+  if (APV.includes(mode) || mode === 'VS') parts.push(`The pressure is adjusted between breaths to reach Vt (at least 5 cmH2O above PEEP, never above Plimit ${plim} cmH2O).` + (live && !V.cpr ? ` Current ΔPinsp ${fmt(mode === 'VS' ? B.vsP : B.apvP)} cmH2O.` : ''));
+  if (mode === 'ASV') {
+    const ibw = calcIBW();
+    parts.push(`Target MinVol = IBW ${ibw} kg × 0.1 l/kg/min × ${s.minvol}% = ${fmt(ibw * 0.1 * s.minvol / 100, 1)} l/min. ASV chooses rate, Vt, TI and ΔPinsp within lung-protective limits (max ΔPinsp = Plimit ${plim} − PEEP).` + (live ? ` Now: target f ${fmt(A.fTarget)} b/min, Vt ${fmt(A.vtTarget * 1000)} ml, ΔPinsp ${fmt(A.p)} cmH2O.` : ''));
+  }
+  if (mode === 'HiFlowO2') parts.push('HiFlowO2 delivers a continuous flow through a nasal cannula. It is not life-supporting: disconnection and apnea alarms are inactive, and Manual breath is disabled.');
+  if (tp !== null) parts.push(`Total inspiratory pressure ${tp} cmH2O; Plimit ${plim} cmH2O (high Pressure alarm − 10).` + (tp > plim ? ' <b>Total pressure exceeds Plimit: delivered pressure will be limited.</b>' : ''));
+  return parts.join(' ');
+}
+/* a draft for a new mode, shown in the Controls window until Confirm (5.4.1) */
+function createDraft(mode, cpr) {
+  const ibw = calcIBW();
+  let set = V.cpr && !cpr ? {...V.cpr.prevSet} : {...V.set};
+  set.plim = V.cpr && !cpr ? V.cpr.prevLim.phigh - 10 : V.lim.phigh - 10;
+  if (cpr) { mode = 'APVcmv'; Object.assign(set, {rate:10, ie:0.2, peep:5, o2:100, vt:Math.max(20, Math.round(ibw * 6 / 10) * 10), trig:0, pramp:50, plim:45}); }
+  if (!cpr && mode === 'APRV' && !V.aprvInit) Object.assign(set, ibw >= 60 ? {aphi:20, plo:5, athigh:5.4, tlow:0.6} : ibw >= 40 ? {aphi:20, plo:5, athigh:4.4, tlow:0.6} : {aphi:20, plo:5, athigh:3.5, tlow:0.5});
+  if (!cpr && (APV.includes(mode) || mode === 'VS') && !APV.includes(V.mode) && V.mode !== 'VS') set.vt = Math.max(20, Math.round(ibw * 8 / 10) * 10);
+  const mk = cpr ? 'CPR' : mode;
+  ['rate', 'pramp', 'trig'].forEach(k => {
+    const d = ctrlDef(k, mk);
+    if (k === 'trig' && set.trig <= 0 && !d.off0 && !cpr) set.trig = DEFAULT_SET.trig;
+    else if (k !== 'trig') set[k] = clamp(set[k], d.min, d.max);
+  });
+  D = {mode, cpr:!!cpr, set, psync:V.psync, sigh:V.sigh};
+}
+const ifaceOf = m => isHFO(m) ? 'hfo' : isNIV(m) ? 'niv' : 'inv';
+function applyDraft() {
+  const oldLabel = modeLabel(), prev = V.mode, oldIf = ifaceOf(V.mode);
+  const entering = D.cpr && !V.cpr, leaving = !D.cpr && V.cpr;
+  if (leaving) { V.lim = {...V.cpr.prevLim}; V.cpr = null; clear('cpron'); }
+  if (entering) {
+    V.cpr = {t0:B.now, prevLim:{...V.lim}, prevSet:{...V.set}};
+    Object.assign(V.lim, {mvhigh:99999, mvlow:0, fhigh:99, flow:0, vthigh:99999, vtlow:0});   /* 10.9.1: Apnea time is only changed (to 10 s) for neonates */
+  }
+  const plimOld = V.lim.phigh - 10;
+  V.set = {...D.set}; V.mode = D.mode; V.psync = D.psync; V.sigh = D.sigh;
+  if (V.set.plim !== plimOld) { V.lim.phigh = clamp(V.set.plim + 10, 15, 70); if (!entering && !leaving) { raise('plimchg'); B.plimchgT = 10; } }
+  if (V.mode === 'APRV') V.aprvInit = true;
+  D = null;
+  modeEntered(prev);
+  logEvent((entering ? 'CPR ventilation started' : leaving ? 'CPR ventilation stopped' : 'Mode changed ' + oldLabel + ' → ' + modeLabel()), 'info');
+  if (entering) addPrompt('CPR ventilation on (' + modeLabel() + '): Rate 10, I:E 1:5, Oxygen 100%, trigger Off. The CPR timer runs while it is on. To stop, select and confirm another mode (alarm limits return to their previous settings), or enter Standby; Start CPR then restarts it.');
+  else addPrompt('Mode changed to ' + modeLabel() + '. On the device the change takes effect at the end of the current breath cycle.');
+  const nIf = ifaceOf(V.mode);
+  if (nIf !== oldIf) {
+    if (nIf === 'inv') addPrompt('Invasive mode: this trainer now assumes the patient has been intubated (the NIV patient scenarios are written for a mask). The leak buttons act as a leak at the tube or circuit. Disconnection on patient side and Inspiratory volume limitation now apply.');
+    if (nIf === 'niv') addPrompt('Noninvasive mode: the trainer assumes a non-vented mask. Volume alarms are less meaningful; set the low Pressure limit near the set pressure.');
+    if (nIf === 'hfo') addPrompt('HiFlowO2: the trainer assumes a nasal cannula. There is no pressure support. Only Oxygen and Flow are monitored, and disconnection and apnea alarms are inactive.');
+  }
+  if (entering && V.standby) { startVentilation(); return; }
+  win = null; closeWin(); updateTasks();
+}
+function modeEntered(prev) {
+  B.apnoeaVent = false; clear('apvent'); clear('apnea');
+  if (APV.includes(V.mode) && !APV.includes(prev)) B.apvP = 10;
+  if (V.mode === 'VS' && prev !== 'VS') B.vsP = 10;
+  if (V.mode === 'ASV') asvInit();
+  B.simvC0 = B.now; B.simvDue = true; B.lastMand = -1e9;
+  if (V.gfx === 'asv' && V.mode !== 'ASV') V.gfx = 'wave';
+  if (!isInvasive()) { clear('discpat'); clear('vlimit'); }
+  if (isHFO()) { for (const k in M) M[k] = null; B.starts = []; B.types = []; B.vols = []; }
 }
 function testMark(s) { return s === 'ok' ? '✔' : s === 'fail' ? '✖' : '–'; }
 function bufferHTML() {
@@ -1889,6 +2367,11 @@ function turn(dir) {
   }
   if (E.scope === 'lim' && (E.key === 'o2hi' || E.key === 'o2lo')) return;
   const d = defFor(E.scope === 'standby' ? 'ctrl' : E.scope, E.key);
+  if (d.list) {
+    let i = d.list.findIndex(x => Math.abs(x - E.val) < 1e-6);
+    if (i < 0) i = d.list.reduce((bi, x, j) => Math.abs(x - E.val) < Math.abs(d.list[bi] - E.val) ? j : bi, 0);
+    E.val = d.list[clamp(i + dir, 0, d.list.length - 1)]; renderAll(); return;
+  }
   if (d.offMax && E.val > d.max) { if (dir < 0) { E.val = d.max; renderAll(); } return; }
   if (d.offMax && E.val >= d.max && dir > 0) { E.val = 99999; renderAll(); return; }
   if (d.off0 && E.val <= 0 && dir > 0) { E.val = typeof d.step === 'function' ? d.step(0, 1) : d.step; renderAll(); return; }
@@ -1918,12 +2401,13 @@ function confirmEdit() {
   const {scope, key, val} = E;
   if (scope === 'lim') {
     V.lim[key] = val;
-    if (key === 'phigh') { raise('plimchg'); B.plimchgT = 10; }
+    if (key === 'phigh') { raise('plimchg'); B.plimchgT = 10; V.set.plim = val - 10; }
     logEvent('Alarm limit changed: ' + ALIM[key].label + (key.endsWith('low') || key === 'plow' || key === 'flow' ? ' low ' : key === 'apnoea' ? ' ' : ' high ') + valStr('lim', key, val), 'info');
     checkSettingPrompts(key);
   } else if (scope === 'draft') D.set[key] = val;
   else {
     V.set[key] = val;
+    if (key === 'plim') { V.lim.phigh = clamp(val + 10, 15, 70); raise('plimchg'); B.plimchgT = 10; }
     if (key !== 'height') logEvent('Setting changed: ' + CTRL[key].label + ' ' + valStr('ctrl', key, val), 'info');
     checkSettingPrompts(key);
   }
@@ -1935,13 +2419,14 @@ let knobAngle = 0;
 function rotateKnob(dir) { knobAngle += dir * 15; $('#knobRot').style.transform = 'rotate(' + knobAngle + 'deg)'; }
 
 function checkSettingPrompts(key) {
-  const ipap = V.set.peep + setDP();
-  if (ipap > 30) addPrompt('IPAP ' + ipap + ' cmH2O: BTS/ICS advises IPAP should not exceed 30 (or EPAP 8) without expert review.');
-  if (ipap > 33) addPrompt('Hamilton manual: peak pressures above 33 cmH2O may increase the risk of aspiration from gastric insufflation. Consider an invasive mode.');
-  if (V.set.peep + setDP() > V.lim.phigh - 10) addPrompt('Total inspiratory pressure is above Plimit (Pressure high − 10). Delivered pressure will be limited and the Pressure limitation alarm will appear. Adjust the pressure settings or raise the Pressure high limit if intended.');
+  if (isHFO()) return;
+  const tp = totalP(V.mode, V.set, V.psync), ipap = V.set.peep + setDP();
+  if (isNIV() && ipap > 30) addPrompt('IPAP ' + ipap + ' cmH2O: BTS/ICS advises IPAP should not exceed 30 (or EPAP 8) without expert review.');
+  if (isNIV() && ipap > 33) addPrompt('Hamilton manual: peak pressures above 33 cmH2O may increase the risk of aspiration from gastric insufflation. Consider an invasive mode.');
+  if (tp !== null && tp > V.lim.phigh - 10) addPrompt('Total inspiratory pressure is above Plimit (Pressure high − 10). Delivered pressure will be limited and the Pressure limitation alarm will appear. Adjust the pressure settings or raise the Pressure high limit if intended.');
   if (key === 'trig' && V.set.trig <= 1) addPrompt('Very sensitive trigger: watch for auto-triggering, especially with leak.');
   if (key === 'trig' && V.set.trig >= 10) addPrompt('Insensitive trigger: weak patients may fail to trigger (missed efforts).');
-  if (key === 'plow' && V.lim.plow < V.set.peep + setDP() - 6) addPrompt('Low Pressure limit is well below the set pressure. In NIV a disconnection may not alarm promptly. The manual advises setting it near the set pressure.');
+  if (key === 'plow' && isNIV() && V.lim.plow < V.set.peep + setDP() - 6) addPrompt('Low Pressure limit is well below the set pressure. In NIV a disconnection may not alarm promptly. The manual advises setting it near the set pressure.');
 }
 
 /* ---------- event wiring: screen ---------- */
@@ -1963,20 +2448,22 @@ $('#screen').addEventListener('click', e => {
   if (b.dataset.night) { V.night = b.dataset.night === '1'; renderAll(); return; }
   if (b.dataset.help) { helpFor = helpFor === b.dataset.help ? null : b.dataset.help; renderWindow(); return; }
   if (b.dataset.test) { startTest(b.dataset.test); return; }
-  if (b.dataset.mode) { D = {mode: b.dataset.mode, set: {...V.set}}; renderWindow(); return; }
+  if (b.dataset.mode) { if (b.dataset.mode === V.mode && !V.cpr) { D = null; openWin('controls'); return; } createDraft(b.dataset.mode, false); renderWindow(); return; }
+  if (b.dataset.toggle) {
+    const k = b.dataset.toggle, on = b.dataset.val === '1';
+    if (win === 'draft' && D) D[k] = on;
+    else { V[k] = on; logEvent(TOGGLES[k] + (on ? ' on' : ' off'), 'info'); }
+    renderWindow(); return;
+  }
   switch (b.id) {
     case 'btnModeName': openWin('modes'); break;
     case 'msgbar': openWin('alarms', 'buffer'); break;
     case 'wClose': closeWin(); break;
     case 'mCancel': D = null; closeWin(); break;
     case 'mConfirm': win = 'draft'; winTab = 'basic'; renderAll(); break;
+    case 'mCPR': createDraft(null, true); win = 'draft'; winTab = 'basic'; renderAll(); break;
     case 'dCancel': E = null; D = null; closeWin(); break;
-    case 'dConfirm': {
-      V.set = {...D.set}; const old = V.mode; V.mode = D.mode; D = null;
-      logEvent('Mode changed ' + old + ' → ' + V.mode, 'info');
-      addPrompt('Mode changed to ' + V.mode + '. The change takes effect at the end of the current breath cycle.');
-      win = null; closeWin(); updateTasks(); break;
-    }
+    case 'dConfirm': if (E) confirmEdit(); applyDraft(); renderAll(); break;
     case 'sbStart': startVentilation(); break;
     case 'limAuto': autoLimits(); break;
     case 'loudTest': { const s = V.sound; V.sound = true; beep(3, 0.3, 780); V.sound = s; break; }
@@ -2000,9 +2487,18 @@ function autoLimits() {
 function startVentilation() {
   if (E) confirmEdit();
   V.standby = false; V.ambient = false; V.startSuppress = 60;
-  B.lastStart = B.now; B.nextEffort = B.now + 0.6; B.starts = []; B.types = [];
-  win = null; logEvent('Ventilation started (' + V.mode + ')', 'info');
-  addPrompt('Ventilation started in ' + V.mode + '. Acoustic patient alarms are suppressed for 1 minute after starting from Standby. Check synchrony, SpO2 target and leak.');
+  B.lastStart = B.now; B.nextEffort = B.now + 0.6; B.starts = []; B.types = []; B.vols = [];
+  Object.assign(B, {Vee:0, vEndInsp:0, simvC0:B.now, simvDue:true, lastMand:-1e9, apnoeaVent:false, ovl:null, br:null, phase:'exp', t:0});
+  if (V.mode === 'ASV') asvInit();
+  if (V.cpr) V.cpr.t0 = B.now;
+  win = null;
+  if (isHFO()) {
+    logEvent('Therapy started (HiFlowO2)', 'info');
+    addPrompt('HiFlowO2 therapy started: Flow ' + V.set.hflow + ' l/min, Oxygen ' + V.set.o2 + '%. Watch SpO2 and the respiratory rate; HiFlowO2 does not ventilate the patient.');
+  } else {
+    logEvent('Ventilation started (' + modeLabel() + ')', 'info');
+    addPrompt('Ventilation started in ' + modeLabel() + '. Acoustic patient alarms are suppressed for 1 minute after starting from Standby. Check synchrony, SpO2 target and leak.');
+  }
   if (V.tests.leak !== 'ok' || V.tests.flow !== 'ok') addPrompt('Note: the leak test and flow sensor calibration have not both passed (System > Tests & calib). The manual expects the preoperational check before connecting a patient.');
   updateTasks(); renderAll();
 }
@@ -2139,8 +2635,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && E) cancelE
 
 /* ======================= patient side panel ======================= */
 const EVENTS = [
-  {id:'leakM', label:'Moderate mask leak', on:() => { P.fit = 'moderate'; }, off:() => { P.fit = 'good'; }, is:() => P.fit === 'moderate'},
-  {id:'leakL', label:'Large mask leak', on:() => { P.fit = 'large'; }, off:() => { P.fit = 'good'; }, is:() => P.fit === 'large'},
+  {id:'leakM', label:'Moderate leak', on:() => { P.fit = 'moderate'; }, off:() => { P.fit = 'good'; }, is:() => P.fit === 'moderate'},
+  {id:'leakL', label:'Large leak', on:() => { P.fit = 'large'; }, off:() => { P.fit = 'good'; }, is:() => P.fit === 'large'},
   {id:'disc', label:'Mask off / disconnected', on:() => { P.disc = true; }, off:() => { P.disc = false; }, is:() => P.disc},
   {id:'cough', label:'Coughing / fighting', on:() => { P.cough = true; }, off:() => { P.cough = false; }, is:() => P.cough},
   {id:'kink', label:'Kinked expiratory limb', on:() => { P.kink = true; }, off:() => { P.kink = false; }, is:() => P.kink},
@@ -2168,11 +2664,12 @@ $$('[data-speed]').forEach(b => b.addEventListener('click', () => { speed = +b.d
 
 function fullReset(id) {
   resetPatient(id || 'copd');
-  Object.assign(V, {power:true, selftest:0, standby:true, ambient:false, mode:'NIV-ST', set:{...DEFAULT_SET}, lim:{...DEFAULT_LIM}, backupOn:true, locked:false, night:false, o2Enrich:0, audioPause:0, manualReq:false, neb:0, startSuppress:0, standbySince:B.now, testRun:null, tests:{leak:null, flow:null, o2:'ok'}});
+  Object.assign(V, {power:true, selftest:0, standby:true, ambient:false, mode:'NIV-ST', set:{...DEFAULT_SET}, lim:{...DEFAULT_LIM}, backupOn:true, cpr:null, psync:false, sigh:false, aprvInit:false, gfx:V.gfx === 'asv' ? 'wave' : V.gfx, locked:false, night:false, o2Enrich:0, audioPause:0, manualReq:false, neb:0, startSuppress:0, standbySince:B.now, testRun:null, tests:{leak:null, flow:null, o2:'ok'}});
   if (id === 'cpo') { V.mode = 'NIV'; V.set.ps = 0; V.set.peep = 5; V.set.o2 = 60; }
   E = null; D = null; active.clear(); inactive.clear(); history.length = 0; helpFor = null; cursor = -1;
   for (const k in M) M[k] = null;
-  Object.assign(B, {phase:'exp', t:0, br:null, starts:[], types:[], apnoeaVent:false, missLog:[], tiMaxLog:[], autoLog:[], lowVtCount:0, highVtCount:0, lossPeepT:0, highPeepCount:0, highPT:0});
+  Object.assign(B, {phase:'exp', t:0, br:null, starts:[], types:[], apnoeaVent:false, missLog:[], tiMaxLog:[], autoLog:[], lowVtCount:0, highVtCount:0, lossPeepT:0, highPeepCount:0, highPT:0, vols:[], apvP:10, vsP:10, ovl:null, Vee:0, vEndInsp:0, nBreaths:0, vlimit:false, apvLim:false});
+  TR.o2.length = 0; TR.flow.length = 0; TR.lastMin = -1; bufPl.fill(0);
   bufP.fill(0); bufF.fill(0); bufV.fill(0); bufTrig.fill(0);
   $('#abgBody').innerHTML = '<tr><td colspan="5">No gases yet</td></tr>';
   $('#prompts').innerHTML = '';
@@ -2192,18 +2689,20 @@ function patientTick(dtReal) {
   P.simMin += dtMin;
   const ventOn = V.power && !V.standby && !V.ambient;
   if (ventOn) P.onNivMin += dtMin;
-  const dp = ventOn && !P.disc ? P.dpAvg : 0;
+  const hfo = ventOn && isHFO();
+  const dp = ventOn && !P.disc && !hfo ? P.dpAvg : 0;
   let rr = pr.rrBase - 0.45 * dp + 8 * P.fatigue + (P.spo2 < 88 ? 4 : 0) - (P.id === 'cpo' && ventOn && !P.disc ? 0.5 * V.set.peep + P.improve * 40 : 0);
   if (P.deteriorate) rr += 4;
   P.rr = P.apnoea ? 0 : clamp(rr, 10, 45);
   P.missFrac = frac(B.missLog); P.tiMaxFrac = frac(B.tiMaxLog); P.autoFrac = frac(B.autoLog);
   let VA;
   if (!ventOn || P.disc) VA = P.VAbase * (1 - 0.3 * P.fatigue);
+  else if (hfo) VA = P.VAbase * (1 - 0.3 * P.fatigue) * (1 + 0.15 * V.set.hflow / 60);   /* illustrative dead-space washout */
   else {
     const eff = clamp(1 - 0.5 * P.missFrac - 0.15 * P.tiMaxFrac - 0.3 * P.autoFrac, 0.3, 1);
     VA = Math.max(0.2, (P.vtAvg - pr.vd)) * Math.max(P.rr, (M.ftot || P.rr)) * eff;
   }
-  if (P.apnoea) VA = ventOn && (V.mode === 'NIV-ST' || B.apnoeaVent) ? VA * 0.6 : 0.2;
+  if (P.apnoea) VA = ventOn && !P.disc && !hfo && (mandTiming() !== null || B.apnoeaVent) ? VA * (isNIV() ? 0.6 : 1) : 0.2;
   const r = VA / P.VAbase;
   let target = pr.floor + (pr.paco2 - pr.floor) * Math.exp(-0.5 * (r - 1));
   target = Math.min(target, pr.paco2 + 4);
@@ -2216,12 +2715,19 @@ function patientTick(dtReal) {
   let fio2, peep;
   if (!ventOn) { fio2 = pr.fio2Pre; peep = 0; }
   else if (P.disc) { fio2 = 0.21; peep = 0; }
-  else { fio2 = measuredO2() / 100; peep = B.peepNow; }
+  else if (hfo) {
+    /* room air is entrained when the set flow is below the patient's peak inspiratory flow (illustrative: 25 + 1.2 x RR l/min) */
+    const pif = 25 + 1.2 * P.rr, fl = V.set.hflow;
+    fio2 = (fl * measuredO2() / 100 + Math.max(0, pif - fl) * 0.21) / Math.max(pif, fl);
+    peep = 0.05 * fl;
+  }
+  else { fio2 = measuredO2() / 100; peep = ['APRV', 'DuoPAP'].includes(V.mode) && M.pmean !== null ? Math.max(B.peepNow, M.pmean - 2) : B.peepNow; }
   P.spo2T = calcSpo2(fio2, peep);
   P.spo2 += (P.spo2T - P.spo2) * Math.min(1, dtReal * 0.12);
   let hr = pr.hr + (P.spo2 < 88 ? (88 - P.spo2) * 1.5 : 0) + (P.rr > 30 ? (P.rr - 30) : 0) + (P.paco2 > 9 ? 6 : 0) - (ventOn ? Math.min(10, P.onNivMin / 12) : 0);
   if (P.apnoea) hr = Math.max(40, hr - Math.min(50, P.onNivMin));
   P.hr += (hr - P.hr) * Math.min(1, dtReal * 0.2);
+  trendTick();
 }
 function appearance() {
   if (P.apnoea) return 'Unresponsive. No respiratory effort seen.';
@@ -2232,8 +2738,9 @@ function appearance() {
   if (P.missFrac > 0.3) bits.push('visible efforts not followed by breaths (asynchrony)');
   if (P.autoFrac > 0.3) bits.push('breaths arriving without patient effort');
   if (P.tiMaxFrac > 0.5) bits.push('fighting prolonged inspirations');
-  if (P.fit !== 'good' && !P.disc) bits.push('air blowing around the mask' + (P.fit === 'large' ? ' into the eyes' : ''));
-  if (P.disc) bits.push('mask off the face');
+  const itf = isHFO() ? 'cannula' : isNIV() ? 'mask' : 'tube';
+  if (P.fit !== 'good' && !P.disc) bits.push(itf === 'mask' ? 'air blowing around the mask' + (P.fit === 'large' ? ' into the eyes' : '') : itf === 'tube' ? 'audible leak around the tube or circuit' : 'cannula slipping from the nostrils');
+  if (P.disc) bits.push(itf === 'mask' ? 'mask off the face' : itf === 'tube' ? 'circuit disconnected from the tube' : 'cannula out of the nose');
   if (P.cough) bits.push('coughing');
   if (!bits.length) return V.standby ? 'On controlled oxygen, breathless, waiting for NIV.' : 'More settled, chest moving with each breath.';
   return 'Patient: ' + bits.join('; ') + '.';
@@ -2251,7 +2758,7 @@ function updatePatientPanel() {
 }
 $('#btnABG').addEventListener('click', () => {
   const ph = phOf(P.paco2, P.hco3);
-  const settings = V.standby ? 'pre-NIV, FiO2 ' + Math.round(P.pr.fio2Pre * 100) + '%' : `${V.mode} PEEP ${V.set.peep} ΔP ${setDP()} O2 ${measuredO2()}%`;
+  const settings = V.standby ? 'pre-NIV, FiO2 ' + Math.round(P.pr.fio2Pre * 100) + '%' : (isHFO() ? `HiFlowO2 ${V.set.hflow} l/min O2 ${measuredO2()}%` : `${modeLabel()} ${V.mode === 'APRV' ? 'P high ' + V.set.aphi + ' P low ' + V.set.plo : 'PEEP ' + V.set.peep + ' ΔP ' + fmt(setDP())} O2 ${measuredO2()}%`);
   P.abgs.push({min: P.onNivMin, ph, paco2: P.paco2, pao2: P.pao2, settings});
   $('#abgBody').innerHTML = P.abgs.map(a => `<tr><td>${String(Math.floor(a.min / 60)).padStart(2, '0')}:${String(Math.floor(a.min % 60)).padStart(2, '0')}</td><td>${a.ph.toFixed(2)}</td><td>${a.paco2.toFixed(1)}</td><td>${a.pao2.toFixed(1)}</td><td>${esc(a.settings)}</td></tr>`).join('');
   const prev = P.abgs.length > 1 ? P.abgs[P.abgs.length - 2] : null;
