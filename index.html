@@ -98,6 +98,13 @@ details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
 .t1-wrap{position:relative;width:100%;overflow:hidden;border-radius:14px;background:radial-gradient(ellipse at 50% 35%,#ffffff 0,#e9eef3 60%,#dfe5eb 100%);padding:10px 0 4px}
 .t1-wrap.zoom{overflow-x:auto;overscroll-behavior-x:contain}
 .t1-scaler{position:relative;margin:0 auto;transform-origin:0 0}
+/* full screen: the ventilator alone, filling the viewport */
+.fs-exit{display:none}
+body.t1fs{overflow:hidden}
+body.t1fs .t1-wrap{position:fixed;inset:0;z-index:1000;width:auto;border-radius:0;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#4a5058 0,#2a2e33 60%,#1b1e22 100%)}
+body.t1fs .t1-scaler{margin:0}
+body.t1fs .fs-exit{display:block;position:absolute;top:10px;right:10px;z-index:2;background:rgba(15,27,45,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 12px;font-size:.85rem;font-weight:600;opacity:.6;cursor:pointer}
+body.t1fs .fs-exit:hover,body.t1fs .fs-exit:focus-visible{opacity:1}
 .t1{position:absolute;left:0;top:0;width:1000px;height:790px;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;user-select:none;-webkit-user-select:none}
 .t1 button{font-family:inherit}
 /* handle */
@@ -462,9 +469,10 @@ footer a{color:#9cc3ff}
       <div>
         <div class="sim-banner" role="note">
           <span><strong>SIMULATION</strong>: a training recreation of the HAMILTON-T1 front panel and screen, built from the SW 3.0.x operator's manual. It is not Hamilton Medical software and is not endorsed by Hamilton Medical.</span>
-          <span class="bopts"><span id="simClock" aria-live="off">Ventilated 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button></span>
+          <span class="bopts"><span id="simClock" aria-live="off">Ventilated 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button><button id="btnFull" aria-pressed="false" title="Show only the ventilator, filling the screen">Full screen</button></span>
         </div>
         <div class="t1-wrap" id="device">
+          <button class="fs-exit" id="btnFsExit" aria-label="Exit full screen">✕ Exit full screen</button>
           <div class="t1-scaler" id="t1scaler">
           <div class="t1" id="t1">
             <div class="t1-handle" aria-hidden="true"><i class="post l"></i><i class="post r"></i><div class="bar"></div><div class="grip"></div></div>
@@ -2031,6 +2039,7 @@ function fitDevice() {
   const avail = wrap.clientWidth;
   let s = Math.min(1, avail / DEV_W);
   if (wrap.classList.contains('zoom')) s = Math.max(s, 0.8);
+  if (document.body.classList.contains('t1fs')) s = Math.min(avail / DEV_W, (wrap.clientHeight - 8) / DEV_H);
   t1.style.transform = 'scale(' + s + ')'; t1.style.transformOrigin = '0 0';
   sc.style.width = (DEV_W * s) + 'px'; sc.style.height = (DEV_H * s) + 'px';
   const box = $('#screenbox');
@@ -2867,6 +2876,26 @@ $('#kNeb').addEventListener('click', () => {
 $('#kPrint').addEventListener('click', () => { if (!V.power) return; if (V.locked) { scrToast('Screen is locked!'); return; } const l = $('#led-print'); l.classList.add('on'); setTimeout(() => l.classList.remove('on'), 600); scrToast('Screenshot saved to the USB memory device (simulated).'); });
 $('#kAudio').addEventListener('click', () => { if (!V.power) return; V.audioPause = V.audioPause > 0 ? 0 : AUDIO_PAUSE_S; renderAll(); });
 $('#btnSound').addEventListener('click', e => { V.sound = !V.sound; e.currentTarget.setAttribute('aria-pressed', V.sound); if (V.sound) beep(1, 0.2, 700); });
+/* full screen: CSS takes the device over the whole window; the Fullscreen API also hides the browser bars where it is supported (not on iPhone) */
+function setFull(on) {
+  document.body.classList.toggle('t1fs', on);
+  $('#btnFull').setAttribute('aria-pressed', on);
+  const d = document, el = d.documentElement;
+  const fsEl = d.fullscreenElement || d.webkitFullscreenElement;
+  try {
+    if (on && !fsEl) { const r = el.requestFullscreen ? el.requestFullscreen() : el.webkitRequestFullscreen && el.webkitRequestFullscreen(); if (r && r.catch) r.catch(() => {}); }
+    else if (!on && fsEl) { const r = d.exitFullscreen ? d.exitFullscreen() : d.webkitExitFullscreen && d.webkitExitFullscreen(); if (r && r.catch) r.catch(() => {}); }
+  } catch (er) {}
+  fitDevice();
+  if (on) $('#knob').focus({ preventScroll: true }); else $('#btnFull').focus({ preventScroll: true });
+}
+$('#btnFull').addEventListener('click', () => setFull(true));
+$('#btnFsExit').addEventListener('click', () => setFull(false));
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, () => {
+  if (!(document.fullscreenElement || document.webkitFullscreenElement) && document.body.classList.contains('t1fs')) setFull(false);
+  else fitDevice();
+}));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !E && document.body.classList.contains('t1fs')) setFull(false); });
 $('#btnZoom').addEventListener('click', e => { const z = $('#device').classList.toggle('zoom'); e.currentTarget.setAttribute('aria-pressed', z); fitDevice(); });
 
 /* ---------- knob ---------- */
