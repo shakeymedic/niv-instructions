@@ -38,11 +38,6 @@ button{font:inherit;cursor:pointer}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem}
 .brand img{width:44px;height:44px;border-radius:8px;background:#fff}
 .head-tag{font-size:.82rem;opacity:.9}
-.topnav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 6px rgba(15,27,45,.06)}
-.topnav ul{list-style:none;display:flex;gap:4px;margin:0 auto;padding:6px 16px;max-width:1180px;overflow-x:auto;scrollbar-width:thin}
-.topnav li{margin:0;flex:0 0 auto}
-.topnav a{display:block;padding:7px 11px;border-radius:999px;text-decoration:none;color:var(--brand-d);font-weight:600;font-size:.9rem;white-space:nowrap}
-.topnav a:hover,.topnav a:focus{background:var(--brand-l)}
 
 /* Layout */
 section.block{padding:30px 0 10px}
@@ -416,16 +411,55 @@ footer{background:#0f1b2d;color:#cbd5e1;margin-top:30px;padding:24px 0;font-size
 footer a{color:#9cc3ff}
 .toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#0f1b2d;color:#fff;padding:10px 16px;border-radius:10px;z-index:200;max-width:calc(100% - 32px);font-size:.9rem;box-shadow:0 8px 20px rgba(0,0,0,.3)}
 .toast[hidden]{display:none}
-.tbar{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 0}
-.tbar h2{font-size:1.25rem;margin:0 0 8px}
-.ttabs{display:flex;gap:6px;flex-wrap:wrap}
-.ttabs button{border:1px solid var(--line);border-bottom:0;background:var(--bg);color:var(--brand-d);font-weight:700;font-size:1rem;padding:10px 18px;border-radius:10px 10px 0 0}
-.ttabs button[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
-.ttabs button:hover{background:var(--brand-l)}
-.ttabs button[aria-selected="true"]:hover{background:var(--brand-d)}
-.tpanel-toc{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
-.tpanel-toc a{font-size:.85rem;font-weight:600;text-decoration:none;background:var(--brand-l);color:var(--brand-d);border-radius:999px;padding:4px 11px}
-@media (max-width:560px){.ttabs button{flex:1 1 0;padding:9px 8px;font-size:.92rem}}
+/* page layout: app tabs, sub-tabs, side tabs */
+.apanel[hidden],.apanel section.block[hidden],.sidetabs-card [role="tabpanel"][hidden],.hands[hidden]{display:none}
+.head-title{flex:1 1 auto;margin:0;font-size:1.05rem;color:#fff;font-weight:700}
+@media(min-width:820px){.head-title{font-size:1.3rem}}
+@media(max-width:600px){.head-in{padding:8px 16px;flex-wrap:nowrap}.brand img{width:34px;height:34px}.brand span,.head-tag{display:none}.head-title{font-size:1rem}}
+.head-tag{opacity:.85}
+.apptabs{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 6px rgba(15,27,45,.06)}
+.apptabs .wrap{display:flex;gap:2px}
+.apptabs button{flex:0 0 auto;display:flex;align-items:center;gap:7px;background:none;border:0;border-bottom:3px solid transparent;color:var(--brand-d);font-weight:700;font-size:.98rem;padding:12px 14px 9px;cursor:pointer;white-space:nowrap}
+.apptabs button:hover{background:var(--brand-l)}
+.apptabs button[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--brand)}
+.apptabs .ti{font-size:1.05rem}
+@media(max-width:600px){.apptabs .wrap{padding:0}.apptabs button{flex:1 1 0;flex-direction:column;gap:1px;font-size:.78rem;padding:7px 2px 5px}.apptabs .lg{display:none}}
+.subbar{position:sticky;top:var(--apptabs-h,49px);z-index:40;background:var(--surface);border-bottom:1px solid var(--line)}
+.subtabs{display:flex;gap:6px;overflow-x:auto;padding:9px 0;scrollbar-width:thin}
+.subtabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--brand-d);font-weight:600;font-size:.88rem;padding:6px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.subtabs button:hover{background:var(--brand-l)}
+.subtabs button[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.apanel section.block{padding-top:20px}
+.wrap.narrow{max-width:880px}
+#p-sim section.block{padding-top:14px}
+.howto{margin:0 0 10px;font-size:.92rem}
+.howto summary{cursor:pointer;font-weight:700;color:var(--brand-d);display:inline-block}
+.howto p{margin:6px 0 0;color:var(--muted)}
+.sim-banner a{color:#ffd24a}
+.sidetabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:-4px -4px 10px}
+.sidetabs button{flex:1 1 0;position:relative;background:none;border:0;border-bottom:3px solid transparent;font-weight:700;font-size:.88rem;color:var(--brand-d);padding:6px 4px 7px;cursor:pointer}
+.sidetabs button[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--brand)}
+.sidetabs .dot{display:none;position:absolute;top:5px;right:8px;width:8px;height:8px;border-radius:50%;background:#e08a00}
+.sidetabs button.new .dot{display:block}
+.sp-note{font-size:.82rem;color:var(--muted);margin:0 0 8px}
+.hands{border:2px solid #e08a00}
+details.acc{padding:0;margin-bottom:10px}
+details.acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:13px 16px;border-radius:12px}
+details.acc>summary::-webkit-details-marker{display:none}
+details.acc>summary::after{content:"";flex:0 0 auto;margin-left:auto;width:9px;height:9px;border-right:2.5px solid var(--brand);border-bottom:2.5px solid var(--brand);transform:rotate(45deg);transition:transform .15s}
+details.acc[open]>summary::after{transform:rotate(-135deg)}
+details.acc>summary:hover{background:var(--brand-l)}
+details.acc>summary h3{margin:0;font-size:1.08rem}
+details.acc .acc-body{padding:2px 16px 14px}
+details.acc .acc-body>:first-child{margin-top:0}
+.acc-list{display:block}
+.acc-tools{display:flex;gap:6px;justify-content:flex-end;margin:-6px 0 10px}
+.step.shut{padding:0}
+.step.shut>:not(.steph){display:none}
+.step .steph{all:unset;box-sizing:border-box;display:flex;width:100%;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-size:1.02rem}
+.step .steph .status{margin-left:auto}
+.step.shut .steph{padding:11px 14px}
+.step .steph:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:10px}
 .docs{margin-top:12px}
 .doclist{margin:0;padding-left:1.2em}
 .doclist li{margin-bottom:.5em}
@@ -439,36 +473,30 @@ footer a{color:#9cc3ff}
 <header class="site-head">
   <div class="head-in wrap">
     <a class="brand" href="https://emevidence.org"><img src="https://raw.githubusercontent.com/shakeymedic/wmem/main/emevidence_logo.png" alt="EMEvidence logo" width="44" height="44"><span>EMEvidence</span></a>
-    <span class="head-tag">Education &amp; training aid. Not a substitute for manufacturer training or your local SOP.</span>
+    <h1 class="head-title">HAMILTON-T1 ventilator trainer</h1>
+    <span class="head-tag">Training aid only. Your local SOP takes precedence.</span>
   </div>
 </header>
-<nav class="topnav" aria-label="Page sections">
-  <ul>
-    <li><a href="#sim">Simulator</a></li>
-    <li><a href="#niv" data-goto="niv">NIV teaching</a></li>
-    <li><a href="#invasive" data-goto="inv">Invasive ventilation teaching</a></li>
-    <li><a href="#docs">Manuals &amp; SOP</a></li>
-  </ul>
+<nav class="apptabs" aria-label="Trainer sections">
+  <div class="wrap" role="tablist" aria-label="Trainer sections">
+    <button role="tab" id="tab-sim" aria-controls="p-sim" aria-selected="true" data-panel="sim"><span class="ti" aria-hidden="true">🫁</span><span>Simulator</span></button>
+    <button role="tab" id="tab-niv" aria-controls="tp-niv" aria-selected="false" tabindex="-1" data-panel="niv"><span class="ti" aria-hidden="true">😷</span><span>NIV<span class="lg"> teaching</span></span></button>
+    <button role="tab" id="tab-inv" aria-controls="tp-inv" aria-selected="false" tabindex="-1" data-panel="inv"><span class="ti" aria-hidden="true">🩺</span><span>Invasive<span class="lg"> teaching</span></span></button>
+    <button role="tab" id="tab-about" aria-controls="p-about" aria-selected="false" tabindex="-1" data-panel="about"><span class="ti" aria-hidden="true">📄</span><span>About<span class="lg"> &amp; sources</span></span></button>
+  </div>
 </nav>
 
 <main id="main">
-<section class="hero">
-  <div class="wrap">
-    <p class="kicker" style="color:#ffd24a">Emergency medicine · ventilation</p>
-    <h1>HAMILTON-T1 ventilator trainer</h1>
-    <p>Practise on an on-screen HAMILTON-T1 with every adult mode, then choose NIV or invasive ventilation teaching below the simulator. For ED doctors and nurses.</p>
-  </div>
-</section>
-
 <!-- ================= SIMULATOR ================= -->
+<div id="p-sim" class="apanel" role="tabpanel" aria-labelledby="tab-sim">
 <section id="sim" class="block" aria-labelledby="sim-h">
   <div class="wrap">
-    <h2 id="sim-h">Ventilator simulator</h2>
-    <p class="lead">Touch a control to select it (yellow outline) and activate it (orange). Turn the press-and-turn knob to change the value, then press the knob or touch the control again to confirm. Touch the mode name or <b>Modes</b> to change mode, any number on the left to open the alarm limits, and a waveform to change the graphics.</p>
+    <h2 id="sim-h" class="sr-only">Ventilator simulator</h2>
+    <details class="howto"><summary>How to use the simulator</summary><p>Touch a control to select it (yellow outline) and activate it (orange). Turn the press-and-turn knob to change the value, then press the knob or touch the control again to confirm. Touch the mode name or <b>Modes</b> to change mode, any number on the left to open the alarm limits, and a waveform to change the graphics. The knob buttons under the ventilator, dragging round the knob, scrolling on it or the arrow keys all turn it.</p></details>
     <div class="sim-layout">
       <div>
         <div class="sim-banner" role="note">
-          <span><strong>SIMULATION</strong>: a training recreation of the HAMILTON-T1 front panel and screen, built from the SW 3.0.x operator's manual. It is not Hamilton Medical software and is not endorsed by Hamilton Medical.</span>
+          <span><strong>SIMULATION</strong> A training recreation, not Hamilton Medical software. <a href="#about">About</a></span>
           <span class="bopts"><span id="simClock" aria-live="off">Ventilated 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button><button id="btnFull" aria-pressed="false" title="Show only the ventilator, filling the screen">Full screen</button></span>
         </div>
         <div class="t1-wrap" id="device">
@@ -542,17 +570,7 @@ footer a{color:#9cc3ff}
           <button id="kCCW" aria-label="Turn knob anticlockwise">⟲ Turn −</button>
           <button class="knobp" id="kPress" aria-label="Press the knob">Press knob</button>
           <button id="kCW" aria-label="Turn knob clockwise">Turn + ⟳</button>
-          <span class="hint">You can also drag round the knob, scroll on it, or focus it and use the arrow keys.</span>
-        </div>
-        <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
-        <div class="card docs" id="docs">
-          <h3 style="margin-top:0">Check the source documents</h3>
-          <ul class="doclist">
-            <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">HAMILTON-T1 Operator's Manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, Hamilton Medical website</span></li>
-            <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">HAMILTON-T1 Quick Guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, Hamilton Medical website</span></li>
-            <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the Hamilton-T1 Ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
-          </ul>
-          <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The Hamilton documents open on hamilton-medical.com, so you always get the manufacturer's published version.</p>
+          
         </div>
       </div>
 
@@ -587,41 +605,33 @@ footer a{color:#9cc3ff}
           <div class="row"><button class="btn sm" id="btnABG">Take blood gas</button><span id="abgDue" class="tag amb" hidden>ABG due</span></div>
           <div class="table-wrap" style="margin-top:8px"><table class="abg-table"><thead><tr><th>Time</th><th>pH</th><th>pCO2</th><th>pO2</th><th>Settings</th></tr></thead><tbody id="abgBody"><tr><td colspan="5">No gases yet</td></tr></tbody></table></div>
         </div>
-        <div class="card">
+        <div class="card hands" id="handsCard" hidden>
           <h4 style="margin:0 0 6px">Your hands (physical actions)</h4>
           <p style="font-size:.8rem;margin:0 0 4px;color:var(--muted)">Used during the pre-use tests in System &gt; Tests &amp; calib.</p>
           <div class="physical" id="physical"><span style="font-size:.8rem;color:var(--muted)">Nothing to do at the moment.</span></div>
         </div>
-        <div class="card">
-          <h4 style="margin:0 0 6px">Inject a problem</h4>
-          <div class="events" id="events"></div>
-          <div class="row" style="margin-top:8px"><button class="btn sm ghost" id="btnFixAll">Fix all problems</button><button class="btn sm ghost" id="btnReset">Reset simulation</button></div>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 6px">Guided tasks</h4>
-          <ul class="tasks" id="tasks"></ul>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 6px">Teaching prompts</h4>
-          <div class="prompts" id="prompts" aria-live="polite"><p>Start in Standby. Choose a patient, set up the controls and press <b>Start ventilation</b>.</p></div>
+        <div class="card sidetabs-card">
+          <div class="sidetabs" role="tablist" aria-label="Scenario tools">
+            <button role="tab" id="st-tasks" aria-controls="sp-tasks" aria-selected="true" data-st="tasks">Tasks</button>
+            <button role="tab" id="st-prompts" aria-controls="sp-prompts" aria-selected="false" tabindex="-1" data-st="prompts">Prompts<span class="dot" aria-hidden="true"></span></button>
+            <button role="tab" id="st-events" aria-controls="sp-events" aria-selected="false" tabindex="-1" data-st="events">Problems</button>
+          </div>
+          <div id="sp-tasks" role="tabpanel" aria-labelledby="st-tasks"><ul class="tasks" id="tasks"></ul></div>
+          <div id="sp-prompts" role="tabpanel" aria-labelledby="st-prompts" hidden><div class="prompts" id="prompts" aria-live="polite"><p>Start in Standby. Choose a patient, set up the controls and press <b>Start ventilation</b>.</p></div></div>
+          <div id="sp-events" role="tabpanel" aria-labelledby="st-events" hidden>
+            <p class="sp-note">Inject a problem, then find and fix it.</p>
+            <div class="events" id="events"></div>
+            <div class="row" style="margin-top:8px"><button class="btn sm ghost" id="btnFixAll">Fix all problems</button><button class="btn sm ghost" id="btnReset">Reset simulation</button></div>
+          </div>
         </div>
       </aside>
     </div>
   </div>
 </section>
+</div>
 
-<!-- ================= TEACHING TABS ================= -->
-<section class="tbar" id="teaching" aria-labelledby="teaching-h">
-  <div class="wrap">
-    <h2 id="teaching-h">Teaching</h2>
-    <div class="ttabs" role="tablist" aria-label="Choose the teaching">
-      <button role="tab" id="tab-niv" aria-controls="tp-niv" aria-selected="true" data-tp="niv">NIV</button>
-      <button role="tab" id="tab-inv" aria-controls="tp-inv" aria-selected="false" tabindex="-1" data-tp="inv">Invasive ventilation</button>
-    </div>
-  </div>
-</section>
-<div id="tp-niv" role="tabpanel" aria-labelledby="tab-niv">
-<div class="wrap"><nav class="tpanel-toc" aria-label="NIV teaching sections"><a href="#checks">Pre-use checks</a><a href="#setup">Set-up</a><a href="#modes">Modes</a><a href="#alarms">Alarms</a><a href="#clinical">Clinical</a><a href="#cases">Cases</a><a href="#quiz">Quiz</a><a href="#refs">References</a></nav></div>
+<div id="tp-niv" class="apanel" role="tabpanel" aria-labelledby="tab-niv" hidden>
+<div class="subbar"><div class="wrap"><div class="subtabs" role="tablist" aria-label="NIV teaching sections"><button role="tab" data-sub="checks" aria-controls="checks" aria-selected="false" tabindex="-1">Pre-use checks</button><button role="tab" data-sub="setup" aria-controls="setup" aria-selected="false" tabindex="-1">Set-up</button><button role="tab" data-sub="modes" aria-controls="modes" aria-selected="false" tabindex="-1">Modes</button><button role="tab" data-sub="alarms" aria-controls="alarms" aria-selected="false" tabindex="-1">Alarms</button><button role="tab" data-sub="clinical" aria-controls="clinical" aria-selected="false" tabindex="-1">Clinical</button><button role="tab" data-sub="cases" aria-controls="cases" aria-selected="false" tabindex="-1">Cases</button><button role="tab" data-sub="quiz" aria-controls="quiz" aria-selected="false" tabindex="-1">Quiz</button><button role="tab" data-sub="refs" aria-controls="refs" aria-selected="false" tabindex="-1">References</button></div></div></div>
 <!-- ================= PRE-USE CHECKS ================= -->
 <section id="checks" class="block" aria-labelledby="checks-h">
   <div class="wrap">
@@ -650,11 +660,10 @@ footer a{color:#9cc3ff}
 <!-- ================= SET-UP ================= -->
 <section id="setup" class="block" aria-labelledby="setup-h">
   <div class="wrap">
-    <h2 id="setup-h">Circuit, interface and starting settings</h2>
+    <h2 id="setup-h">Circuit, interface and starting settings</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
     <div class="note bad"><b>Mask type matters.</b> The HAMILTON-T1 uses a coaxial or dual-limb circuit, and the patient breathes out through the ventilator's <b>expiratory valve</b>. Use a <b>non-vented</b> mask with a standard (non-vented) elbow: no exhalation port and no anti-asphyxia valve. Hamilton Medical's mask guide states that the standard elbow is "used with a coaxial or dual limb circuit on a Hamilton Medical ventilator" and that the anti-asphyxia (vented) elbows are "not to be used with ventilators". Vented masks belong with single-limb "ward NIV" machines that have no expiratory valve. Never put a non-vented mask on a single-limb circuit that has no exhalation port, because the patient will rebreathe CO2.</div>
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Circuit layout (schematic)</h3>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>Circuit layout (schematic)</h3></summary><div class="acc-body">
         <svg viewBox="0 0 760 330" role="img" aria-labelledby="circT circD" style="width:100%;height:auto">
           <title id="circT">Schematic of a HAMILTON-T1 NIV circuit</title>
           <desc id="circD">The ventilator's inspiratory port connects through an inspiratory filter and limb to the Y-piece. The flow sensor sits between the Y-piece and the patient, with its blue and clear tubes going back to the ventilator. A non-vented full face mask with a standard elbow connects to the flow sensor. The expiratory limb returns to the expiratory valve set on the ventilator.</desc>
@@ -689,9 +698,8 @@ footer a{color:#9cc3ff}
           <li>Then <a href="#checks">calibrate the flow sensor and run the Leak test</a> with the complete circuit.</li>
         </ol>
         <p class="note warn">The manual cautions that an extra component (such as an HMEF) between the flow sensor and the patient adds resistance. This limits the ventilator's ability to detect a disconnection at the patient. Set the low Pressure alarm and the volume alarms appropriately, and watch SpO2. Masks and HMEFs also add dead space. <span class="sop">Check your trust SOP for filter/HMEF position in NIV</span></p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Mask fitting and skin</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Mask fitting and skin</h3></summary><div class="acc-body">
         <ul>
           <li><b>Full face mask first</b> (BTS/ICS Rec 2, Grade D). Keep a range of sizes, and make sure staff are trained to fit them.</li>
           <li>Size with the manufacturer's sizing gauge. The cushion should sit from the bridge of the nose to just below the lower lip, without pressing on the eyes. <span class="sop">mask IFU</span></li>
@@ -706,11 +714,10 @@ footer a{color:#9cc3ff}
           <li><b>Oxygen</b> is set with the <b>Oxygen</b> control (21–100%) through the internal blender. You do not need to entrain oxygen into the circuit. Target SpO2 88–92% in hypercapnic respiratory failure (BTS/ICS Rec 4).</li>
           <li><b>Nebulisers:</b> BTS advises giving nebulised drugs during breaks from NIV, or in-line if the patient depends on NIV. The T1 has a pneumatic nebuliser key (high-pressure O2 only) and supports Aerogen-type nebulisers. Check the expiratory valve and filter afterwards, because nebulised drug can affect them. <span class="sop">trust SOP</span></li>
         </ul>
-      </div>
+      </div></details>
     </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">Starting settings and titration (hypercapnic respiratory failure)</h3>
+    <details class="card acc"><summary><h3>Starting settings and titration (hypercapnic respiratory failure)</h3></summary><div class="acc-body">
       <div class="note"><b>Translate IPAP/EPAP into T1 controls.</b> On the T1, <b>PEEP = EPAP</b>, and <b>ΔPsupport</b> (NIV) or <b>ΔPinsp</b> (NIV-ST) is the pressure <i>added on top of</i> PEEP. So <b>IPAP = PEEP + ΔP</b>. For example, IPAP 20 with EPAP 5 is PEEP 5 and ΔP 15. If you raise PEEP, IPAP rises with it because the ΔP is kept. You do not need to add the same amount to ΔP to "keep the gap".</div>
       <div class="table-wrap"><table>
         <thead><tr><th>Setting</th><th>BTS/ICS 2016 (Figure 1) guide</th><th>On the HAMILTON-T1</th></tr></thead>
@@ -734,18 +741,16 @@ footer a{color:#9cc3ff}
         <li>Blood gas at 1 h and 4 h, and whenever the patient deteriorates (see <a href="#clinical">Clinical</a>).</li>
       </ol>
       <p class="note"><b>Cardiogenic pulmonary oedema (CPAP):</b> use <b>NIV mode with ΔPsupport = 0</b>. The manual states that "the ventilator functions like a conventional CPAP system". PEEP is the CPAP level. Many protocols start around 5 and titrate towards about 10 cmH2O. <span class="sop">local protocol</span></p>
-    </div>
+    </div></details>
   </div>
 </section>
 
 <!-- ================= MODES ================= -->
 <section id="modes" class="block" aria-labelledby="modes-h">
   <div class="wrap">
-    <h2 id="modes-h">Ventilation modes, triggering and cycling</h2>
-    <div class="grid2">
-      <div class="card">
-        <span class="tag grn">ED NIV mode</span>
-        <h3 style="margin-top:.4em">NIV (noninvasive ventilation)</h3>
+    <h2 id="modes-h">Ventilation modes, triggering and cycling</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
+    <div class="acc-list">
+      <details class="card acc" open><summary><span class="tag grn">ED NIV mode</span> <h3>NIV (noninvasive ventilation)</h3></summary><div class="acc-body">
         <p>Every breath is <b>spontaneous</b> (patient-triggered), with or without pressure support (ISO 19223: CSV-PS).</p>
         <ul>
           <li><b>ΔPsupport</b> (older software: Psupport): pressure above PEEP during inspiration. <b>ΔPsupport 0 gives CPAP.</b></li>
@@ -754,10 +759,8 @@ footer a{color:#9cc3ff}
           <li>No set rate. If the patient stops breathing for the <b>Apnea time</b>, apnoea backup takes over if it is enabled (backup mode PCV+, or NIV-ST when the NIV-only option is active). If it is not enabled, a high-priority "Apnea" alarm sounds.</li>
         </ul>
         <p><b>Use for:</b> CPAP (for example cardiogenic pulmonary oedema), or bilevel support in a patient with a reliable respiratory drive.</p>
-      </div>
-      <div class="card">
-        <span class="tag grn">ED NIV mode</span>
-        <h3 style="margin-top:.4em">NIV-ST (spontaneous/timed)</h3>
+      </div></details>
+      <details class="card acc"><summary><span class="tag grn">ED NIV mode</span> <h3>NIV-ST (spontaneous/timed)</h3></summary><div class="acc-body">
         <p>Every patient trigger gives a <b>flow-cycled</b>, pressure-supported breath. If the patient breathes slower than the set <b>Rate</b>, <b>time-cycled</b> mandatory breaths are delivered at that rate with the set <b>TI</b> (ISO 19223: SIMV-PC).</p>
         <ul>
           <li><b>ΔPinsp</b> (older software: Pinsp): pressure above PEEP for <i>both</i> spontaneous and mandatory breaths. Minimum 3 cmH2O in v3.1.x, so NIV-ST cannot deliver CPAP.</li>
@@ -765,16 +768,13 @@ footer a{color:#9cc3ff}
           <li><b>PEEP</b>, <b>Oxygen</b>, <b>Trigger</b>, <b>P-ramp</b>, <b>ETS</b>, <b>TI max</b></li>
         </ul>
         <p><b>Use for:</b> acute hypercapnic respiratory failure (COPD, OHS, neuromuscular or chest wall disease). This is the closest equivalent to "BiPAP S/T" with a backup rate, as BTS/ICS Figure 1 describes.</p>
-      </div>
+      </div></details>
     </div>
-    <div class="card">
-      <span class="tag">Also on the T1</span>
-      <h3 style="margin-top:.4em">HiFlowO2 (high-flow nasal oxygen)</h3>
+    <details class="card acc"><summary><span class="tag">Also on the T1</span> <h3>HiFlowO2 (high-flow nasal oxygen)</h3></summary><div class="acc-body">
       <p>A continuous flow of air/oxygen through a nasal cannula: you set <b>Flow</b> (2–60 l/min for adults) and <b>Oxygen</b>. It is for patients who can breathe spontaneously and is <b>not life-supporting</b>. You can only select it in Standby, disconnection and apnea alarms are inactive, and Manual breath is disabled. The screen shows Oxygen and Flow trends and, with SpO2 on, the pleth (manual section 10.5). The manual warns that excessive flows could lead to barotrauma or pneumothorax, and that HiFlowO2 should not be used during intrahospital transport.</p>
-    </div>
+    </div></details>
 
-    <div class="card">
-      <h3 style="margin-top:0">Triggering, rise and cycling</h3>
+    <details class="card acc"><summary><h3>Triggering, rise and cycling</h3></summary><div class="acc-body">
       <div class="grid3">
         <div><h4>Trigger (inspiratory)</h4><p><b>Flow trigger</b>, in l/min (v3.1.x adult range 0.5–20, default 5). A lower number is <i>more</i> sensitive. If it is too low you get <b>auto-triggering</b>, especially with leak. If it is too high you get <b>missed efforts</b>. Pink triangles on the pressure curve mark patient-triggered breaths. Some devices have an <b>IntelliSync+</b> option (not in all markets).</p></div>
         <div><h4>P-ramp (rise time)</h4><p>The time for pressure to rise to target, in ms. In NIV and NIV-ST it is limited to a maximum of 200 ms, and always to one-third of TI. A shorter ramp gives a faster, "punchier" breath, which is often preferred by breathless COPD patients. A longer ramp is gentler but can leave a hungry patient underserved.</p></div>
@@ -799,10 +799,9 @@ footer a{color:#9cc3ff}
           <p style="font-size:.85rem;color:var(--muted)">This is an illustrative single-compartment model. The dashed line is the ETS threshold. Leak is shown partly compensated, as IntelliTrig would do, but the amount is not modelled to match the device.</p>
         </div>
       </div>
-    </div>
+    </div></details>
 
-    <div class="card">
-      <h3 style="margin-top:0">Other HAMILTON-T1 modes (overview only)</h3>
+    <details class="card acc"><summary><h3>Other HAMILTON-T1 modes (overview only)</h3></summary><div class="acc-body">
       <p>From manual Table 7-1 (v3.1.x). Availability depends on the options and licence installed. An NIV-only option restricts the device to NIV, NIV-ST and HiFlowO2. In the ED, acute NIV means <b>NIV</b> or <b>NIV-ST</b>.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Mode</th><th>ISO 19223</th><th>Group</th><th>What it does</th></tr></thead>
@@ -820,7 +819,7 @@ footer a{color:#9cc3ff}
           <tr><td>HiFlowO2</td><td>n/a</td><td>All</td><td>High-flow oxygen therapy with no supported breaths. Selected in Standby only. Disconnection and apnoea alarms are inactive.</td></tr>
         </tbody>
       </table></div>
-    </div>
+    </div></details>
 
     <details>
       <summary>Physiology refresher: why EPAP and pressure support help</summary>
@@ -886,10 +885,9 @@ footer a{color:#9cc3ff}
 <!-- ================= CLINICAL ================= -->
 <section id="clinical" class="block" aria-labelledby="clin-h">
   <div class="wrap">
-    <h2 id="clin-h">Clinical essentials (BTS/ICS 2016, BTS Quality Standards 2018)</h2>
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Indications</h3>
+    <h2 id="clin-h">Clinical essentials (BTS/ICS 2016, BTS Quality Standards 2018)</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>Indications</h3></summary><div class="acc-body">
         <ul>
           <li><b>AECOPD:</b> start NIV when <b>pH &lt; 7.35 and pCO2 &gt; 6.5 kPa persist or develop despite optimal medical therapy</b> (Rec 25, Grade A). Optimal therapy includes controlled oxygen, bronchodilators and steroids. BTS/ICS Figure 1 also lists RR &gt; 23. Use it as supporting evidence of distress, not as an extra requirement.</li>
           <li>Severe acidosis alone does not rule out a trial of NIV, provided it happens in an appropriate area with ready access to staff who can intubate safely (Rec 26). NIV must not delay escalation to invasive ventilation when that is more appropriate (Rec 27).</li>
@@ -899,9 +897,8 @@ footer a{color:#9cc3ff}
           <li><b>NIV is not indicated in asthma or pneumonia</b> with hypercapnic failure. Refer to ICU to consider invasive ventilation (Figure 1; Rec 39).</li>
           <li><b>Cardiogenic pulmonary oedema</b> is outside the BTS/ICS hypercapnic guideline. NICE CG187 advises against routine NIV, but says to consider it without delay if there is severe dyspnoea and acidaemia. ERS/ATS 2017 suggests bilevel NIV or CPAP. <span class="sop">local pathway</span></li>
         </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Contraindications and cautions (BTS/ICS Figure 1)</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Contraindications and cautions (BTS/ICS Figure 1)</h3></summary><div class="acc-body">
         <p><b>Absolute:</b> severe facial deformity, facial burns, fixed upper airway obstruction.</p>
         <p><b>Relative:</b> pH &lt; 7.15 (or pH &lt; 7.25 with an additional adverse feature), <b>GCS &lt; 8</b>, confusion or agitation, cognitive impairment. Relative contraindications call for <b>enhanced observation</b>, consideration of HDU/ICU and an early decision on whether to continue NIV or move to invasive ventilation. They do not, on their own, mean NIV should be withheld.</p>
         <ul>
@@ -911,12 +908,11 @@ footer a{color:#9cc3ff}
           <li>Respiratory arrest or peri-arrest: intubate. A short NIV trial by an experienced operator is justified only in exceptional circumstances.</li>
         </ul>
         <p class="note warn">The manufacturer's manual is more conservative. It lists no drive to breathe, airway obstruction, GI bleeding, intolerance of the interface and inability to cooperate or protect the airway as contraindications. It also requires the patient to be conscious and intubation to be possible at any time. Clinical decisions follow BTS/ICS and senior judgement. Be aware of the device labelling. <span class="sop">trust SOP</span></p>
-      </div>
+      </div></details>
     </div>
 
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Timings and blood gases</h3>
+    <div class="acc-list">
+      <details class="card acc"><summary><h3>Timings and blood gases</h3></summary><div class="acc-body">
         <div class="table-wrap"><table>
           <tbody>
             <tr><th>Start NIV</th><td>Within <b>60 min</b> of the blood gas that led to the decision, and within <b>120 min</b> of arrival for acute presentations (BTS QS 4)</td></tr>
@@ -929,9 +925,8 @@ footer a{color:#9cc3ff}
           </tbody>
         </table></div>
         <p>A fall in RR and an improved pH within 4 h predict NIV success (BTS/ICS). Persisting pH &lt; 7.25 with RR &gt; 35 makes failure likely. Capillary gases are acceptable. Transcutaneous CO2 can help.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Monitoring and red flags</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Monitoring and red flags</h3></summary><div class="acc-body">
         <ul>
           <li><b>Continuous SpO2</b> (BTS GPP), with a target of 88–92%.</li>
           <li><b>ECG monitoring</b> if HR &gt; 120, dysrhythmia or possible cardiomyopathy.</li>
@@ -940,12 +935,11 @@ footer a{color:#9cc3ff}
           <li>Staffing: <b>1 nurse for every 2 NIV patients</b>, especially in the first 24 h (BTS/ICS Box 3).</li>
         </ul>
         <div class="note bad"><b>Red flags (BTS/ICS Figure 1):</b> pH &lt; 7.25 on optimal NIV, RR persisting &gt; 25, new confusion or patient distress. <b>Actions:</b> check synchronisation, mask fit and exhalation. Give physiotherapy and bronchodilators, consider an anxiolytic, and <b>consider invasive ventilation</b> if it is within the ceiling of treatment.</div>
-      </div>
+      </div></details>
     </div>
 
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Escalation and ceiling of care</h3>
+    <div class="acc-list">
+      <details class="card acc"><summary><h3>Escalation and ceiling of care</h3></summary><div class="acc-body">
         <ul>
           <li>Before starting, agree and document an <b>individualised plan for what happens if NIV fails</b>, involving the patient wherever possible (BTS GPP; QS 5). The plan should say whether NIV is the ceiling of treatment or whether invasive ventilation is appropriate.</li>
           <li>Invasive ventilation should be considered for persistent or worsening acidosis despite optimised NIV (Rec 32). Intubate in respiratory arrest or peri-arrest unless there is rapid recovery (Rec 33).</li>
@@ -953,9 +947,8 @@ footer a{color:#9cc3ff}
           <li>Prognostic tools can help discussions but predict poorly for individuals. Clinicians tend to underestimate survival with invasive ventilation in AECOPD (Recs 36–37).</li>
           <li>When NIV is the ceiling of care and the patient is distressed, sedation or anxiolysis for symptom control is appropriate (Rec 9). IV morphine 2.5–5 mg, with or without a benzodiazepine, may help an agitated patient tolerate NIV (GPP). Use close monitoring, and give infusions only in HDU or ICU.</li>
         </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Weaning and documentation</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Weaning and documentation</h3></summary><div class="acc-body">
         <ul>
           <li>Maximise time on NIV in the first 24 h, as far as tolerance and complications allow (BTS GPP).</li>
           <li>Over the next 2–3 days, taper NIV during the day according to the self-ventilating pCO2, before stopping it overnight.</li>
@@ -971,13 +964,11 @@ footer a{color:#9cc3ff}
           <li>Review times (4 h and 14 h, QS 5)</li>
         </ul>
         <p style="font-size:.9rem">NCEPOD's 2017 report <i>Inspiring Change</i> found that care could have been improved in many patients receiving acute NIV, including blood gases taken too infrequently and gaps in prescribing and escalation planning.</p>
-      </div>
+      </div></details>
     </div>
 
     <div class="grid2">
-      <div class="card focus-panel nurse">
-        <span class="tag grn">Nurse focus</span>
-        <h3 style="margin-top:.4em">At the bedside</h3>
+      <details class="card acc focus-panel nurse"><summary><span class="tag grn">Nurse focus</span> <h3>At the bedside</h3></summary><div class="acc-body">
         <ul>
           <li>Check the ventilator: preop checks passed (green ticks, valid date), Leak test run with the full circuit, battery charged, O2 connected, mains plugged in.</li>
           <li>Confirm the circuit: <b>non-vented</b> mask, standard elbow, flow sensor the right way round, filter fitted.</li>
@@ -989,7 +980,7 @@ footer a{color:#9cc3ff}
           <li>Watch for gastric distension or vomiting, and for agitation, which may be asynchrony.</li>
           <li><b>Escalate immediately</b> if there is a red flag, a blood gas that has not improved, drowsiness, or an alarm you cannot fix.</li>
         </ul>
-      </div>
+      </div></details>
       <div class="card focus-panel doc">
         <span class="tag" style="background:#efe7fd;color:#5b21b6">Doctor focus</span>
         <h3 style="margin-top:.4em">Decisions</h3>
@@ -1052,16 +1043,15 @@ footer a{color:#9cc3ff}
   </div>
 </section>
 </div>
-<div id="tp-inv" role="tabpanel" aria-labelledby="tab-inv" hidden>
-<div class="wrap"><nav class="tpanel-toc" aria-label="Invasive ventilation teaching sections"><a href="#inv-start">Starting</a><a href="#inv-modes">Modes</a><a href="#inv-asv">ASV and bilevel</a><a href="#inv-gas">Oxygen, CO2, trapping</a><a href="#inv-trouble">Troubleshooting</a><a href="#inv-cpr">CPR</a><a href="#inv-practice">Practise</a><a href="#inv-quiz">Quiz</a><a href="#inv-refs">References</a></nav></div>
+<div id="tp-inv" class="apanel" role="tabpanel" aria-labelledby="tab-inv" hidden>
+<div class="subbar"><div class="wrap"><div class="subtabs" role="tablist" aria-label="Invasive ventilation teaching sections"><button role="tab" data-sub="inv-start" aria-controls="inv-start" aria-selected="false" tabindex="-1">Starting</button><button role="tab" data-sub="inv-modes" aria-controls="inv-modes" aria-selected="false" tabindex="-1">Modes</button><button role="tab" data-sub="inv-asv" aria-controls="inv-asv" aria-selected="false" tabindex="-1">ASV and bilevel</button><button role="tab" data-sub="inv-gas" aria-controls="inv-gas" aria-selected="false" tabindex="-1">Oxygen, CO2, trapping</button><button role="tab" data-sub="inv-trouble" aria-controls="inv-trouble" aria-selected="false" tabindex="-1">Troubleshooting</button><button role="tab" data-sub="inv-cpr" aria-controls="inv-cpr" aria-selected="false" tabindex="-1">CPR</button><button role="tab" data-sub="inv-practice" aria-controls="inv-practice" aria-selected="false" tabindex="-1">Practise</button><button role="tab" data-sub="inv-quiz" aria-controls="inv-quiz" aria-selected="false" tabindex="-1">Quiz</button><button role="tab" data-sub="inv-refs" aria-controls="inv-refs" aria-selected="false" tabindex="-1">References</button></div></div></div>
 <!-- ================= INVASIVE TEACHING ================= -->
 <section id="inv-start" class="block" aria-labelledby="inv-start-h">
   <div class="wrap">
-    <h2 id="inv-start-h">Starting invasive ventilation on the T1</h2>
+    <h2 id="inv-start-h">Starting invasive ventilation on the T1</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
     <p class="lead">For the first hour after intubation in the ED, before ICU takes over. Use your trust's post-intubation checklist and local ventilation guidance alongside this.</p>
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Set-up sequence</h3>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>Set-up sequence</h3></summary><div class="acc-body">
         <ol>
           <li><b>Preoperational check</b> in Standby: leak test and flow sensor calibration (System &gt; Tests &amp; calib). It is the same check as for NIV: see the <a href="#checks" data-goto="niv">walk-through in the NIV tab</a>.</li>
           <li><b>Patient group, sex and height</b> in the Standby window. The T1 calculates <b>ideal body weight (IBW)</b> from these, and IBW sets the starting Vt, the APRV and ASV starting values and the ASV targets. Measure height; do not guess from weight.</li>
@@ -1069,9 +1059,8 @@ footer a{color:#9cc3ff}
           <li><b>Set the alarm limits</b> (Alarms &gt; Limits). The high Pressure limit also sets <b>Plimit</b> (10 cmH2O below it), the highest pressure the T1 will use in the adaptive modes. The blue line on the pressure waveform shows Plimit.</li>
           <li><b>Start ventilation</b>, check chest movement, SpO2, waveforms and blood pressure, confirm tube position (waveform capnography), then take a blood gas.</li>
         </ol>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">A common starting point</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>A common starting point</h3></summary><div class="acc-body">
         <table>
           <tbody>
             <tr><th scope="row">Mode</th><td>(S)CMV+ (volume-targeted, adaptive pressure) or PCV+. Most passive, paralysed patients are started on a fully controlled mode.</td></tr>
@@ -1083,7 +1072,7 @@ footer a{color:#9cc3ff}
           </tbody>
         </table>
         <p style="font-size:.88rem;color:var(--muted);margin-top:8px">These are widely taught starting values, not a protocol. Check your local guidance.</p>
-      </div>
+      </div></details>
     </div>
     <div class="note warn"><b>Pplateau ≤ 30 cmH2O.</b> The ARDS Network trial used Vt 6 ml/kg predicted body weight with plateau pressure kept at or below 30 cmH2O, and showed lower mortality than 12 ml/kg. The T1 shows <b>Pplateau</b> and <b>Driving pressure</b> (Monitoring &gt; General 1) for mandatory, time-cycled breaths.</div>
   </div>
@@ -1091,7 +1080,7 @@ footer a{color:#9cc3ff}
 
 <section id="inv-modes" class="block" aria-labelledby="inv-modes-h">
   <div class="wrap">
-    <h2 id="inv-modes-h">The invasive modes on the T1</h2>
+    <h2 id="inv-modes-h">The invasive modes on the T1</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
     <p class="lead">Every T1 mode delivers pressure-controlled or pressure-supported breaths. The difference is what you set and what the ventilator adjusts. Names follow the SW 3.0.x manual (chapter 7).</p>
     <div class="card table-wrap">
       <table>
@@ -1110,27 +1099,23 @@ footer a{color:#9cc3ff}
       </table>
       <p style="font-size:.88rem;color:var(--muted);margin:8px 0 0">The T1 times mandatory breaths with Rate and TI, and shows either I:E or TI depending on the breath timing chosen in Configuration (manual 7.1.1). The trainer shows I:E in (S)CMV+ and PCV+ and TI in the SIMV modes.</p>
     </div>
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">Volume target or pressure target?</h3>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>Volume target or pressure target?</h3></summary><div class="acc-body">
         <p>In <b>(S)CMV+, SIMV+ and VS</b> you set the volume and the T1 finds the pressure. If the lungs get stiffer, pressure rises; if it reaches Plimit, Vt falls short and the <b>Pressure limitation</b> alarm appears.</p>
         <p>In <b>PCV+ and PSIMV+</b> you set the pressure. If the lungs get stiffer or the tube blocks, <b>Vt falls</b>, so the Vt and ExpMinVol low alarms are your warning.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Apnea backup</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Apnea backup</h3></summary><div class="acc-body">
         <p>In the modes where the patient must trigger (SIMV+, PSIMV+, SPONT, VS, DuoPAP, APRV), set <b>Apnea time</b> and keep <b>Apnea backup</b> on (Controls &gt; Apnea). If the patient stops breathing, the T1 switches to backup ventilation and shows "Apnea ventilation". A sedated, paralysed patient on SPONT will be ventilated only by backup breaths. Try it in the simulator.</p>
-      </div>
+      </div></details>
     </div>
   </div>
 </section>
 
 <section id="inv-asv" class="block" aria-labelledby="inv-asv-h">
   <div class="wrap">
-    <h2 id="inv-asv-h">ASV and the bilevel modes</h2>
-    <div class="grid2">
-      <div class="card">
-        <span class="tag">Intelligent ventilation</span>
-        <h3 style="margin-top:.4em">ASV (Adaptive Support Ventilation)</h3>
+    <h2 id="inv-asv-h">ASV and the bilevel modes</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
+    <div class="acc-list">
+      <details class="card acc" open><summary><span class="tag">Intelligent ventilation</span> <h3>ASV (Adaptive Support Ventilation)</h3></summary><div class="acc-body">
         <ul>
           <li>You set <b>%MinVol</b>: the target minute ventilation as a percentage of normal for the patient's IBW (100% is normal; the trainer uses 0.1 l/kg/min). Also set PEEP, Oxygen and the high Pressure limit.</li>
           <li>ASV chooses the rate and Vt it expects to need the least work of breathing, then adjusts pressure and mandatory rate breath by breath. Passive patients get mandatory breaths; active patients get supported breaths.</li>
@@ -1138,45 +1123,39 @@ footer a{color:#9cc3ff}
           <li><b>ASV Graph</b> (Graphics): the green curve is the target minute volume, the dashed box is the safety frame, the circle is the target and the cross is the patient's actual breathing.</li>
           <li>Adjusting: in a passive patient with a high pCO2, increase %MinVol in steps of 10–20%; in an active patient in distress, steps of 20% with 2–5 minutes between them (ASV quick guide).</li>
         </ul>
-      </div>
-      <div class="card">
-        <span class="tag">Bilevel</span>
-        <h3 style="margin-top:.4em">DuoPAP and APRV</h3>
+      </div></details>
+      <details class="card acc"><summary><span class="tag">Bilevel</span> <h3>DuoPAP and APRV</h3></summary><div class="acc-body">
         <p><b>DuoPAP</b> switches between P high and PEEP/CPAP. The manual describes it as resembling PCV+ at conventional settings with no spontaneous breathing, looking more like PSIMV+ at low rates, and like APRV when T high takes up almost the whole cycle. ΔPsupport is set above PEEP, so it only helps breaths at P high when PEEP + ΔPsupport is above P high.</p>
         <p><b>APRV</b> holds P high for a long T high and releases briefly to P low. For a patient with no spontaneous breathing it is similar to pressure-controlled inverse ratio ventilation. The first time you select it, the T1 proposes P high 20, P low 5, T high 5.4 s and T low 0.6 s for IBW over 60 kg. A short T low leaves air in the lungs on purpose, so watch AutoPEEP.</p>
         <p style="font-size:.9rem;color:var(--muted)">APRV is a specialist mode. In the ED, use it only under ICU guidance.</p>
-      </div>
+      </div></details>
     </div>
   </div>
 </section>
 
 <section id="inv-gas" class="block" aria-labelledby="inv-gas-h">
   <div class="wrap">
-    <h2 id="inv-gas-h">Oxygenation, CO2 and air trapping</h2>
-    <div class="grid3">
-      <div class="card">
-        <h3 style="margin-top:0">Oxygenation</h3>
+    <h2 id="inv-gas-h">Oxygenation, CO2 and air trapping</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>Oxygenation</h3></summary><div class="acc-body">
         <p>Driven by <b>Oxygen</b> and <b>mean airway pressure</b> (mostly PEEP). In hypoxaemia, raise PEEP as well as Oxygen, watching blood pressure and Pplateau. Common targets: SpO2 88–95% in ARDS (ARDSNet), 94–98% for most other acutely ill patients (BTS oxygen guideline), 88–92% if at risk of hypercapnic failure.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">CO2</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>CO2</h3></summary><div class="acc-body">
         <p>Driven by <b>alveolar minute ventilation</b>: rate × (Vt − dead space). If you lower Vt to protect the lungs, raise the rate to keep minute ventilation. In ARDS a modestly raised pCO2 is usually accepted rather than giving large tidal volumes.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Air trapping (AutoPEEP)</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>Air trapping (AutoPEEP)</h3></summary><div class="acc-body">
         <p>If expiration is too short for the lungs to empty, the next breath starts on top of trapped air. Expiratory flow does not return to zero before the next breath, <b>AutoPEEP</b> rises (Monitoring), delivered Vt falls in pressure-controlled breaths, and blood pressure can fall. Treat with a <b>lower rate</b> and a <b>longer expiratory time</b> (I:E 1:3 or 1:4). In severe asthma, accept a raised pCO2 to allow this.</p>
-      </div>
+      </div></details>
     </div>
   </div>
 </section>
 
 <section id="inv-trouble" class="block" aria-labelledby="inv-trouble-h">
   <div class="wrap">
-    <h2 id="inv-trouble-h">Troubleshooting a ventilated patient</h2>
+    <h2 id="inv-trouble-h">Troubleshooting a ventilated patient</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
     <div class="note bad"><b>If the patient is deteriorating and the cause is not obvious:</b> call for help, disconnect from the ventilator and hand-ventilate with 100% oxygen through a bag and the tube, with waveform capnography attached. Then work through DOPES.</div>
-    <div class="grid2">
-      <div class="card">
-        <h3 style="margin-top:0">DOPES</h3>
+    <div class="acc-list">
+      <details class="card acc" open><summary><h3>DOPES</h3></summary><div class="acc-body">
         <ul>
           <li><b>D</b>isplacement of the tube: check capnography, tube length at the teeth, chest movement.</li>
           <li><b>O</b>bstruction: kinked tube, secretions (pass a suction catheter), biting.</li>
@@ -1184,9 +1163,8 @@ footer a{color:#9cc3ff}
           <li><b>E</b>quipment: circuit disconnection or leak, flow sensor, oxygen supply, ventilator failure.</li>
           <li><b>S</b>tacked breaths: air trapping (see AutoPEEP above). Briefly disconnecting lets trapped air out.</li>
         </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">T1 alarms worth knowing</h3>
+      </div></details>
+      <details class="card acc"><summary><h3>T1 alarms worth knowing</h3></summary><div class="acc-body">
         <ul>
           <li><b>Pressure high</b>: the breath is cut short at the high Pressure limit. Think obstruction, coughing, biting, bronchospasm, pneumothorax.</li>
           <li><b>Pressure limitation</b>: inspiratory pressure has been held at Plimit. In the adaptive modes this means the T1 needs more than Plimit to reach Vt. Lungs stiffer? Tube partly blocked? Vt too high?</li>
@@ -1196,7 +1174,7 @@ footer a{color:#9cc3ff}
           <li><b>Apnea</b> / <b>Apnea ventilation</b>: no breaths within the Apnea time; backup ventilation starts if it is enabled.</li>
         </ul>
         <p style="font-size:.9rem;color:var(--muted)">In the simulator, open the alarm buffer and touch an alarm for its help text. Use <b>Inject a problem</b> to practise.</p>
-      </div>
+      </div></details>
     </div>
   </div>
 </section>
@@ -1269,6 +1247,27 @@ footer a{color:#9cc3ff}
       </ol>
       <p style="font-size:.9rem;color:var(--muted)">This independent educational resource is not affiliated with or endorsed by Hamilton Medical. Content reviewed against the sources above in October 2026.</p>
     </div>
+  </div>
+</section>
+</div>
+<div id="p-about" class="apanel" role="tabpanel" aria-labelledby="tab-about" hidden>
+<section id="about" class="block" aria-labelledby="about-h">
+  <div class="wrap narrow">
+    <h2 id="about-h">About this trainer</h2>
+    <div class="card">
+      <h3 style="margin-top:0">What the simulator is based on</h3>
+        <p>Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        </div>
+    <div class="card docs" id="docs">
+          <h3 style="margin-top:0">Check the source documents</h3>
+          <ul class="doclist">
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">HAMILTON-T1 Operator's Manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, Hamilton Medical website</span></li>
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">HAMILTON-T1 Quick Guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, Hamilton Medical website</span></li>
+            <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the Hamilton-T1 Ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
+          </ul>
+          <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The Hamilton documents open on hamilton-medical.com, so you always get the manufacturer's published version.</p>
+        </div>
+    <div class="note warn"><b>Educational use only.</b> This trainer is not Hamilton Medical software and is not endorsed by Hamilton Medical. It is not a substitute for manufacturer training, the operator's manual or your local SOP, and must not be used to make decisions about a real patient.</div>
   </div>
 </section>
 </div>
@@ -2790,6 +2789,7 @@ const PHYS = {
   wait: 'Do nothing'
 };
 function setPhysical(list) {
+  const hc = $('#handsCard'); if (hc) hc.hidden = !(list && list.length);
   $('#physical').innerHTML = list && list.length ? list.map(k => `<button data-phys="${k}">${esc(PHYS[k])}</button>`).join('') : '<span style="font-size:.8rem;color:var(--muted)">Nothing to do at the moment.</span>';
 }
 function tcMsg(m) { if (V.testRun) V.testRun.msg = m; if (win === 'system' && winTab === 'tests') renderWindow(); }
@@ -3094,6 +3094,7 @@ function addPrompt(text, throttleKey, everyMin) {
   p.innerHTML = `<b>${P ? clockStr() : ''}</b> ${esc(text)}`;
   box.prepend(p);
   while (box.children.length > 25) box.lastChild.remove();
+  const st = $('#st-prompts'); if (st && $('#sp-prompts').hidden) st.classList.add('new');
 }
 function autoPrompts() {
   if (V.standby || !P || !V.power) return;
@@ -3215,30 +3216,33 @@ const CHECKS = [
     v:'Ready to ventilate.', f:['If anything is uncertain, do not connect the patient. Ask for help from someone competent with the device.']}
 ];
 const chkState = CHECKS.map(() => null);
+const chkOpen = new Set();
 function renderChecks() {
-  $('#steps').innerHTML = CHECKS.map((c, i) => `<li class="step ${chkState[i] === true ? 'passed' : chkState[i] === false ? 'failed' : ''}" id="chk${i}">
-    <span class="status">${chkState[i] === true ? '<span class="tag grn">Passed</span>' : chkState[i] === false ? '<span class="tag red">Failed</span>' : '<span class="tag">To do</span>'}</span>
-    <h4>Step ${i + 1}. ${c.t}</h4>
+  const cur = chkState.findIndex(x => x !== true);
+  $('#steps').innerHTML = CHECKS.map((c, i) => { const open = i === cur || chkState[i] === false || chkOpen.has(i); return `<li class="step ${chkState[i] === true ? 'passed' : chkState[i] === false ? 'failed' : ''} ${open ? '' : 'shut'}" id="chk${i}">
+    <button class="steph" data-open="${i}" aria-expanded="${open}"><span>Step ${i + 1}. ${c.t}</span><span class="status">${chkState[i] === true ? '<span class="tag grn">Passed</span>' : chkState[i] === false ? '<span class="tag red">Failed</span>' : '<span class="tag">To do</span>'}</span></button>
     <ol>${c.d.map(x => `<li>${x}</li>`).join('')}</ol>
     <p><b>Expected result:</b> ${c.v}</p>
     <div class="row"><button class="btn sm" data-chk="${i}" data-res="pass">Mark passed</button><button class="btn sm ghost" data-chk="${i}" data-res="fail">Simulate a fail</button></div>
     <div class="fail-box note bad" style="margin-top:10px"><b>If this step fails (manufacturer sequence):</b><ol>${c.f.map(x => `<li>${x}</li>`).join('')}</ol><button class="btn sm ghost" data-chk="${i}" data-res="retry">Retest this step</button></div>
-  </li>`).join('');
+  </li>`; }).join('');
   const n = chkState.filter(x => x === true).length;
   $('#chkSummary').textContent = `${n} of ${CHECKS.length} steps passed`;
   $('#chkBar').style.width = (n / CHECKS.length * 100) + '%';
   $('#chkReady').hidden = n !== CHECKS.length;
 }
 $('#steps').addEventListener('click', e => {
+  const h = e.target.closest('button[data-open]');
+  if (h) { const i = +h.dataset.open; if (h.getAttribute('aria-expanded') === 'true') chkOpen.delete(i); else chkOpen.add(i); renderChecks(); $('#chk' + i + ' .steph').focus({ preventScroll: true }); return; }
   const b = e.target.closest('button[data-chk]'); if (!b) return;
-  const i = +b.dataset.chk;
+  const i = +b.dataset.chk; chkOpen.delete(i);
   chkState[i] = b.dataset.res === 'pass' ? true : b.dataset.res === 'fail' ? false : null;
   renderChecks();
   const el = document.getElementById('chk' + i);
   if (b.dataset.res === 'pass' && i + 1 < CHECKS.length) document.getElementById('chk' + (i + 1)).querySelector('button').focus({preventScroll:false});
   else el.querySelector('button').focus({preventScroll:true});
 });
-$('#chkReset').addEventListener('click', () => { chkState.fill(null); renderChecks(); });
+$('#chkReset').addEventListener('click', () => { chkState.fill(null); chkOpen.clear(); renderChecks(); });
 
 /* ======================= BREATH EXPLORER ======================= */
 let exLung = 'copd';
@@ -3390,7 +3394,7 @@ function loadScenario(s) {
   if (s.load === 'apnoea' && V.mode !== 'NIV') { V.mode = 'NIV'; V.set.ps = 10; V.backupOn = false; addPrompt('Mode set to NIV with Apnea backup OFF for this scenario.'); }
   renderEvents(); renderAll();
   addPrompt('Scenario loaded: ' + s.name + '. Find and fix the problem using the event buttons and the controls.');
-  document.getElementById('sim').scrollIntoView({behavior:'smooth'});
+  if (typeof showPanel === 'function') showPanel('sim');
 }
 $('#scnChips').addEventListener('click', e => { const b = e.target.closest('[data-scn]'); if (!b) return; scnSel = +b.dataset.scn; renderScnChips(); renderScn(); });
 
@@ -3529,36 +3533,89 @@ $('#quizList').addEventListener('click', e => {
 });
 $('#quizReset').addEventListener('click', () => { quizAns.fill(null); renderQuiz(); });
 
-/* ======================= teaching tabs ======================= */
-function showTab(id, focus) {
-  const inv = id === 'inv';
-  $('#tp-niv').hidden = inv; $('#tp-inv').hidden = !inv;
-  $$('.ttabs [role="tab"]').forEach(b => { const on = b.dataset.tp === id; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
-  try { localStorage.setItem('t1tab', id); } catch (e) {}
-  if (!inv && typeof drawExplorer === 'function') drawExplorer();
+/* ======================= page tabs ======================= */
+const PANEL = { sim: 'p-sim', niv: 'tp-niv', inv: 'tp-inv', about: 'p-about' };
+const PANEL_HASH = { sim: '#sim', niv: '#niv', inv: '#invasive', about: '#about' };
+function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function recall(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function setHash(h) { try { window.history.replaceState(null, '', h); } catch (er) {} }
+function selectTab(list, attr, val) {
+  $$('[role="tab"]', list).forEach(b => { const on = b.dataset[attr] === val; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
 }
-$('.ttabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) showTab(b.dataset.tp); });
-$('.ttabs').addEventListener('keydown', e => {
-  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-  e.preventDefault(); showTab($('#tab-niv').getAttribute('aria-selected') === 'true' ? 'inv' : 'niv', true);
-});
-/* links to a section inside a hidden panel open that panel first */
+/* arrow keys, Home and End move between tabs in a tablist (WAI-ARIA pattern) */
+function tabKeys(e, pick) {
+  const bs = $$('[role="tab"]', e.currentTarget), i = bs.indexOf(document.activeElement);
+  if (i < 0) return;
+  const n = { ArrowRight: (i + 1) % bs.length, ArrowLeft: (i - 1 + bs.length) % bs.length, Home: 0, End: bs.length - 1 }[e.key];
+  if (n === undefined) return;
+  e.preventDefault(); pick(bs[n]); bs[n].focus();
+}
+function showSub(pe, id) {
+  const bar = $('.subtabs', pe); if (!bar) return null;
+  const ids = $$('[data-sub]', bar).map(b => b.dataset.sub);
+  if (!ids.includes(id)) id = ids[0];
+  ids.forEach(x => { $('#' + x).hidden = x !== id; });
+  selectTab(bar, 'sub', id);
+  store('t1sub-' + pe.id, id);
+  if (pe.id === 'tp-niv' && typeof drawExplorer === 'function') drawExplorer();
+  return id;
+}
+function showPanel(key, sub, opts = {}) {
+  if (!PANEL[key]) key = 'sim';
+  Object.entries(PANEL).forEach(([k, id]) => { $('#' + id).hidden = k !== key; });
+  selectTab($('.apptabs'), 'panel', key);
+  store('t1tab', key);
+  const pe = $('#' + PANEL[key]);
+  const s = showSub(pe, sub || recall('t1sub-' + pe.id));
+  if (key === 'sim') fitDevice();
+  if (opts.hash !== false) setHash(sub && s ? '#' + s : PANEL_HASH[key]);
+  if (opts.scroll !== false) window.scrollTo(0, 0);
+}
+/* a link or address ending in #section opens the tab (and sub-tab) holding it */
 function goToHash(h) {
-  if (!h || h === '#') return;
-  if (h === '#niv' || h === '#invasive') { showTab(h === '#niv' ? 'niv' : 'inv'); $('#teaching').scrollIntoView(); return; }
-  const el = document.getElementById(h.slice(1)); if (!el) return;
-  const pn = el.closest('[role="tabpanel"]');
-  if (pn) { showTab(pn.id === 'tp-inv' ? 'inv' : 'niv'); el.scrollIntoView(); }
+  if (!h || h === '#' || h === '#main') return false;
+  const k = Object.keys(PANEL_HASH).find(x => PANEL_HASH[x] === h);
+  if (k) { showPanel(k, null, { hash: false }); return true; }
+  const el = document.getElementById(h.slice(1)); if (!el) return false;
+  const pe = el.closest('.apanel'); if (!pe) return false;
+  const key = Object.keys(PANEL).find(x => PANEL[x] === pe.id);
+  const sec = $$('[data-sub]', pe).map(b => b.dataset.sub).find(id => document.getElementById(id).contains(el));
+  showPanel(key, sec, { hash: false, scroll: false });
+  if (sec && sec !== el.id) el.scrollIntoView(); else window.scrollTo(0, 0);
+  return true;
 }
+$('.apptabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) showPanel(b.dataset.panel); });
+$('.apptabs').addEventListener('keydown', e => tabKeys(e, b => showPanel(b.dataset.panel)));
+$$('.subtabs').forEach(bar => {
+  const pe = bar.closest('.apanel');
+  const pick = b => { showSub(pe, b.dataset.sub); setHash('#' + b.dataset.sub); window.scrollTo(0, 0); };
+  bar.addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) pick(b); });
+  bar.addEventListener('keydown', e => tabKeys(e, pick));
+});
+function showSide(id) {
+  selectTab($('.sidetabs'), 'st', id);
+  ['tasks', 'prompts', 'events'].forEach(x => { $('#sp-' + x).hidden = x !== id; });
+  if (id === 'prompts') $('#st-prompts').classList.remove('new');
+}
+$('.sidetabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) showSide(b.dataset.st); });
+$('.sidetabs').addEventListener('keydown', e => tabKeys(e, b => showSide(b.dataset.st)));
 document.addEventListener('click', e => {
-  const a = e.target.closest('a[href^="#"]'); if (!a) return;
-  const h = a.getAttribute('href'), g = a.dataset.goto;
-  if (h === '#niv' || h === '#invasive' || g) { e.preventDefault(); if (g && h !== '#niv' && h !== '#invasive') showTab(g); goToHash(h); try { window.history.replaceState(null, '', h); } catch (er) {} return; }
-  const el = document.getElementById(h.slice(1));
-  if (el && el.closest('[role="tabpanel"]') && el.closest('[role="tabpanel"]').hidden) { e.preventDefault(); goToHash(h); try { window.history.replaceState(null, '', h); } catch (er) {} }
+  const a = e.target.closest('a[href^="#"]'); if (!a || a.closest('.apptabs')) return;
+  const h = a.getAttribute('href');
+  if (goToHash(h)) { e.preventDefault(); setHash(h); }
 });
 window.addEventListener('hashchange', () => goToHash(location.hash));
-(() => { let t = 'niv'; try { t = localStorage.getItem('t1tab') || 'niv'; } catch (e) {} showTab(t === 'inv' ? 'inv' : 'niv'); if (location.hash) setTimeout(() => goToHash(location.hash), 0); })();
+/* keep the sub-tab bar just under the sticky main tabs */
+function setStickyOffset() { document.documentElement.style.setProperty('--apptabs-h', $('.apptabs').offsetHeight + 'px'); }
+window.addEventListener('resize', setStickyOffset); setStickyOffset();
+(() => { if (!(location.hash && goToHash(location.hash))) showPanel(recall('t1tab') || 'sim', null, { hash: false, scroll: false }); })();
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-accall]'); if (!b) return;
+  $$('details.acc', b.closest('section')).forEach(d => { d.open = b.dataset.accall === 'open'; });
+  if (typeof drawExplorer === 'function') drawExplorer();
+});
+document.addEventListener('toggle', e => { if (e.target.matches && e.target.matches('details.acc') && e.target.open && e.target.querySelector('#exCv')) drawExplorer(); }, true);
 
 /* ======================= init ======================= */
 renderChecks();
