@@ -419,6 +419,11 @@ footer a{color:#9cc3ff}
 .tpanel-toc{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
 .tpanel-toc a{font-size:.85rem;font-weight:600;text-decoration:none;background:var(--brand-l);color:var(--brand-d);border-radius:999px;padding:4px 11px}
 @media (max-width:560px){.ttabs button{flex:1 1 0;padding:9px 8px;font-size:.92rem}}
+.docs{margin-top:12px}
+.doclist{margin:0;padding-left:1.2em}
+.doclist li{margin-bottom:.5em}
+.dmeta{display:inline-block;font-size:.8rem;color:var(--muted)}
+.dnote{font-size:.85rem;color:var(--muted);margin:6px 0 0}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 </style>
 </head>
@@ -435,6 +440,7 @@ footer a{color:#9cc3ff}
     <li><a href="#sim">Simulator</a></li>
     <li><a href="#niv" data-goto="niv">NIV teaching</a></li>
     <li><a href="#invasive" data-goto="inv">Invasive ventilation teaching</a></li>
+    <li><a href="#docs">Manuals &amp; SOP</a></li>
   </ul>
 </nav>
 
@@ -531,6 +537,15 @@ footer a{color:#9cc3ff}
           <span class="hint">You can also drag round the knob, scroll on it, or focus it and use the arrow keys.</span>
         </div>
         <p class="note" style="margin-top:10px"><b>About this simulation.</b> Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <div class="card docs" id="docs">
+          <h3 style="margin-top:0">Check the source documents</h3>
+          <ul class="doclist">
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">HAMILTON-T1 Operator's Manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, Hamilton Medical website</span></li>
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">HAMILTON-T1 Quick Guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, Hamilton Medical website</span></li>
+            <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the Hamilton-T1 Ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
+          </ul>
+          <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The Hamilton documents open on hamilton-medical.com, so you always get the manufacturer's published version.</p>
+        </div>
       </div>
 
       <aside class="side" aria-label="Patient and scenario controls">
@@ -1021,6 +1036,7 @@ footer a{color:#9cc3ff}
         <li>Hamilton Medical AG. <i>HAMILTON-T1 Quick Guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">hamilton-medical.com (PDF)</a></li>
         <li>Hamilton Medical. Knowledge base: <i>Compensation for large leaks during NIV</i>. <a href="https://www.hamilton-medical.com/Article-page~knowledge-base~d66df327-e83e-411b-aaf0-1d21ea31c02f~Compensation%20for%20large%20leaks%20during%20NIV~.html">hamilton-medical.com</a></li>
         <li>Hamilton Medical. <i>NIV masks and interchangeable elbow portfolio</i> (ELO20250403N.00). <a href="https://www.hamilton-medical.com/dam/jcr:3da11458-ded3-4b4d-8650-e8b6f9c1dd86/ELO20250403N.00_NIV%20masks%20portfolio%20guide-EN.pdf">hamilton-medical.com (PDF)</a></li>
+        <li>KIDS NTS. <i>Standard Operating Procedure for using the Hamilton-T1 Ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
         <li>RUGD Point-of-Care IT. <i>Hamilton T1 – NIV</i> (secondary summary). <a href="https://www.rugd.net.au/pocit/HamiltonT1-NIV.htm">rugd.net.au</a></li>
       </ol>
       <p style="font-size:.9rem;color:var(--muted)">HAMILTON-T1, IntelliTrig, IntelliSync+, INTELLiVENT-ASV and ASV are trademarks of Hamilton Medical AG. This independent educational resource is not affiliated with or endorsed by Hamilton Medical. No manufacturer artwork is reproduced. Content reviewed against the sources above in October 2026.</p>
@@ -1238,6 +1254,7 @@ footer a{color:#9cc3ff}
         <li>Hamilton Medical AG. <i>HAMILTON-T1 Operator's Manual</i>, software 3.0.x (10103179/03 USA, April 2024): chapter 7 (modes), section 10.5 (HiFlowO2), section 10.9 (CPR ventilation), monitored parameters. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">hamilton-medical.com (PDF)</a></li>
         <li>Hamilton Medical AG. <i>ASV quick guide</i> (lung-protective rules, %MinVol adjustment, weaning).</li>
         <li>Hamilton Medical AG. <i>HAMILTON-T1 Quick Guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">hamilton-medical.com (PDF)</a></li>
+        <li>KIDS NTS. <i>Standard Operating Procedure for using the Hamilton-T1 Ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
         <li>The Acute Respiratory Distress Syndrome Network. Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and the acute respiratory distress syndrome. <i>N Engl J Med</i> 2000;342:1301–8. <a href="https://doi.org/10.1056/NEJM200005043421801">doi:10.1056/NEJM200005043421801</a></li>
         <li>Griffiths MJD, McAuley DF, Perkins GD, et al. Guidelines on the management of acute respiratory distress syndrome. <i>BMJ Open Respir Res</i> 2019;6:e000420. <a href="https://doi.org/10.1136/bmjresp-2019-000420">doi:10.1136/bmjresp-2019-000420</a></li>
         <li>O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. <i>Thorax</i> 2017;72(Suppl 1):ii1–ii90. <a href="https://doi.org/10.1136/thoraxjnl-2016-209729">doi:10.1136/thoraxjnl-2016-209729</a></li>
