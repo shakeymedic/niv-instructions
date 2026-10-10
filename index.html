@@ -443,6 +443,17 @@ footer a{color:#9cc3ff}
 .sidetabs button.new .dot{display:block}
 .sp-note{font-size:.82rem;color:var(--muted);margin:0 0 8px}
 .hands{border:2px solid #e08a00}
+.lung .lrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 8px;padding:7px 0;border-bottom:1px solid var(--line)}
+.lung .lrow:last-child{border-bottom:0}
+.lung .ln{font-size:.86rem;font-weight:700}
+.lung .ln small{display:block;font-weight:400;color:var(--muted);font-size:.76rem}
+.lung .lc{display:flex;align-items:center;gap:4px}
+.lung .lc button{width:34px;height:32px;border:1px solid var(--line);background:var(--bg);border-radius:8px;font-size:1.1rem;font-weight:700;color:var(--brand-d);cursor:pointer}
+.lung .lc button:disabled{opacity:.4;cursor:default}
+.lung .lv{min-width:58px;text-align:center;font-variant-numeric:tabular-nums;font-weight:700;font-size:.9rem}
+.lung .seg2 button{width:auto;padding:0 9px;font-size:.8rem}
+.lung .seg2 button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+kbd{font-family:inherit;font-size:.75rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:#fff}
 details.acc{padding:0;margin-bottom:10px}
 details.acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:13px 16px;border-radius:12px}
 details.acc>summary::-webkit-details-marker{display:none}
@@ -492,7 +503,7 @@ details.acc .acc-body>:first-child{margin-top:0}
 <section id="sim" class="block" aria-labelledby="sim-h">
   <div class="wrap">
     <h2 id="sim-h" class="sr-only">Ventilator simulator</h2>
-    <details class="howto"><summary>How to use the simulator</summary><p>Touch a control to select it (yellow outline) and activate it (orange). Turn the press-and-turn knob to change the value, then press the knob or touch the control again to confirm. Touch the mode name or <b>Modes</b> to change mode, any number on the left to open the alarm limits, and a waveform to change the graphics. The knob buttons under the ventilator, dragging round the knob, scrolling on it or the arrow keys all turn it.</p></details>
+    <details class="howto"><summary>How to use the simulator</summary><p>Touch a control to select it (yellow outline) and activate it (orange). Turn the press-and-turn knob to change the value, then press the knob or touch the control again to confirm. Touch the mode name or <b>Modes</b> to change mode, any number on the left to open the alarm limits, and a waveform to change the graphics. The knob buttons under the ventilator, dragging round the knob, scrolling on it or the arrow keys all turn it. To change the patient while you ventilate, open <b>Lungs</b> in the panel beside the ventilator.</p></details>
     <div class="sim-layout">
       <div>
         <div class="sim-banner" role="note">
@@ -615,9 +626,16 @@ details.acc .acc-body>:first-child{margin-top:0}
             <button role="tab" id="st-tasks" aria-controls="sp-tasks" aria-selected="true" data-st="tasks">Tasks</button>
             <button role="tab" id="st-prompts" aria-controls="sp-prompts" aria-selected="false" tabindex="-1" data-st="prompts">Prompts<span class="dot" aria-hidden="true"></span></button>
             <button role="tab" id="st-events" aria-controls="sp-events" aria-selected="false" tabindex="-1" data-st="events">Problems</button>
+            <button role="tab" id="st-lung" aria-controls="sp-lung" aria-selected="false" tabindex="-1" data-st="lung">Lungs</button>
           </div>
           <div id="sp-tasks" role="tabpanel" aria-labelledby="st-tasks"><ul class="tasks" id="tasks"></ul></div>
           <div id="sp-prompts" role="tabpanel" aria-labelledby="st-prompts" hidden><div class="prompts" id="prompts" aria-live="polite"><p>Start in Standby. Choose a patient, set up the controls and press <b>Start ventilation</b>.</p></div></div>
+          <div id="sp-lung" role="tabpanel" aria-labelledby="st-lung" hidden>
+            <p class="sp-note">Change the patient's lungs while you ventilate. Changes apply straight away. The model is simplified for teaching.</p>
+            <div class="lung" id="lung"></div>
+            <div class="row" style="margin-top:8px"><button class="btn sm ghost" id="lungReset">Reset to this patient</button></div>
+            <p class="sp-note" style="margin-top:8px">Keyboard: hold <kbd>C</kbd>, <kbd>R</kbd>, <kbd>M</kbd>, <kbd>O</kbd>, <kbd>P</kbd> or <kbd>E</kbd> and press <kbd>↑</kbd> or <kbd>↓</kbd>.</p>
+          </div>
           <div id="sp-events" role="tabpanel" aria-labelledby="st-events" hidden>
             <p class="sp-note">Inject a problem, then find and fix it.</p>
             <div class="events" id="events"></div>
@@ -1256,7 +1274,7 @@ details.acc .acc-body>:first-child{margin-top:0}
     <h2 id="about-h">About this trainer</h2>
     <div class="card">
       <h3 style="margin-top:0">What the simulator is based on</h3>
-        <p>Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <p>Screen layout, control names, ranges, alarm wording and colours follow the HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024). All adult modes can be used: (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation. Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide; where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window). The NIV patients are written for a mask: choosing an invasive mode for them assumes the patient has been intubated. Two intubated patients (ARDS and severe asthma) are in the Patient list for invasive practice. Neonatal modes and INTELLiVENT-ASV are not included. The physiology is simplified for teaching. The <b>Lungs</b> panel next to the simulator follows the patient controls Hamilton describes for its VenTrainer app (compliance, resistance, CO2 production, oxygenation, passive or active breathing and spontaneous rate); how each one maps onto this trainer's model is our own assumption. Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></p>
         </div>
     <div class="card docs" id="docs">
           <h3 style="margin-top:0">Check the source documents</h3>
@@ -1264,6 +1282,7 @@ details.acc .acc-body>:first-child{margin-top:0}
             <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">HAMILTON-T1 Operator's Manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, Hamilton Medical website</span></li>
             <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">HAMILTON-T1 Quick Guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, Hamilton Medical website</span></li>
             <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the Hamilton-T1 Ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
+            <li><a href="https://www.hamilton-medical.com/en_GB/Academy/VenTrainer.html" target="_blank" rel="noopener">Hamilton Medical VenTrainer</a>, the manufacturer's free ventilation training app (iOS, Android and Windows), with the full ventilator interface and an adjustable patient model. <span class="dmeta">App, Hamilton Medical website</span></li>
           </ul>
           <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The Hamilton documents open on hamilton-medical.com, so you always get the manufacturer's published version.</p>
         </div>
@@ -1440,7 +1459,7 @@ const PROFILES = {
 let P = null;
 function resetPatient(id) {
   const pr = PROFILES[id];
-  P = {id, pr, paco2:pr.paco2, hco3:pr.hco3, spo2:88, spo2T:88, pao2:8, hr:pr.hr, rr:pr.rrBase, simMin:0, onNivMin:0, fatigue:0.1, improve:0,
+  P = {id, pr:{...pr}, base:pr, vco2:1, passive:false, paco2:pr.paco2, hco3:pr.hco3, spo2:88, spo2T:88, pao2:8, hr:pr.hr, rr:pr.rrBase, simMin:0, onNivMin:0, fatigue:0.1, improve:0,
        fit:'good', disc:false, cough:false, kink:false, apnoea:false, o2fail:false, mains:true, batt:100, deteriorate:false, circLeak:false,
        abgs:[], missFrac:0, tiMaxFrac:0, autoFrac:0, dpAvg:0, vtAvg:pr.vtBase, VAbase:(pr.vtBase - pr.vd) * pr.rrBase};
   P.spo2 = P.spo2T = calcSpo2(pr.fio2Pre, 0);
@@ -1601,7 +1620,7 @@ function startBreath(kind) {
   const iPeep = B.Vee / pr.C;
   const dPlung = Math.max(0, dPeff - iPeep);
   const obstructed = kind === 'spont' && !isInvasive(m) && pr.needEpap && s.peep < pr.needEpap && Math.random() < 0.4;
-  const passive = auto || P.apnoea || P.pr.sedated;
+  const passive = auto || P.apnoea || P.pr.sedated || P.passive;
   let Ti = 0, tiMaxHit = false, VT;
   if (pc) Ti = kind === 'manual' && !mt ? 1.0 : mt.ti;
   if (P.disc) VT = 0.01;
@@ -1757,7 +1776,7 @@ function adaptASV(br) {
 
 function effortHappens() {
   const pr = P.pr, m = V.mode;
-  if (P.apnoea || V.ambient || pr.sedated) return;
+  if (P.apnoea || V.ambient || pr.sedated || P.passive) return;
   let effort = pr.effort * (1 - 0.5 * P.fatigue) * (P.deteriorate ? 0.7 : 1);
   if (pr.ipeep && V.set.peep < 4) effort *= 0.6;
   if (pr.needEpap && !isInvasive(m) && V.set.peep < pr.needEpap && Math.random() < 0.4) effort *= 0.35;
@@ -2974,6 +2993,7 @@ function fullReset(id) {
   else addPrompt('Patient: ' + P.pr.name + '. ' + (id === 'cpo' ? 'Set up CPAP: NIV mode with ΔPsupport 0. Titrate PEEP/CPAP and Oxygen.' : 'Set up NIV-ST and titrate towards the BTS/ICS targets.') + ' The ventilator is in Standby. Run the preop check (leak test and flow sensor) first.');
   win = 'standby';
   renderEvents(); renderTasks(); renderAll(); updatePatientPanel();
+  if (typeof renderLung === 'function') renderLung();
 }
 
 /* ---------- clinical clock & patient physiology ---------- */
@@ -2988,7 +3008,7 @@ function patientTick(dtReal) {
   const dp = ventOn && !P.disc && !hfo ? P.dpAvg : 0;
   let rr = pr.rrBase - 0.45 * dp + 8 * P.fatigue + (P.spo2 < 88 ? 4 : 0) - (P.id === 'cpo' && ventOn && !P.disc ? 0.5 * V.set.peep + P.improve * 40 : 0);
   if (P.deteriorate) rr += 4;
-  P.rr = P.apnoea || pr.sedated ? 0 : clamp(rr, 10, 45);
+  P.rr = P.apnoea || pr.sedated || P.passive ? 0 : clamp(rr, Math.min(10, pr.rrBase), 45);
   P.missFrac = frac(B.missLog); P.tiMaxFrac = frac(B.tiMaxLog); P.autoFrac = frac(B.autoLog);
   let VA;
   if (!ventOn || P.disc) VA = P.VAbase * (1 - 0.3 * P.fatigue);
@@ -2997,14 +3017,14 @@ function patientTick(dtReal) {
     const eff = clamp(1 - 0.5 * P.missFrac - 0.15 * P.tiMaxFrac - 0.3 * P.autoFrac, 0.3, 1);
     VA = Math.max(0.2, (P.vtAvg - pr.vd)) * Math.max(P.rr, (M.ftot || P.rr)) * eff;
   }
-  if (P.apnoea || pr.sedated && ventOn) VA = ventOn && !P.disc && !hfo && (mandTiming() !== null || B.apnoeaVent) ? VA * (isNIV() ? 0.6 : 1) : 0.2;
+  if (P.apnoea || (pr.sedated || P.passive) && ventOn) VA = ventOn && !P.disc && !hfo && (mandTiming() !== null || B.apnoeaVent) ? VA * (isNIV() ? 0.6 : 1) : 0.2;
   const r = VA / P.VAbase;
   let target = pr.floor + (pr.paco2 - pr.floor) * Math.exp(-0.5 * (r - 1));
-  target = Math.min(target, pr.paco2 + 4);
+  target = Math.min(target, pr.paco2 + 4) * P.vco2;   /* PaCO2 rises in proportion to CO2 production at the same ventilation */
   if (P.id !== 'cpo' && P.spo2 > 94) target += 0.6;
   if (P.deteriorate) target += 2.5;
   P.paco2 += (target - P.paco2) * Math.min(1, dtMin / 40);
-  if (pr.sedated) P.fatigue = 0;
+  if (pr.sedated || P.passive) P.fatigue = 0;
   else if (r < 1.3 || P.deteriorate) P.fatigue = clamp(P.fatigue + (P.deteriorate ? 0.01 : 0.003) * dtMin, 0, 1);
   else P.fatigue = clamp(P.fatigue - 0.003 * dtMin, 0, 1);
   if (P.id === 'cpo' && ventOn && !P.disc) P.improve = Math.min(0.1, P.improve + 0.0006 * dtMin);
@@ -3533,6 +3553,62 @@ $('#quizList').addEventListener('click', e => {
 });
 $('#quizReset').addEventListener('click', () => { quizAns.fill(null); renderQuiz(); });
 
+/* ======================= lung model panel ======================= */
+/* Adjustable patient, after the patient-model controls described for Hamilton's VenTrainer app: compliance 30–200% of the patient's value
+   in 10% steps, resistance 1–30 cmH2O/(l/s), CO2 production 65–200% in 5% steps, an oxygenation impairment in 2.5% steps, passive or
+   active breathing, and the spontaneous rate. How each maps onto this trainer's simplified model is our own assumption. */
+const LUNG = {
+  c:   {key:'c', name:'Compliance', unit:'%', min:30, max:200, step:10, get:() => Math.round(P.pr.C / P.base.C * 100), note:() => fmt(P.pr.C * 1000) + ' ml/cmH2O',
+        set:v => { const k = v / 100; const tauR = P.pr.tau / P.pr.C; P.pr.C = P.base.C * k; P.pr.tau = tauR * P.pr.C; }},
+  r:   {key:'r', name:'Resistance', unit:'', min:1, max:30, step:1, get:() => Math.round(P.pr.R), note:() => 'cmH2O/(l/s)',
+        set:v => { P.pr.tau = P.pr.tau * v / P.pr.R; P.pr.R = v; }},
+  m:   {key:'m', name:'CO2 production', unit:'%', min:65, max:200, step:5, get:() => Math.round(P.vco2 * 100), note:() => 'metabolism', set:v => { P.vco2 = v / 100; }},
+  o:   {key:'o', name:'Oxygenation impairment', unit:'%', min:0, max:95, step:2.5, get:() => Math.round(P.pr.s0 * 1000) / 10, note:() => 'poorly oxygenated lung', set:v => { P.pr.s0 = v / 100; }},
+  e:   {key:'e', name:'Spontaneous rate', unit:'', min:6, max:40, step:1, get:() => Math.round(P.pr.rrBase), note:() => 'b/min at rest', set:v => { P.pr.rrBase = v; }, off:() => P.pr.sedated || P.passive}
+};
+function lungStep(id, dir) {
+  const L = LUNG[id]; if (!P || (L.off && L.off())) return;
+  const v = clamp(Math.round((L.get() + dir * L.step) * 10) / 10, L.min, L.max);
+  if (v === L.get()) return;
+  L.set(v); renderLung(); renderAll();
+  addPrompt('Lung model: ' + L.name.toLowerCase() + ' ' + v + (L.unit || '') + '.', 'lung-' + id, 1);
+}
+function setPassive(on) {
+  if (!P || P.pr.sedated || P.passive === on) return;
+  P.passive = on; renderLung(); renderAll();
+  addPrompt(on ? 'Lung model: patient now breathing passively (no respiratory effort).' : 'Lung model: patient breathing actively again.');
+}
+function renderLung() {
+  const box = $('#lung'); if (!box || !P) return;
+  const row = L => { const off = L.off && L.off(), v = L.get();
+    return `<div class="lrow"><span class="ln">${L.name} <small>${esc(L.note())}</small></span><span class="lc"><button data-lung="${L.key}" data-dir="-1" aria-label="Lower ${L.name}" ${off || v <= L.min ? 'disabled' : ''}>−</button><span class="lv">${off ? '—' : v + L.unit}</span><button data-lung="${L.key}" data-dir="1" aria-label="Raise ${L.name}" ${off || v >= L.max ? 'disabled' : ''}>+</button></span></div>`; };
+  const act = `<div class="lrow"><span class="ln">Breathing <small>${P.pr.sedated ? 'sedated and paralysed' : 'patient effort'}</small></span><span class="lc seg2"><button data-act="0" aria-pressed="${!(P.passive || P.pr.sedated)}" ${P.pr.sedated ? 'disabled' : ''}>Active</button><button data-act="1" aria-pressed="${!!(P.passive || P.pr.sedated)}" ${P.pr.sedated ? 'disabled' : ''}>Passive</button></span></div>`;
+  box.innerHTML = row(LUNG.c) + row(LUNG.r) + row(LUNG.m) + row(LUNG.o) + act + row(LUNG.e);
+}
+$('#lung').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.lung) lungStep(b.dataset.lung, +b.dataset.dir);
+  else if (b.dataset.act) setPassive(b.dataset.act === '1');
+});
+$('#lungReset').addEventListener('click', () => {
+  if (!P) return;
+  P.pr = {...P.base}; P.vco2 = 1; P.passive = false; renderLung(); renderAll();
+  addPrompt('Lung model reset to the ' + P.pr.name + ' patient.');
+});
+/* instructor shortcuts: hold a letter and press the up or down arrow (P toggles passive breathing) */
+let lungKey = null;
+document.addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input, select, textarea')) return;
+  const k = e.key.toLowerCase();
+  if ('crmope'.includes(k) && k.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) { lungKey = k; return; }
+  if (lungKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (lungKey === 'p') setPassive(e.key === 'ArrowDown'); else lungStep(lungKey, e.key === 'ArrowUp' ? 1 : -1);
+  }
+}, true);
+document.addEventListener('keyup', e => { if (e.key.toLowerCase() === lungKey) lungKey = null; });
+window.addEventListener('blur', () => { lungKey = null; });
+
 /* ======================= page tabs ======================= */
 const PANEL = { sim: 'p-sim', niv: 'tp-niv', inv: 'tp-inv', about: 'p-about' };
 const PANEL_HASH = { sim: '#sim', niv: '#niv', inv: '#invasive', about: '#about' };
@@ -3594,7 +3670,7 @@ $$('.subtabs').forEach(bar => {
 });
 function showSide(id) {
   selectTab($('.sidetabs'), 'st', id);
-  ['tasks', 'prompts', 'events'].forEach(x => { $('#sp-' + x).hidden = x !== id; });
+  ['tasks', 'prompts', 'events', 'lung'].forEach(x => { $('#sp-' + x).hidden = x !== id; });
   if (id === 'prompts') $('#st-prompts').classList.remove('new');
 }
 $('.sidetabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) showSide(b.dataset.st); });
