@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-labelledby="t d">
+<title id="t">A clinician checks the ventilator screen beside a patient on mask NIV</title>
+<desc id="d">Line drawing. A patient sits up in bed wearing a full face mask. Two breathing tubes run from the ventilator on its stand to the mask. A clinician in scrubs stands at the ventilator and touches the screen.</desc>
+<g fill="none" stroke="#1f3550" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- floor -->
+  <path d="M10 288H470" stroke="#c9d3de"/>
+  <!-- bed -->
+  <path d="M262 214H468V230H262Z" fill="#e8eef5"/>
+  <path d="M272 230V284M458 230V284" />
+  <path d="M262 214L236 132" stroke-width="5" stroke="#9fb0c3"/>
+  <!-- patient: legs under blanket -->
+  <path d="M318 206C350 186 420 192 462 200V214H300Z" fill="#cfe3f5"/>
+  <!-- patient torso on backrest -->
+  <path d="M256 140C266 134 284 136 292 146L326 206H284L250 156Z" fill="#dfe8f2"/>
+  <!-- patient arm resting -->
+  <path d="M280 160L300 196L334 200"/>
+  <!-- patient head and face -->
+  <circle cx="262" cy="118" r="18" fill="#f6dcc8"/>
+  <path d="M246 108C250 96 270 94 278 104" stroke="#6b4f3a"/>
+  <!-- full face mask -->
+  <path d="M274 104C290 106 298 120 292 136C286 140 276 138 270 132Z" fill="#e0f2fe" stroke="#0369a1"/>
+  <path d="M268 112L248 106M270 132L250 134" stroke="#0369a1" stroke-width="1.8"/>
+  <!-- ventilator on stand -->
+  <path d="M78 160V270M50 270H108" stroke-width="4"/>
+  <circle cx="54" cy="278" r="6" fill="#fff"/><circle cx="102" cy="278" r="6" fill="#fff"/>
+  <rect x="28" y="72" width="104" height="88" rx="10" fill="#eef1f4"/>
+  <path d="M56 72V64H104V72" />
+  <rect x="38" y="82" width="64" height="50" rx="3" fill="#14233c" stroke="#14233c"/>
+  <path d="M44 116L52 100L58 112L66 94L74 116L96 116" stroke="#5cc8ff" stroke-width="2"/>
+  <circle cx="117" cy="142" r="9" fill="#c9cdd1"/>
+  <!-- two-limb circuit to the mask -->
+  <path d="M132 146C200 230 250 200 292 134" stroke="#9fb0c3" stroke-width="7"/>
+  <path d="M132 154C210 250 262 214 294 138" stroke="#c3ccd6" stroke-width="7"/>
+  <!-- clinician -->
+  <path d="M176 104H214L222 196H168Z" fill="#cfe3f5"/>
+  <path d="M180 196L176 280M208 196L214 280" stroke-width="5"/>
+  <path d="M170 284H182M210 284H222" stroke-width="5"/>
+  <circle cx="196" cy="80" r="16" fill="#f6dcc8"/>
+  <path d="M180 76C180 60 212 60 212 76Z" fill="#5b8ccf"/>
+  <!-- arm reaching to the screen -->
+  <path d="M180 110L140 118L104 104" stroke-width="5"/>
+  <circle cx="102" cy="104" r="4" fill="#f6dcc8"/>
+  <path d="M212 110L222 160L218 186" stroke-width="5"/>
+</g>
+</svg>

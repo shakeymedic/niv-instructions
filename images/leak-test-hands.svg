@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 210" role="img" aria-labelledby="t d">
+<title id="t">Leak test: disconnect, block, reconnect</title>
+<desc id="d">Three line drawings. 1, Disconnect: the circuit is separated at the patient side of the flow sensor. 2, Block: a gloved finger seals the open end completely. 3, Reconnect: the circuit is joined again.</desc>
+<defs>
+  <g id="circ">
+    <!-- circuit tube and Y-piece coming from the left -->
+    <path d="M0 70H44" stroke="#9fb0c3" stroke-width="16" stroke-linecap="butt"/>
+    <rect x="44" y="58" width="22" height="24" rx="4" fill="#94a3b8" stroke="#1f3550" stroke-width="2"/>
+    <!-- flow sensor with its two sensing lines -->
+    <rect x="66" y="61" width="52" height="18" rx="5" fill="#fde68a" stroke="#1f3550" stroke-width="2"/>
+    <path d="M80 61C80 40 60 34 40 30" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+    <path d="M100 61C100 36 76 26 48 20" fill="none" stroke="#9ca3af" stroke-width="2.5"/>
+    <ellipse cx="118" cy="70" rx="3.5" ry="8" fill="#fff" stroke="#1f3550" stroke-width="2"/>
+  </g>
+  <g id="glove" fill="#b9c8f0" stroke="#1f3550" stroke-width="2.2" stroke-linejoin="round">
+    <!-- gloved hand from the right; index fingertip seals the open end -->
+    <path d="M150 52C160 46 174 46 180 50V114C170 118 156 116 148 110Z"/>
+    <ellipse cx="146" cy="88" rx="9" ry="6"/>
+    <ellipse cx="146" cy="99" rx="9" ry="6"/>
+    <ellipse cx="148" cy="109" rx="8" ry="5"/>
+    <path d="M154 61H127C118 61 118 79 127 79H154"/>
+    <path d="M150 58C142 50 132 50 130 56"/>
+    <rect x="176" y="46" width="8" height="72" rx="2" fill="#8ea3dc"/>
+  </g>
+</defs>
+<g font-family="system-ui,Segoe UI,Arial,sans-serif" font-size="20" fill="#0f1b2d">
+  <!-- panel 1 -->
+  <rect x="4" y="4" width="192" height="202" rx="12" fill="#f8fafc" stroke="#d6dfe9"/>
+  <g transform="translate(14 40)"><use href="#circ"/>
+    <!-- elbow/mask side moved away -->
+    <path d="M150 70H170" stroke="#1e4a7d" stroke-width="2" stroke-dasharray="3 4"/>
+    <rect x="152" y="60" width="24" height="20" rx="4" fill="#bfdbfe" stroke="#1f3550" stroke-width="2" transform="translate(0 0)"/>
+    <path d="M126 50L146 50M140 44L146 50L140 56" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <circle cx="26" cy="26" r="15" fill="#ea580c"/><text x="26" y="33" fill="#fff" font-weight="700" text-anchor="middle">1</text>
+  <text x="48" y="33" font-weight="700">Disconnect</text>
+  <text x="100" y="170" text-anchor="middle" font-size="17">Patient side of</text>
+  <text x="100" y="192" text-anchor="middle" font-size="17">flow sensor</text>
+  <!-- panel 2 -->
+  <rect x="204" y="4" width="192" height="202" rx="12" fill="#f8fafc" stroke="#d6dfe9"/>
+  <g transform="translate(214 40)"><use href="#circ"/><use href="#glove"/></g>
+  <circle cx="226" cy="26" r="15" fill="#ea580c"/><text x="226" y="33" fill="#fff" font-weight="700" text-anchor="middle">2</text>
+  <text x="248" y="33" font-weight="700">Block</text>
+  <text x="300" y="170" text-anchor="middle" font-size="17">Seal completely</text>
+  <text x="300" y="192" text-anchor="middle" font-size="17">(gloved finger)</text>
+  <!-- panel 3 -->
+  <rect x="404" y="4" width="192" height="202" rx="12" fill="#f8fafc" stroke="#d6dfe9"/>
+  <g transform="translate(414 40)"><use href="#circ"/>
+    <rect x="121" y="60" width="24" height="20" rx="4" fill="#bfdbfe" stroke="#1f3550" stroke-width="2"/>
+    <path d="M168 50L150 50M156 44L150 50L156 56" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <circle cx="426" cy="26" r="15" fill="#ea580c"/><text x="426" y="33" fill="#fff" font-weight="700" text-anchor="middle">3</text>
+  <text x="448" y="33" font-weight="700">Reconnect</text>
+  <text x="500" y="170" text-anchor="middle" font-size="17">When the screen</text>
+  <text x="500" y="192" text-anchor="middle" font-size="17">says so</text>
+</g>
+</svg>

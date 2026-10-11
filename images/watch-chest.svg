@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" role="img" aria-labelledby="t d">
+<title id="t">Watching the patient, not just the screen</title>
+<desc id="d">A clinician stands at the bedside watching a patient on mask NIV. Arrows show the chest and abdomen rising with each supported breath.</desc>
+<g font-family="system-ui,Segoe UI,Arial,sans-serif" font-size="18" fill="#0f1b2d">
+<g fill="none" stroke="#1f3550" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 290H510" stroke="#c9d3de"/>
+  <!-- bed -->
+  <path d="M150 220H500V236H150Z" fill="#e8eef5"/>
+  <path d="M160 236V286M490 236V286"/>
+  <path d="M150 220L126 120" stroke-width="5" stroke="#9fb0c3"/>
+  <!-- legs under blanket -->
+  <path d="M250 212C300 190 420 196 494 204V220H230Z" fill="#cfe3f5"/>
+  <!-- torso, sitting up -->
+  <path d="M146 130C158 120 182 122 192 134L246 212H186L142 150Z" fill="#dfe8f2"/>
+  <!-- head with full face mask -->
+  <circle cx="156" cy="100" r="22" fill="#f6dcc8"/>
+  <path d="M136 92C140 76 166 72 176 84" stroke="#6b4f3a" stroke-width="4"/>
+  <path d="M170 84C190 86 200 104 192 122C184 126 172 124 166 116Z" fill="#e0f2fe" stroke="#0369a1"/>
+  <path d="M166 92L138 86M166 116L140 118" stroke="#0369a1" stroke-width="2"/>
+  <path d="M190 120C214 126 216 104 204 76C190 44 110 40 30 58" stroke="#9fb0c3" stroke-width="8"/>
+  <!-- arm resting -->
+  <path d="M172 146L196 196L240 204"/>
+</g>
+<!-- rise arrows on chest and abdomen -->
+<g fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M206 150L230 132M222 130L230 132L228 140"/>
+  <path d="M226 182L252 168M244 166L252 168L250 176"/>
+</g>
+<g fill="none" stroke="#1f3550" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(96 0)">
+  <!-- clinician on the near side, watching -->
+  <path d="M348 102H386L394 196H340Z" fill="#cfe3f5"/>
+  <path d="M352 196L348 282M380 196L386 282" stroke-width="5"/>
+  <path d="M342 286H354M382 286H394" stroke-width="5"/>
+  <circle cx="368" cy="78" r="16" fill="#f6dcc8"/>
+  <path d="M352 74C352 58 384 58 384 74Z" fill="#5b8ccf"/>
+  <path d="M352 108L336 150L348 176" stroke-width="5"/>
+  <path d="M384 108L394 156L392 184" stroke-width="5"/>
+  
+  </g>
+  <path d="M446 84L246 156" stroke="#4a5b70" stroke-width="1.5" stroke-dasharray="5 5"/>
+</g>
+<text x="244" y="26" font-weight="700">Look at the patient</text>
+<text x="244" y="50">Chest and abdomen rise</text>
+<text x="244" y="73">Slower breathing</text>
+<text x="244" y="96">Synchrony, comfort</text>
+</g>
+</svg>
