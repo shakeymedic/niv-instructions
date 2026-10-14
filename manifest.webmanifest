@@ -1,0 +1,37 @@
+{
+  "id": "./",
+  "name": "HAMILTON-T1 Ventilator Trainer",
+  "short_name": "T1 Trainer",
+  "description": "HAMILTON-T1 ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#047857",
+  "categories": [
+    "medical",
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

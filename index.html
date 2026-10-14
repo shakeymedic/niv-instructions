@@ -506,6 +506,14 @@ details.alarm>summary .ado{flex-basis:100%;font-size:.92rem;color:var(--ink)}
 details.alarm[open]>summary{margin-bottom:6px}
 details.alarm p{font-size:.92rem;margin-bottom:10px}
 </style>
+    <!-- Install as an app (PWA) -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#047857">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="T1 Trainer">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -3880,5 +3888,6 @@ fullReset('copd');
 drawExplorer();
 requestAnimationFrame(loop);
 </script>
+    <script src="sw-register.js"></script>
 </body>
 </html>
