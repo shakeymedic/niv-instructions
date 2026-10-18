@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HAMILTON-T1 Ventilator Trainer | EMEvidence</title>
-<meta name="description" content="HAMILTON-T1 ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.">
+<title>Transport ventilator trainer | EMEvidence</title>
+<meta name="description" content="Transport ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.">
 <style>
 :root{
   --bg:#f2f5f9;--surface:#ffffff;--ink:#0f1b2d;--muted:#4a5b70;--line:#d6dfe9;
@@ -510,7 +510,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#047857">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-title" content="T1 Trainer">
+    <meta name="apple-mobile-web-app-title" content="Vent trainer">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -520,7 +520,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
 <header class="site-head">
   <div class="head-in wrap">
     <a class="brand" href="https://emevidence.org"><img src="https://raw.githubusercontent.com/shakeymedic/wmem/main/emevidence_logo.png" alt="EMEvidence logo" width="44" height="44"><span>EMEvidence</span></a>
-    <h1 class="head-title">HAMILTON-T1 ventilator trainer</h1>
+    <h1 class="head-title">Transport ventilator trainer</h1>
     <span class="head-tag">Training aid only. Your local SOP takes precedence.</span>
   </div>
 </header>
@@ -549,7 +549,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <div class="sim-layout">
       <div>
         <div class="sim-banner" role="note">
-          <span><strong>SIMULATION</strong> A training recreation, not Hamilton Medical software. <a href="#about">About</a></span>
+          <span><strong>SIMULATION</strong> A training recreation, not manufacturer software. <a href="#about">About</a></span>
           <span class="bopts"><span id="simClock" aria-live="off">Ventilated 00:00</span><button id="btnSound" aria-pressed="false">Alarm sound</button><button id="btnZoom" aria-pressed="false">Zoom</button><button id="btnFull" aria-pressed="false" title="Show only the ventilator, filling the screen">Full screen</button></span>
         </div>
         <div class="t1-wrap" id="device">
@@ -596,7 +596,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
                     <div class="scr-off" id="scrOff" hidden><span id="scrOffTxt"></span></div>
                   </div>
                 </div>
-                <div class="t1-name">HAMILTON-T1<small>TRAINING SIMULATION</small></div>
+                <div class="t1-name">TRANSPORT VENTILATOR<small>TRAINING SIMULATION</small></div>
                 <div class="t1-keys">
                   <button class="k pw" id="kPower" aria-label="Power/Standby key"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg></button>
                   <div class="batt" aria-label="Battery charge indicator"><span>2</span><i></i><span>1</span><b class="led" id="led-b2" style="left:6px;top:10px"></b><b class="led on" id="led-b1" style="left:56px;top:10px"></b></div>
@@ -724,12 +724,12 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <div class="split">
       <div class="note bad" style="margin-top:0"><b>Use a non-vented mask.</b>
         <ul class="tight" style="margin:.4em 0 0">
-          <li>T1: coaxial or dual-limb circuit; the patient exhales through its <b>expiratory valve</b>.</li>
+          <li>Transport ventilator: coaxial or dual-limb circuit; the patient exhales through its <b>expiratory valve</b>.</li>
           <li>Non-vented mask + standard (non-vented) elbow: no exhalation port, no anti-asphyxia valve.</li>
           <li>Vented masks: for single-limb "ward NIV" machines with no expiratory valve.</li>
           <li><b>Never</b> a non-vented mask on a single-limb circuit with no exhalation port: CO2 rebreathing.</li>
         </ul>
-        <details class="more"><summary>Source wording</summary><p>Hamilton Medical's mask guide: the standard elbow is "used with a coaxial or dual limb circuit on a Hamilton Medical ventilator"; the anti-asphyxia (vented) elbows are "not to be used with ventilators".</p></details>
+        <details class="more"><summary>Source wording</summary><p>The manufacturer's mask guide: the standard elbow is "used with a coaxial or dual limb circuit on a [manufacturer's] ventilator"; the anti-asphyxia (vented) elbows are "not to be used with ventilators".</p></details>
       </div>
       <figure class="fig" style="margin-top:0">
         <img src="images/bedside-niv.svg" width="480" height="300" loading="lazy" alt="Line drawing: a clinician touches the ventilator screen while a patient sits up in bed wearing a full face mask connected by breathing tubes to the ventilator.">
@@ -739,7 +739,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <div class="acc-list">
       <details class="card acc" open><summary><h3>Circuit layout</h3></summary><div class="acc-body">
         <svg viewBox="0 0 760 330" role="img" aria-labelledby="circT circD" style="width:100%;height:auto">
-          <title id="circT">Schematic of a HAMILTON-T1 NIV circuit</title>
+          <title id="circT">Schematic of a transport ventilator NIV circuit</title>
           <desc id="circD">The ventilator's inspiratory port connects through an inspiratory filter and limb to the Y-piece. The flow sensor sits between the Y-piece and the patient, with its blue and clear tubes going back to the ventilator. A non-vented full face mask with a standard elbow connects to the flow sensor. The expiratory limb returns to the expiratory valve set on the ventilator.</desc>
           <rect x="10" y="40" width="190" height="250" rx="14" fill="#2e3338"/>
           <text x="105" y="70" fill="#fff" font-size="16" font-weight="700" text-anchor="middle">Ventilator</text>
@@ -787,26 +787,26 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         </ul>
         <h3>Humidification, oxygen, nebulisers</h3>
         <ul class="tight">
-          <li><b>Humidification:</b> not routine (BTS/ICS Rec 6). Consider heated humidification for mucosal dryness or thick, tenacious secretions. The T1 takes a compatible heated humidifier and has an NIV temperature setting. <b>Never use an HMEF and active humidification together.</b> Hamilton's NIV guide (citing AARC 2012) goes further: it actively humidifies every NIV circuit and advises against HMEs in NIV. <span class="sop">trust SOP</span></li>
+          <li><b>Humidification:</b> not routine (BTS/ICS Rec 6). Consider heated humidification for mucosal dryness or thick, tenacious secretions. The transport ventilator takes a compatible heated humidifier and has an NIV temperature setting. <b>Never use an HMEF and active humidification together.</b> The manufacturer's NIV guide (citing AARC 2012) goes further: it actively humidifies every NIV circuit and advises against HMEs in NIV. <span class="sop">trust SOP</span></li>
           <li><b>Oxygen:</b> <b>Oxygen</b> control (21–100%), internal blender; no entrained oxygen needed. Target SpO2 88–92% in hypercapnic respiratory failure (BTS/ICS Rec 4).</li>
-          <li><b>Nebulisers:</b> BTS: in NIV breaks, or in-line if NIV-dependent. T1: pneumatic nebuliser key (high-pressure O2 only); Aerogen-type nebulisers supported. Afterwards check expiratory valve and filter (drug can affect them). <span class="sop">trust SOP</span></li>
+          <li><b>Nebulisers:</b> BTS: in NIV breaks, or in-line if NIV-dependent. Transport ventilator: pneumatic nebuliser key (high-pressure O2 only); vibrating-mesh nebulisers supported. Afterwards check expiratory valve and filter (drug can affect them). <span class="sop">trust SOP</span></li>
         </ul>
       </div></details>
     </div>
 
     <details class="card acc"><summary><h3>Starting settings and titration (hypercapnic failure)</h3></summary><div class="acc-body">
-      <div class="note"><b>IPAP = PEEP + ΔP.</b> On the T1, <b>PEEP = EPAP</b>; <b>ΔPsupport</b> (NIV) or <b>ΔPinsp</b> (NIV-ST) is added <i>on top of</i> PEEP.
+      <div class="note"><b>IPAP = PEEP + ΔP.</b> On the transport ventilator, <b>PEEP = EPAP</b>; <b>ΔPsupport</b> (NIV) or <b>ΔPinsp</b> (NIV-ST) is added <i>on top of</i> PEEP.
         <ul class="tight" style="margin:.4em 0 0">
           <li>Example: IPAP 20 / EPAP 5 = PEEP 5, ΔP 15.</li>
           <li>Raise PEEP and IPAP rises with it (ΔP is kept). No need to add to ΔP to "keep the gap".</li>
         </ul>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Setting</th><th>BTS/ICS 2016 (Figure 1)</th><th>On the HAMILTON-T1</th></tr></thead>
+        <thead><tr><th>Setting</th><th>BTS/ICS 2016 (Figure 1)</th><th>On the transport ventilator</th></tr></thead>
         <tbody>
           <tr><td>Interface</td><td>Full face mask</td><td>Non-vented full face mask, standard elbow</td></tr>
-          <tr><td>EPAP</td><td>3 cmH2O; higher if OSA known or expected. May need &gt; 8 in severe OHS, kyphoscoliosis or recruitment for hypoxaemia</td><td><b>PEEP</b>. BTS: EPAP 3 is the minimum to vent exhaled air via a mask or circuit exhalation port. The T1 exhales via its valve; many T1 protocols start PEEP at 4–5. <span class="sop">local protocol</span></td></tr>
-          <tr><td>IPAP</td><td>COPD/OHS/kyphoscoliosis: 15 (20 if pH &lt; 7.25). Up-titrate over 10–30 min to 20–30 for adequate chest/abdominal movement and slower RR. IPAP above 30 (and EPAP above 8) is mainly needed in obesity hypoventilation; get senior or expert input. Neuromuscular: 10, or 5 above usual</td><td><b>PEEP + ΔPsupport/ΔPinsp</b>. Manual: peaks above 33 cmH2O may raise aspiration risk (gastric insufflation); consider an invasive mode. Keep the Pressure high alarm above target: the T1 limits pressure 10 cmH2O below it.</td></tr>
+          <tr><td>EPAP</td><td>3 cmH2O; higher if OSA known or expected. May need &gt; 8 in severe OHS, kyphoscoliosis or recruitment for hypoxaemia</td><td><b>PEEP</b>. BTS: EPAP 3 is the minimum to vent exhaled air via a mask or circuit exhalation port. The transport ventilator exhales via its valve; many local protocols start PEEP at 4–5. <span class="sop">local protocol</span></td></tr>
+          <tr><td>IPAP</td><td>COPD/OHS/kyphoscoliosis: 15 (20 if pH &lt; 7.25). Up-titrate over 10–30 min to 20–30 for adequate chest/abdominal movement and slower RR. IPAP above 30 (and EPAP above 8) is mainly needed in obesity hypoventilation; get senior or expert input. Neuromuscular: 10, or 5 above usual</td><td><b>PEEP + ΔPsupport/ΔPinsp</b>. Manual: peaks above 33 cmH2O may raise aspiration risk (gastric insufflation); consider an invasive mode. Keep the Pressure high alarm above target: the transport ventilator limits pressure 10 cmH2O below it.</td></tr>
           <tr><td>Backup rate</td><td>16–20 b/min</td><td><b>Rate</b> in NIV-ST (range 5–80)</td></tr>
           <tr><td>Inspiratory time</td><td>COPD 0.8–1.2 s; OHS, NM and chest wall disease 1.2–1.5 s</td><td><b>TI</b> times mandatory (NIV-ST) breaths. Spontaneous breaths cycle on <b>ETS</b>; <b>TI max</b> is the backstop.</td></tr>
           <tr><td>I:E</td><td>COPD 1:2 to 1:3; OHS, NM and chest wall disease 1:1</td><td>Set by Rate and TI (mandatory breaths)</td></tr>
@@ -818,7 +818,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <h4>Titrate <span class="sop">adapt to local protocol</span></h4>
           <ol class="tight">
             <li>Prescribe and document the plan, including the ceiling of treatment, <b>before</b> starting (BTS QS 5).</li>
-            <li>Sit the patient up (sitting or semi-recumbent). Lying on one side can help with a large abdomen (Hamilton NIV guide).</li>
+            <li>Sit the patient up (sitting or semi-recumbent). Lying on one side can help with a large abdomen (manufacturer's NIV guide).</li>
             <li>Explain. Hold the mask by hand at modest pressures, e.g. PEEP 5 + ΔP 10 (IPAP 15), or ΔP 15 (IPAP 20) if pH &lt; 7.25. Oxygen for SpO2 88–92%.</li>
             <li>First <b>10–30 min</b>: raise ΔP in 2–5 cmH2O steps towards IPAP 20–30, as tolerated.</li>
             <li>Look for chest and abdominal movement, falling RR, synchrony, comfort.</li>
@@ -864,7 +864,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <p><b>Use for:</b> acute hypercapnic respiratory failure (COPD, OHS, neuromuscular or chest wall disease). Closest to "BiPAP S/T" with a backup rate (BTS/ICS Figure 1).</p>
       </div></details>
     </div>
-    <details class="card acc"><summary><span class="tag">Also on the T1</span> <h3>HiFlowO2 (high-flow nasal oxygen)</h3></summary><div class="acc-body">
+    <details class="card acc"><summary><span class="tag">Also on this ventilator</span> <h3>HiFlowO2 (high-flow nasal oxygen)</h3></summary><div class="acc-body">
       <ul class="tight">
         <li>Continuous air/oxygen via nasal cannula. Set <b>Flow</b> (adults 2–60 l/min) and <b>Oxygen</b>.</li>
         <li>For spontaneously breathing patients. <b>Not life-supporting.</b></li>
@@ -878,12 +878,12 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
       <div class="grid3">
         <div><h4>Trigger</h4><ul class="tight"><li><b>Flow trigger</b>, l/min (v3.1.x adult 0.5–20, default 5).</li><li>Lower number = <i>more</i> sensitive.</li><li>Too low: <b>auto-triggering</b>, especially with leak.</li><li>Too high: <b>missed efforts</b>.</li><li>Pink triangles on the pressure curve = patient-triggered breaths.</li><li><b>IntelliSync+</b> option on some devices (not all markets).</li></ul></div>
         <div><h4>P-ramp (rise time)</h4><ul class="tight"><li>Time for pressure to reach target, in ms.</li><li>NIV and NIV-ST: maximum 200 ms, and always ≤ one-third of TI.</li><li>Shorter: faster, "punchier" breath, often preferred by breathless COPD patients.</li><li>Longer: gentler, but can leave a hungry patient underserved.</li></ul></div>
-        <div><h4>ETS (expiratory trigger)</h4><ul class="tight"><li>Inspiration ends when flow falls to this <b>% of peak inspiratory flow</b> (5–80%, default 25%).</li><li><b>Higher ETS</b> ends inspiration earlier: more expiratory time (helps COPD) and copes with larger leaks (manual §7.6.4).</li><li>Big leak: flow may never fall to ETS, so <b>TI max</b> (0.5–3 s, default 1.5 s) ends the breath.</li><li>Starting points from Hamilton's NIV guide (not BTS): ETS 40–50% in NIV; TI max about 0.25 s longer than the patient's own TI, or 1.5 s if unsure.</li></ul></div>
+        <div><h4>ETS (expiratory trigger)</h4><ul class="tight"><li>Inspiration ends when flow falls to this <b>% of peak inspiratory flow</b> (5–80%, default 25%).</li><li><b>Higher ETS</b> ends inspiration earlier: more expiratory time (helps COPD) and copes with larger leaks (manual §7.6.4).</li><li>Big leak: flow may never fall to ETS, so <b>TI max</b> (0.5–3 s, default 1.5 s) ends the breath.</li><li>Starting points from the manufacturer's NIV guide (not BTS): ETS 40–50% in NIV; TI max about 0.25 s longer than the patient's own TI, or 1.5 s if unsure.</li></ul></div>
       </div>
       <h4>IntelliTrig leak compensation</h4>
       <ul class="tight">
         <li>Measures mask leak each breath and adjusts triggering, so leak and changing breath patterns affect sensitivity less (manual §7.6.7).</li>
-        <li>Hamilton internal testing: C1/T1/MR1 compensated <b>up to 85 l/min inspiratory</b> and <b>up to 30 l/min expiratory</b> leak, on specific software versions (Hamilton knowledge base).</li>
+        <li>Manufacturer's internal testing: several of its ventilators, including this one, compensated <b>up to 85 l/min inspiratory</b> and <b>up to 30 l/min expiratory</b> leak, on specific software versions (manufacturer's knowledge base).</li>
         <li>Limits: leak still lowers delivered PEEP and can auto-trigger. <b>Fix the mask first.</b></li>
       </ul>
       <h4>Explore one breath</h4>
@@ -905,7 +905,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
       </div>
     </div></details>
 
-    <details class="card acc"><summary><h3>Other T1 modes (overview)</h3></summary><div class="acc-body">
+    <details class="card acc"><summary><h3>Other transport ventilator modes (overview)</h3></summary><div class="acc-body">
       <p>Manual Table 7-1 (v3.1.x). Depends on installed options and licence. The NIV-only option restricts the device to NIV, NIV-ST and HiFlowO2. ED acute NIV = <b>NIV</b> or <b>NIV-ST</b>.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Mode</th><th>ISO 19223</th><th>Group</th><th>What it does</th></tr></thead>
@@ -975,7 +975,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <p style="font-size:.88rem;color:var(--muted);margin-top:-.3em">Tap an alarm for what it means.</p>
     <div class="split">
       <div>
-        <p style="font-size:.92rem">Paraphrased from the HAMILTON-T1 Operator's Manual v3.1.x, Table 9-3. On-screen wording is the manual's (US spelling, e.g. "Apnea"). <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <p style="font-size:.92rem">Paraphrased from the manufacturer's operator's manual v3.1.x, Table 9-3. On-screen wording is the manual's (US spelling, e.g. "Apnea"). <span class="sop">Check your local operator's manual / trust SOP</span></p>
         <div class="note"><b>Set the low Pressure limit near the set pressure</b> (PEEP + ΔP). In NIV, Low pressure is the main disconnection alarm.</div>
       </div>
       <figure class="fig sm">
@@ -1125,7 +1125,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <li>Indication confirmed after optimal medical therapy? Treat the reversible cause (infection, pneumothorax, oversedation, pulmonary oedema, effusion).</li>
           <li>Check contraindications and adverse features. Decide the location (HDU or ICU if high-risk); involve ICU early.</li>
           <li>Agree and document the escalation plan and ceiling <b>before</b> starting. Talk to the patient and family.</li>
-          <li>Prescribe in T1 terms: <b>PEEP</b>, <b>ΔP</b> (IPAP = PEEP + ΔP), <b>Rate/TI</b> in NIV-ST, Oxygen, SpO2 target, alarm limits.</li>
+          <li>Prescribe in the ventilator's terms: <b>PEEP</b>, <b>ΔP</b> (IPAP = PEEP + ΔP), <b>Rate/TI</b> in NIV-ST, Oxygen, SpO2 target, alarm limits.</li>
           <li>Titrate actively in the first 30 min towards IPAP 20–30 as tolerated. Do not leave starting pressures.</li>
           <li>Review the 1 h gas yourself. Not improved: check technical issues (BTS/ICS Table 3), then escalate within 30 min (QS 6).</li>
           <li>Stop for persisting acidosis, exhaustion, falling GCS, haemodynamic instability: intubate if within the ceiling, or palliate.</li>
@@ -1167,16 +1167,16 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <li>O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. <i>Thorax</i> 2017;72(Suppl 1):ii1–ii90. <a href="https://doi.org/10.1136/thoraxjnl-2016-209729">doi:10.1136/thoraxjnl-2016-209729</a></li>
         <li>Rochwerg B, Brochard L, Elliott MW, et al. Official ERS/ATS clinical practice guidelines: noninvasive ventilation for acute respiratory failure. <i>Eur Respir J</i> 2017;50:1602426. <a href="https://doi.org/10.1183/13993003.02426-2016">doi:10.1183/13993003.02426-2016</a></li>
         <li>National Institute for Health and Care Excellence. Acute heart failure: diagnosis and management (CG187). 2014. <a href="https://www.nice.org.uk/guidance/cg187">nice.org.uk/guidance/cg187</a></li>
-        <li>Hamilton Medical AG. <i>HAMILTON-T1 Operator's Manual</i>, software v3.1.x (10101879/02). <a href="https://www.hamilton-medical.com/dam/jcr:eae677f7-72c4-4239-a242-0c102aa6a466/HAMILTON-T1_ops-manual_v3.1.x_en_10101879.02.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>Hamilton Medical AG. <i>HAMILTON-T1 Operator's Manual</i>, software 3.0.x (10103179/03 USA, April 2024). The simulator's screen layout, front panel, control ranges and defaults, alarm limits and alarm wording are based on this edition. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>Hamilton Medical AG. <i>HAMILTON-T1 Quick Guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>Hamilton Medical. Knowledge base: <i>Compensation for large leaks during NIV</i>. <a href="https://www.hamilton-medical.com/Article-page~knowledge-base~d66df327-e83e-411b-aaf0-1d21ea31c02f~Compensation%20for%20large%20leaks%20during%20NIV~.html">hamilton-medical.com</a></li>
-        <li>Karjaghli M (Hamilton Medical). <i>A comprehensive guide to noninvasive ventilation (NIV)</i>. Knowledge base article, first published 1 March 2024. <a href="https://www.hamilton-medical.com/en_GB/Article-page~knowledge-base~0a23091e-4fb0-4626-964d-a36ff984b8dc~A-comprehensive-guide-to-noninvasive-ventilation--NIV-~.html">hamilton-medical.com</a></li>
-        <li>Hamilton Medical. <i>NIV masks and interchangeable elbow portfolio</i> (ELO20250403N.00). <a href="https://www.hamilton-medical.com/dam/jcr:3da11458-ded3-4b4d-8650-e8b6f9c1dd86/ELO20250403N.00_NIV%20masks%20portfolio%20guide-EN.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>KIDS NTS. <i>Standard Operating Procedure for using the Hamilton-T1 Ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
-        <li>RUGD Point-of-Care IT. <i>Hamilton T1 – NIV</i> (secondary summary). <a href="https://www.rugd.net.au/pocit/HamiltonT1-NIV.htm">rugd.net.au</a></li>
+        <li>Manufacturer's <i>operator's manual</i>, software v3.1.x (10101879/02). <a href="https://www.hamilton-medical.com/dam/jcr:eae677f7-72c4-4239-a242-0c102aa6a466/HAMILTON-T1_ops-manual_v3.1.x_en_10101879.02.pdf">Manufacturer's website (PDF)</a></li>
+        <li>Manufacturer's <i>operator's manual</i>, software 3.0.x (10103179/03 USA, April 2024). The simulator's screen layout, front panel, control ranges and defaults, alarm limits and alarm wording are based on this edition. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">Manufacturer's website (PDF)</a></li>
+        <li>Manufacturer's <i>quick guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">Manufacturer's website (PDF)</a></li>
+        <li>Manufacturer's knowledge base: <i>Compensation for large leaks during NIV</i>. <a href="https://www.hamilton-medical.com/Article-page~knowledge-base~d66df327-e83e-411b-aaf0-1d21ea31c02f~Compensation%20for%20large%20leaks%20during%20NIV~.html">Manufacturer's website</a></li>
+        <li>Karjaghli M (the manufacturer). <i>A comprehensive guide to noninvasive ventilation (NIV)</i>. Knowledge base article, first published 1 March 2024. <a href="https://www.hamilton-medical.com/en_GB/Article-page~knowledge-base~0a23091e-4fb0-4626-964d-a36ff984b8dc~A-comprehensive-guide-to-noninvasive-ventilation--NIV-~.html">Manufacturer's website</a></li>
+        <li>Manufacturer's <i>NIV masks and interchangeable elbow portfolio</i> (ELO20250403N.00). <a href="https://www.hamilton-medical.com/dam/jcr:3da11458-ded3-4b4d-8650-e8b6f9c1dd86/ELO20250403N.00_NIV%20masks%20portfolio%20guide-EN.pdf">Manufacturer's website (PDF)</a></li>
+        <li>KIDS NTS. <i>Standard Operating Procedure for using the transport ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
+        <li>RUGD Point-of-Care IT. <i>Transport ventilator – NIV</i> (secondary summary). <a href="https://www.rugd.net.au/pocit/HamiltonT1-NIV.htm">rugd.net.au</a></li>
       </ol>
-      <p style="font-size:.9rem;color:var(--muted)">HAMILTON-T1, IntelliTrig, IntelliSync+, INTELLiVENT-ASV and ASV are trademarks of Hamilton Medical AG. This independent educational resource is not affiliated with or endorsed by Hamilton Medical. No manufacturer artwork is reproduced. Content reviewed against the sources above in October 2026.</p>
+      <p style="font-size:.9rem;color:var(--muted)">Device, mode and feature names are used only to describe on-screen functions and may be trademarks of their owners. An independent training simulator. Not made, endorsed or supported by any ventilator manufacturer. No manufacturer artwork is reproduced. Content reviewed against the sources above in October 2026.</p>
     </div>
   </div>
 </section>
@@ -1193,9 +1193,9 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <div class="split">
           <ol class="tight">
             <li><b>Preoperational check</b> in Standby: leak test and flow sensor calibration (System &gt; Tests &amp; calib). Same as for NIV: see the <a href="#checks" data-goto="niv">NIV walk-through</a>.</li>
-            <li><b>Patient group, sex and height</b> in Standby. The T1 calculates <b>ideal body weight (IBW)</b>, which sets the starting Vt, the APRV and ASV starting values and the ASV targets. Measure height; do not guess from weight.</li>
+            <li><b>Patient group, sex and height</b> in Standby. The transport ventilator calculates <b>ideal body weight (IBW)</b>, which sets the starting Vt, the APRV and ASV starting values and the ASV targets. Measure height; do not guess from weight.</li>
             <li><b>Mode:</b> Modes, then Confirm. Review the Controls window that opens, then Confirm again.</li>
-            <li><b>Alarm limits</b> (Alarms &gt; Limits). The high Pressure limit also sets <b>Plimit</b> (10 cmH2O below it): the highest pressure the T1 uses in the adaptive modes. Blue line on the pressure waveform = Plimit.</li>
+            <li><b>Alarm limits</b> (Alarms &gt; Limits). The high Pressure limit also sets <b>Plimit</b> (10 cmH2O below it): the highest pressure the transport ventilator uses in the adaptive modes. Blue line on the pressure waveform = Plimit.</li>
             <li><b>Start ventilation.</b> Check chest movement, SpO2, waveforms, blood pressure. Confirm tube position (waveform capnography). Take a blood gas.</li>
           </ol>
           <figure class="fig">
@@ -1218,17 +1218,17 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <p style="font-size:.88rem;color:var(--muted);margin-top:8px">Widely taught starting values, not a protocol. Check your local guidance.</p>
       </div></details>
     </div>
-    <div class="note warn"><b>Pplateau ≤ 30 cmH2O.</b> ARDS Network trial: Vt 6 ml/kg predicted body weight with plateau pressure ≤ 30 cmH2O gave lower mortality than 12 ml/kg. The T1 shows <b>Pplateau</b> and <b>Driving pressure</b> (Monitoring &gt; General 1) for mandatory, time-cycled breaths.</div>
+    <div class="note warn"><b>Pplateau ≤ 30 cmH2O.</b> ARDS Network trial: Vt 6 ml/kg predicted body weight with plateau pressure ≤ 30 cmH2O gave lower mortality than 12 ml/kg. The transport ventilator shows <b>Pplateau</b> and <b>Driving pressure</b> (Monitoring &gt; General 1) for mandatory, time-cycled breaths.</div>
   </div>
 </section>
 
 <section id="inv-modes" class="block" aria-labelledby="inv-modes-h">
   <div class="wrap">
     <h2 id="inv-modes-h">Invasive modes</h2><div class="acc-tools"><button class="btn sm ghost" data-accall="open">Open all</button><button class="btn sm ghost" data-accall="close">Close all</button></div>
-    <p class="lead">Every T1 mode gives pressure-controlled or pressure-supported breaths. They differ in what you set and what the T1 adjusts. Names follow the SW 3.0.x manual (chapter 7).</p>
+    <p class="lead">Every transport ventilator mode gives pressure-controlled or pressure-supported breaths. They differ in what you set and what the transport ventilator adjusts. Names follow the SW 3.0.x manual (chapter 7).</p>
     <div class="card table-wrap">
       <table>
-        <thead><tr><th scope="col">Mode</th><th scope="col">Breaths</th><th scope="col">You set</th><th scope="col">The T1 adjusts</th></tr></thead>
+        <thead><tr><th scope="col">Mode</th><th scope="col">Breaths</th><th scope="col">You set</th><th scope="col">The transport ventilator adjusts</th></tr></thead>
         <tbody>
           <tr><td><b>(S)CMV+</b> (APVcmv)</td><td>Mandatory, volume-targeted. Patient can trigger extra mandatory breaths.</td><td>Vt, Rate, I:E (or TI), PEEP, Oxygen, Trigger, P-ramp</td><td>Inspiratory pressure, breath by breath, to reach Vt (≥ 5 cmH2O above PEEP, never above Plimit)</td></tr>
           <tr><td><b>SIMV+</b> (APVsimv)</td><td>Volume-targeted mandatory breaths + pressure-supported spontaneous breaths between them</td><td>Vt, Rate, timing, PEEP, ΔPsupport, ETS</td><td>Pressure of the mandatory breaths</td></tr>
@@ -1241,19 +1241,19 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <tr><td><b>ASV</b></td><td>Pressure-controlled mandatory + pressure-supported spontaneous breaths</td><td>%MinVol, PEEP, Oxygen (plus Plimit)</td><td>Rate, Vt, TI and pressure, within lung-protective rules</td></tr>
         </tbody>
       </table>
-      <p style="font-size:.88rem;color:var(--muted);margin:8px 0 0">Mandatory breaths are timed by Rate and TI. The T1 shows I:E or TI depending on the breath timing chosen in Configuration (manual 7.1.1). The trainer shows I:E in (S)CMV+ and PCV+, and TI in the SIMV modes.</p>
+      <p style="font-size:.88rem;color:var(--muted);margin:8px 0 0">Mandatory breaths are timed by Rate and TI. The transport ventilator shows I:E or TI depending on the breath timing chosen in Configuration (manual 7.1.1). The trainer shows I:E in (S)CMV+ and PCV+, and TI in the SIMV modes.</p>
     </div>
     <div class="acc-list">
       <details class="card acc" open><summary><h3>Volume target or pressure target?</h3></summary><div class="acc-body">
         <ul class="tight">
-          <li><b>Volume target</b> ((S)CMV+, SIMV+, VS): you set volume; the T1 finds the pressure. Stiffer lungs: pressure rises. At Plimit, Vt falls short and <b>Pressure limitation</b> alarms.</li>
+          <li><b>Volume target</b> ((S)CMV+, SIMV+, VS): you set volume; the transport ventilator finds the pressure. Stiffer lungs: pressure rises. At Plimit, Vt falls short and <b>Pressure limitation</b> alarms.</li>
           <li><b>Pressure target</b> (PCV+, PSIMV+): you set pressure. Stiffer lungs or a blocked tube: <b>Vt falls</b>. The Vt and ExpMinVol low alarms are your warning.</li>
         </ul>
       </div></details>
       <details class="card acc"><summary><h3>Apnea backup</h3></summary><div class="acc-body">
         <ul class="tight">
           <li>Modes where the patient must trigger (SIMV+, PSIMV+, SPONT, VS, DuoPAP, APRV): set <b>Apnea time</b> and keep <b>Apnea backup</b> on (Controls &gt; Apnea).</li>
-          <li>Patient stops breathing: the T1 switches to backup ventilation and shows "Apnea ventilation".</li>
+          <li>Patient stops breathing: the transport ventilator switches to backup ventilation and shows "Apnea ventilation".</li>
           <li>A sedated, paralysed patient on SPONT gets only backup breaths. Try it in the simulator.</li>
         </ul>
       </div></details>
@@ -1343,10 +1343,10 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <li><b>S</b>tacked breaths: air trapping (see AutoPEEP). Briefly disconnecting lets trapped air out.</li>
         </ul>
       </div></details>
-      <details class="card acc"><summary><h3>T1 alarms worth knowing</h3></summary><div class="acc-body">
+      <details class="card acc"><summary><h3>Transport ventilator alarms worth knowing</h3></summary><div class="acc-body">
         <ul class="tight">
           <li><b>Pressure high</b>: breath cut short at the high Pressure limit. Think obstruction, coughing, biting, bronchospasm, pneumothorax.</li>
-          <li><b>Pressure limitation</b>: inspiratory pressure held at Plimit. In adaptive modes the T1 needs more than Plimit to reach Vt. Lungs stiffer? Tube partly blocked? Vt too high?</li>
+          <li><b>Pressure limitation</b>: inspiratory pressure held at Plimit. In adaptive modes the transport ventilator needs more than Plimit to reach Vt. Lungs stiffer? Tube partly blocked? Vt too high?</li>
           <li><b>Disconnection on patient side</b> (invasive modes): expired volume much less than inspired.</li>
           <li><b>Vt low / ExpMinVol low</b>: leak, disconnection, or stiffer lungs in a pressure-controlled mode.</li>
           <li><b>Inspiratory volume limitation</b>: delivered Vt more than 1.5 × the Vt high limit. The breath ends; APV modes lower the next breath's pressure by 3 cmH2O.</li>
@@ -1369,7 +1369,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <li>ExpMinVol, fTotal and Vt alarm limits go to minimum and maximum. CPR ON alarm and <b>CPR Timer</b> show while on.</li>
         <li><b>To stop:</b> select and confirm another mode (alarm limits return to previous settings), or enter Standby. "Start CPR" restarts it from Standby.</li>
       </ul>
-      <p style="font-size:.9rem;color:var(--muted)">Follow Resuscitation Council UK guidance for ventilation during CPR; this only describes the T1 function.</p>
+      <p style="font-size:.9rem;color:var(--muted)">Follow Resuscitation Council UK guidance for ventilation during CPR; this only describes the ventilator's function.</p>
     </div>
   </div>
 </section>
@@ -1416,15 +1416,15 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <h2 id="inv-refs-h">References and sources</h2>
     <div class="card">
       <ol>
-        <li>Hamilton Medical AG. <i>HAMILTON-T1 Operator's Manual</i>, software 3.0.x (10103179/03 USA, April 2024): chapter 7 (modes), section 10.5 (HiFlowO2), section 10.9 (CPR ventilation), monitored parameters. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>Hamilton Medical AG. <i>ASV quick guide</i> (lung-protective rules, %MinVol adjustment, weaning).</li>
-        <li>Hamilton Medical AG. <i>HAMILTON-T1 Quick Guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">hamilton-medical.com (PDF)</a></li>
-        <li>KIDS NTS. <i>Standard Operating Procedure for using the Hamilton-T1 Ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
+        <li>Manufacturer's <i>operator's manual</i>, software 3.0.x (10103179/03 USA, April 2024): chapter 7 (modes), section 10.5 (HiFlowO2), section 10.9 (CPR ventilation), monitored parameters. <a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf">Manufacturer's website (PDF)</a></li>
+        <li>Manufacturer's <i>ASV quick guide</i> (lung-protective rules, %MinVol adjustment, weaning).</li>
+        <li>Manufacturer's <i>quick guide</i>, v2.2.x (624840/01). <a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf">Manufacturer's website (PDF)</a></li>
+        <li>KIDS NTS. <i>Standard Operating Procedure for using the transport ventilator</i>, V3, August 2019. <a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf">PDF on this site</a></li>
         <li>The Acute Respiratory Distress Syndrome Network. Ventilation with lower tidal volumes as compared with traditional tidal volumes for acute lung injury and the acute respiratory distress syndrome. <i>N Engl J Med</i> 2000;342:1301–8. <a href="https://doi.org/10.1056/NEJM200005043421801">doi:10.1056/NEJM200005043421801</a></li>
         <li>Griffiths MJD, McAuley DF, Perkins GD, et al. Guidelines on the management of acute respiratory distress syndrome. <i>BMJ Open Respir Res</i> 2019;6:e000420. <a href="https://doi.org/10.1136/bmjresp-2019-000420">doi:10.1136/bmjresp-2019-000420</a></li>
         <li>O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. <i>Thorax</i> 2017;72(Suppl 1):ii1–ii90. <a href="https://doi.org/10.1136/thoraxjnl-2016-209729">doi:10.1136/thoraxjnl-2016-209729</a></li>
       </ol>
-      <p style="font-size:.9rem;color:var(--muted)">This independent educational resource is not affiliated with or endorsed by Hamilton Medical. Content reviewed against the sources above in October 2026.</p>
+      <p style="font-size:.9rem;color:var(--muted)">An independent training simulator. Not made, endorsed or supported by any ventilator manufacturer. Content reviewed against the sources above in October 2026.</p>
     </div>
   </div>
 </section>
@@ -1436,29 +1436,29 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <div class="card">
       <h3 style="margin-top:0">What the simulator is based on</h3>
         <ul class="tight">
-          <li><b>Source:</b> HAMILTON-T1 Operator's Manual, software 3.0.x (10103179/03, April 2024): screen layout, control names, ranges, alarm wording and colours.</li>
+          <li><b>Source:</b> the manufacturer's operator's manual, software 3.0.x (10103179/03, April 2024): screen layout, control names, ranges, alarm wording and colours.</li>
           <li><b>All adult modes:</b> (S)CMV+, SIMV+, VS, PCV+, PSIMV+, SPONT, DuoPAP, APRV, ASV, NIV, NIV-ST, HiFlowO2 and CPR ventilation.</li>
-          <li>Mode controls and rules also draw on the HAMILTON-T1 quick guides and the ASV quick guide. Where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window).</li>
+          <li>Mode controls and rules also draw on the manufacturer's quick guides and ASV quick guide. Where a detail is not published, the trainer makes a stated assumption (see the notes in each Controls window).</li>
           <li>The NIV patients are written for a mask: choosing an invasive mode for them assumes intubation. Two intubated patients (ARDS, severe asthma) are in the Patient list for invasive practice.</li>
           <li><b>Not included:</b> neonatal modes and INTELLiVENT-ASV.</li>
-          <li>Physiology is simplified for teaching. The <b>Lungs</b> panel follows the patient controls Hamilton describes for its VenTrainer app (compliance, resistance, CO2 production, oxygenation, passive or active breathing, spontaneous rate); how each maps onto this trainer's model is our own assumption.</li>
+          <li>Physiology is simplified for teaching. The <b>Lungs</b> panel follows the patient controls described for a manufacturer's ventilator training app (compliance, resistance, CO2 production, oxygenation, passive or active breathing, spontaneous rate); how each maps onto this trainer's model is our own assumption.</li>
           <li>Your device's screen depends on its software version, options and local configuration. <span class="sop">Check your local operator's manual / trust SOP</span></li>
         </ul>
         </div>
     <div class="card docs" id="docs">
           <h3 style="margin-top:0">Check the source documents</h3>
           <ul class="doclist">
-            <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">HAMILTON-T1 Operator's Manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, Hamilton Medical website</span></li>
-            <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">HAMILTON-T1 Quick Guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, Hamilton Medical website</span></li>
-            <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the Hamilton-T1 Ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
-            <li><a href="https://www.hamilton-medical.com/en_GB/Academy/VenTrainer.html" target="_blank" rel="noopener">Hamilton Medical VenTrainer</a>, the manufacturer's free ventilation training app (iOS, Android and Windows), with the full ventilator interface and an adjustable patient model. <span class="dmeta">App, Hamilton Medical website</span></li>
-            <li><a href="https://www.hamilton-medical.com/en_GB/Article-page~knowledge-base~0a23091e-4fb0-4626-964d-a36ff984b8dc~A-comprehensive-guide-to-noninvasive-ventilation--NIV-~.html" target="_blank" rel="noopener">Hamilton Medical: A comprehensive guide to noninvasive ventilation (NIV)</a>. The manufacturer's NIV overview: modes, interfaces, starting settings, alarms and monitoring. Where it differs from BTS/ICS (backup rate, SpO2 target, humidification), this trainer follows BTS/ICS. <span class="dmeta">Web page, Hamilton Medical website</span></li>
-            <li><a href="https://www.hamilton-medical.com/en_GB/Academy/e-Academy.html" target="_blank" rel="noopener">Hamilton Medical e-Academy</a>. Free online modules after registration, including <i>HAMILTON-T1 v3.0</i> and the <i>First steps HAMILTON-T1 v3.0</i> learning path. <span class="dmeta">E-learning, Hamilton Medical website</span></li>
-            <li><a href="https://www.hamilton-medical.com/en_GB/Landing-pages/UK-Virtual-Training.html" target="_blank" rel="noopener">Hamilton Medical UK virtual training</a>. Free, live online sessions for UK customers on setting up and operating the HAMILTON-T1. <span class="dmeta">Live course, Hamilton Medical website</span></li>
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:e394540c-e871-48c8-9ca1-3adb567f3ab5/HAMILTON-T1-ops-manual-SW3.0.x-en-USA-10103179.00.pdf" target="_blank" rel="noopener">Manufacturer's operator's manual</a>, software 3.0.x (10103179). The full user guide this simulator is built from. <span class="dmeta">PDF, 8.6 MB, manufacturer's website</span></li>
+            <li><a href="https://www.hamilton-medical.com/dam/jcr:a67fa177-8302-4074-95e4-d2692248f22f/HAMILTON-T1_quick-guide_v2.2.x_en_624840.01.pdf" target="_blank" rel="noopener">Manufacturer's quick guide</a>, v2.2.x (624840/01). <span class="dmeta">PDF, 6.6 MB, manufacturer's website</span></li>
+            <li><a href="docs/kids-nts-hamilton-t1-sop-v3-2019.pdf" target="_blank" rel="noopener">KIDS NTS Standard Operating Procedure for using the transport ventilator</a>, V3, August 2019. Written for the KIDS NTS transport team, so some content (its circuits, and settings for children) is specific to that service. <span class="dmeta">PDF, 25 MB</span></li>
+            <li><a href="https://www.hamilton-medical.com/en_GB/Academy/VenTrainer.html" target="_blank" rel="noopener">Manufacturer's ventilator training app</a>, free (iOS, Android and Windows), with the full ventilator interface and an adjustable patient model. <span class="dmeta">App, manufacturer's website</span></li>
+            <li><a href="https://www.hamilton-medical.com/en_GB/Article-page~knowledge-base~0a23091e-4fb0-4626-964d-a36ff984b8dc~A-comprehensive-guide-to-noninvasive-ventilation--NIV-~.html" target="_blank" rel="noopener">Manufacturer's guide: A comprehensive guide to noninvasive ventilation (NIV)</a>. The manufacturer's NIV overview: modes, interfaces, starting settings, alarms and monitoring. Where it differs from BTS/ICS (backup rate, SpO2 target, humidification), this trainer follows BTS/ICS. <span class="dmeta">Web page, manufacturer's website</span></li>
+            <li><a href="https://www.hamilton-medical.com/en_GB/Academy/e-Academy.html" target="_blank" rel="noopener">Manufacturer's e-learning academy</a>. Free online modules after registration, including a course on this ventilator (v3.0) and a "first steps" learning path. <span class="dmeta">E-learning, manufacturer's website</span></li>
+            <li><a href="https://www.hamilton-medical.com/en_GB/Landing-pages/UK-Virtual-Training.html" target="_blank" rel="noopener">Manufacturer's UK virtual training</a>. Free, live online sessions for UK customers on setting up and operating the ventilator. <span class="dmeta">Live course, manufacturer's website</span></li>
           </ul>
-          <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The Hamilton documents open on hamilton-medical.com, so you always get the manufacturer's published version.</p>
+          <p class="dnote">Your own device may run different software, and your trust's SOP takes precedence. The manufacturer's documents open on its own website, so you always get the manufacturer's published version.</p>
         </div>
-    <div class="note warn"><b>Educational use only.</b> This trainer is not Hamilton Medical software and is not endorsed by Hamilton Medical. It is not a substitute for manufacturer training, the operator's manual or your local SOP, and must not be used to make decisions about a real patient.</div>
+    <div class="note warn"><b>Educational use only.</b> An independent training simulator. Not made, endorsed or supported by any ventilator manufacturer. It is not a substitute for manufacturer training, the operator's manual or your local SOP, and must not be used to make decisions about a real patient.</div>
   </div>
 </section>
 </div>
@@ -1466,7 +1466,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
 
 <footer>
   <div class="wrap">
-    <p><b>Educational disclaimer.</b> This page is a training aid for healthcare professionals. It is <b>not a substitute for manufacturer training, the HAMILTON-T1 operator's manual, or your local standard operating procedure</b>, and it must not be used to make clinical decisions about an individual patient. The simulator is illustrative. Its physiology, alarm logic and screen layout are simplified and do not reproduce the device's behaviour. Device details vary by software version, options and configuration. Always follow your trust's NIV and ventilation policies and seek senior advice.</p>
+    <p><b>Educational disclaimer.</b> This page is a training aid for healthcare professionals. It is <b>not a substitute for manufacturer training, the manufacturer's operator's manual, or your local standard operating procedure</b>, and it must not be used to make clinical decisions about an individual patient. The simulator is illustrative. Its physiology, alarm logic and screen layout are simplified and do not reproduce the device's behaviour. Device details vary by software version, options and configuration. Always follow your trust's NIV and ventilation policies and seek senior advice.</p>
     <p>© <span id="yr"></span> <a href="https://emevidence.org">EMEvidence</a>. British English. Last content review: October 2026.</p>
   </div>
 </footer>
@@ -2515,7 +2515,7 @@ function renderLEDs() {
   $('#screen').classList.toggle('locked', V.locked);
   const off = $('#scrOff');
   off.hidden = V.power && V.selftest <= 0;
-  $('#scrOffTxt').innerHTML = V.power ? 'HAMILTON-T1<small>Self-test in progress…</small>' : '';
+  $('#scrOffTxt').innerHTML = V.power ? 'TRANSPORT VENTILATOR<small>Self-test in progress…</small>' : '';
   $('#t1').classList.toggle('off', !V.power);
 }
 function renderAll() { V.set.plim = V.lim.phigh - 10; renderModeName(); renderRcol(); renderMMP(); renderAlarmBar(); renderBstat(); renderLEDs(); if (win) renderWindow(); else $('#win').hidden = true; applyCursor(); const lungish = (V.gfx === 'lung' || (V.gfx === 'asv' && V.mode === 'ASV')) && !isHFO(); $('#dynlung').hidden = !lungish || !V.power; CV[1].style.display = CV[2].style.display = lungish ? 'none' : ''; }
@@ -2680,7 +2680,7 @@ function renderWindow() {
         <tr><td>Time on ventilation</td><td>${clockStr()}</td></tr>
         <tr><td>Estimated O2 consumption</td><td>${fmt(Math.max(0, o2c), 1)} l/min</td></tr>
         <tr><td>Software (simulated)</td><td>Trainer, modelled on SW 3.0.x</td></tr></tbody></table>
-        <p class="wnote">Pre-transport estimate (T1 Quick Guide, adult): O2 consumption = (ExpMinVol + 3 l/min) × (FiO2 − 20.9) / 79.1. It excludes the nebuliser; in NIV, leak increases use. <b>Check cylinder sizes and durations locally.</b></p></div>`;
+        <p class="wnote">Pre-transport estimate (manufacturer's quick guide, adult): O2 consumption = (ExpMinVol + 3 l/min) × (FiO2 − 20.9) / 79.1. It excludes the nebuliser; in NIV, leak increases use. <b>Check cylinder sizes and durations locally.</b></p></div>`;
     } else if (winTab === 'tests') {
       h += `<div class="wbody" style="top:48px"><div class="tc">
         <button data-kf data-test="leak">Leak test<span class="st ${V.tests.leak || ''}">${testMark(V.tests.leak)}</span><small>${V.tests.leakAt || 'not done'}</small></button>
@@ -2890,7 +2890,7 @@ function checkSettingPrompts(key) {
   if (isHFO()) return;
   const tp = totalP(V.mode, V.set, V.psync), ipap = V.set.peep + setDP();
   if (isNIV() && ipap > 30) addPrompt('IPAP ' + ipap + ' cmH2O: BTS/ICS 2016 titrates IPAP to 20-30 cmH2O in COPD; pressures above 30 (and EPAP above 8) are mainly needed in obesity hypoventilation. Seek senior or expert review before going higher.');
-  if (isNIV() && ipap > 33) addPrompt('Hamilton manual: peak pressures above 33 cmH2O may increase the risk of aspiration from gastric insufflation. Consider an invasive mode.');
+  if (isNIV() && ipap > 33) addPrompt('Manufacturer\'s manual: peak pressures above 33 cmH2O may increase the risk of aspiration from gastric insufflation. Consider an invasive mode.');
   if (tp !== null && tp > V.lim.phigh - 10) addPrompt('Total inspiratory pressure is above Plimit (Pressure high − 10). Delivered pressure will be limited and the Pressure limitation alarm will appear. Adjust the pressure settings or raise the Pressure high limit if intended.');
   if (key === 'trig' && V.set.trig <= 1) addPrompt('Very sensitive trigger: watch for auto-triggering, especially with leak.');
   if (key === 'trig' && V.set.trig >= 10) addPrompt('Insensitive trigger: weak patients may fail to trigger (missed efforts).');
@@ -3528,8 +3528,8 @@ const SCN = [
     dopes:'D: Displacement / disconnection', load:'disc'},
   {id:'highp', name:'High pressure', alarms:[['High pressure','hi']], mmp:{Ppeak:'42', PEEP:'5', 'VTE NIV':'240', fTotal:'30', VLeak:'15 %', MVLeak:'10 l/min', Oxygen:'30 %'},
     obs:'The patient is coughing hard and looks distressed. Pressure high limit 40. Set IPAP 20.',
-    q1:{q:'What is causing the alarm?', o:['Coughing or fighting the ventilator, pushing pressure above the limit','Too much leak','Low battery','Trigger too insensitive'], a:0, e:'High pressure means measured pressure exceeded the limit. The T1 stops gas flow and opens the expiratory valve to drop pressure to PEEP. In NIV, coughing, secretions, fighting or a kinked limb are typical causes.'},
-    q2:{q:'Best response?', o:['Assess the patient: help them clear secretions, check for asynchrony and kinks, and treat the cause','Raise the Pressure high limit to 70','Increase ΔPinsp','Lower the PEEP to 0'], a:0, e:'Treat the cause. Do not chase the alarm by raising the limit. Remember that the T1 limits pressure 10 cmH2O below the Pressure high alarm (Plimit), and the manual warns of aspiration risk above 33 cmH2O. Persistent distress may mean asynchrony, which needs settings review, or failure, which needs escalation.'},
+    q1:{q:'What is causing the alarm?', o:['Coughing or fighting the ventilator, pushing pressure above the limit','Too much leak','Low battery','Trigger too insensitive'], a:0, e:'High pressure means measured pressure exceeded the limit. The transport ventilator stops gas flow and opens the expiratory valve to drop pressure to PEEP. In NIV, coughing, secretions, fighting or a kinked limb are typical causes.'},
+    q2:{q:'Best response?', o:['Assess the patient: help them clear secretions, check for asynchrony and kinks, and treat the cause','Raise the Pressure high limit to 70','Increase ΔPinsp','Lower the PEEP to 0'], a:0, e:'Treat the cause. Do not chase the alarm by raising the limit. Remember that the transport ventilator limits pressure 10 cmH2O below the Pressure high alarm (Plimit), and the manual warns of aspiration risk above 33 cmH2O. Persistent distress may mean asynchrony, which needs settings review, or failure, which needs escalation.'},
     dopes:'O / P: Obstruction or patient', load:'cough'},
   {id:'async1', name:'Ineffective triggering', alarms:[], mmp:{Ppeak:'22', PEEP:'3', 'VTE NIV':'420', fTotal:'14', VLeak:'12 %', MVLeak:'8 l/min', Oxygen:'28 %'},
     obs:'Patient RR counted at the bedside is 28, but the ventilator shows fTotal 14 (the backup rate). Few pink trigger triangles. COPD, Flow trigger 8 l/min, PEEP 3.',
@@ -3548,7 +3548,7 @@ const SCN = [
     dopes:'P: Patient', load:'det'},
   {id:'apnoea', name:'Apnoea', alarms:[['Apnea','hi']], mmp:{Ppeak:'--', PEEP:'5', 'VTE NIV':'--', fTotal:'0', VLeak:'--', MVLeak:'3 l/min', Oxygen:'40 %'},
     obs:'NIV mode (ΔPsupport 10), Apnea backup OFF. No breaths for 20 s. The patient is unresponsive, with SpO2 falling.',
-    q1:{q:'What does this mean?', o:['No patient trigger within the Apnea time and no backup ventilation: a respiratory arrest or severe CO2 narcosis/oversedation until proven otherwise','Mask leak','Low battery','Flow sensor fault'], a:0, e:'In NIV mode every breath must be triggered. With backup off, the T1 gives a high-priority Apnea alarm. With backup on, it starts PCV+ backup ("Apnea ventilation", low priority).'},
+    q1:{q:'What does this mean?', o:['No patient trigger within the Apnea time and no backup ventilation: a respiratory arrest or severe CO2 narcosis/oversedation until proven otherwise','Mask leak','Low battery','Flow sensor fault'], a:0, e:'In NIV mode every breath must be triggered. With backup off, the transport ventilator gives a high-priority Apnea alarm. With backup on, it starts PCV+ backup ("Apnea ventilation", low priority).'},
     q2:{q:'Best immediate action?', o:['Assess using ABC and call for help. Open the airway and support ventilation (bag-valve-mask). Decide on intubation according to the plan','Turn Apnea backup on and leave','Increase oxygen','Switch to NIV-ST and walk away'], a:0, e:'NIV supplements spontaneous breathing. Respiratory arrest or peri-arrest is an indication for intubation unless there is rapid recovery (Rec 33). NIV-ST with a backup rate is used for patients at risk of reduced drive, but it is not a substitute for airway management in arrest.'},
     dopes:'P: Patient', load:'apnoea'},
   {id:'o2', name:'O2 supply low', alarms:[['Oxygen supply failed','hi'],['Low oxygen','hi']], mmp:{Ppeak:'20', PEEP:'5', 'VTE NIV':'410', fTotal:'22', VLeak:'10 %', MVLeak:'8 l/min', Oxygen:'21 %'},
@@ -3609,9 +3609,9 @@ const CASES = [
   {name:'1. AECOPD, starting NIV', intro:'A 68-year-old with known COPD (FEV1 35%). After nebulised salbutamol and ipratropium, prednisolone and controlled oxygen (SpO2 90% on 28% Venturi) for 1 hour, the gas shows pH 7.29, pCO2 8.4 kPa, pO2 7.6 kPa, HCO3 30. RR 26. GCS 15. Full escalation is appropriate.',
    steps:[
     {q:'Is NIV indicated?', o:['Yes: pH < 7.35 and pCO2 > 6.5 kPa persisting despite optimal medical therapy','No: wait until pH < 7.25','No: give more oxygen to SpO2 96% first','Only if RR > 30'], a:0, e:'BTS/ICS Rec 25 (Grade A). Start within 60 min of the gas that triggered the decision (QS 4), and document the escalation plan first (QS 5).'},
-    {q:'Which T1 starting set-up fits BTS/ICS guidance best?', o:['NIV-ST: PEEP 5, ΔPinsp 10 (IPAP 15), Rate 16, TI 1.0 s, Oxygen for SpO2 88–92%, non-vented full face mask','NIV: PEEP 10, ΔPsupport 0','NIV-ST: PEEP 5, ΔPinsp 30, Oxygen 100%','SPONT mode with a vented mask'], a:0, e:'IPAP 15 (PEEP + ΔP), backup rate 16–20, Ti 0.8–1.2 s for COPD, and SpO2 88–92%. SPONT is an invasive mode. A vented mask is not used with the T1 dual-limb or coaxial circuit.'},
+    {q:'Which transport ventilator starting set-up fits BTS/ICS guidance best?', o:['NIV-ST: PEEP 5, ΔPinsp 10 (IPAP 15), Rate 16, TI 1.0 s, Oxygen for SpO2 88–92%, non-vented full face mask','NIV: PEEP 10, ΔPsupport 0','NIV-ST: PEEP 5, ΔPinsp 30, Oxygen 100%','SPONT mode with a vented mask'], a:0, e:'IPAP 15 (PEEP + ΔP), backup rate 16–20, Ti 0.8–1.2 s for COPD, and SpO2 88–92%. SPONT is an invasive mode. A vented mask is not used with the transport ventilator\'s dual-limb or coaxial circuit.'},
     {q:'At 20 minutes the patient tolerates IPAP 15. Chest movement is modest and RR is 25. What next?', o:['Increase ΔPinsp in steps towards IPAP 20–30, reassessing comfort and chest movement','Leave the settings until the 4 h gas','Increase Oxygen to 60%','Reduce PEEP to 0 to reduce effort'], a:0, e:'BTS/ICS: progressively increase IPAP to 20–30 within 10–30 min. Inadequate IPAP is a common audit finding.'},
-    {q:'At 1 h: pH 7.30, pCO2 8.3, with VLeak 55% and Loss of PEEP alarms. What do you do?', o:['Fix the mask leak (refit or resize), recheck synchrony and pressures, then repeat the gas','Declare NIV failure and intubate','Ignore the leak because the T1 compensates','Increase the trigger sensitivity'], a:0, e:'Before calling NIV a failure, check the common technical issues (BTS/ICS Table 3), with leak first. IntelliTrig compensates within limits, but large leaks still lower the delivered PEEP and cause asynchrony.'},
+    {q:'At 1 h: pH 7.30, pCO2 8.3, with VLeak 55% and Loss of PEEP alarms. What do you do?', o:['Fix the mask leak (refit or resize), recheck synchrony and pressures, then repeat the gas','Declare NIV failure and intubate','Ignore the leak because the transport ventilator compensates','Increase the trigger sensitivity'], a:0, e:'Before calling NIV a failure, check the common technical issues (BTS/ICS Table 3), with leak first. IntelliTrig compensates within limits, but large leaks still lower the delivered PEEP and cause asynchrony.'},
     {q:'At 4 h: pH 7.36, pCO2 6.9, RR 19, comfortable. Plan?', o:['Continue NIV, maximising use in the first 24 h, then taper over 2–3 days according to self-ventilating pCO2','Stop NIV now','Switch to HiFlowO2','Increase IPAP to 35'], a:0, e:'BTS/ICS GPP: maximise time on NIV in the first 24 h, then taper during the day and finally overnight. Stop when pH and pCO2 have normalised and the patient has generally improved (Rec 31).'}
    ]},
   {name:'2. Severe acidosis, escalation', intro:'A 59-year-old with COPD, GCS 12 (E3 V4 M5), RR 34, pH 7.18, pCO2 11.2 kPa. No documented limitations, and was independent before this illness.',
@@ -3623,7 +3623,7 @@ const CASES = [
   {name:'3. Cardiogenic pulmonary oedema', intro:'A 77-year-old with acute breathlessness, crackles to the apices, BP 186/102, SpO2 84% on 15 l/min via a reservoir mask, RR 36, VBG pH 7.24, pCO2 6.6 kPa.',
    steps:[
     {q:'Is CPAP reasonable here?', o:['Yes: severe dyspnoea with acidaemia. NICE CG187 says to consider NIV without delay, alongside nitrates and other treatment','No: NIV is never used in heart failure','Only bilevel NIV is allowed','Only after diuretics have worked'], a:0, e:'NICE CG187 advises against routine NIV in acute heart failure, but says to consider it without delay in cardiogenic pulmonary oedema with severe dyspnoea and acidaemia. ERS/ATS 2017 suggests bilevel NIV or CPAP.'},
-    {q:'How do you deliver CPAP on the T1?', o:['NIV mode with ΔPsupport 0, setting PEEP as the CPAP level','NIV-ST with ΔPinsp 0','SPONT mode','HiFlowO2'], a:0, e:'The manual states that in NIV mode with pressure support at zero, the ventilator works like a conventional CPAP system. In v3.1.x the minimum ΔPinsp in NIV-ST is 3.'},
+    {q:'How do you deliver CPAP on the transport ventilator?', o:['NIV mode with ΔPsupport 0, setting PEEP as the CPAP level','NIV-ST with ΔPinsp 0','SPONT mode','HiFlowO2'], a:0, e:'The manual states that in NIV mode with pressure support at zero, the ventilator works like a conventional CPAP system. In v3.1.x the minimum ΔPinsp in NIV-ST is 3.'},
     {q:'On CPAP 5 the SpO2 is 88%, with Oxygen 60%. BP is 170/95. Next?', o:['Titrate PEEP up (for example towards about 10), watching BP, and adjust Oxygen. Continue medical treatment','Reduce PEEP to 0','Switch to NIV-ST with a backup rate of 30','Accept SpO2 85% as the target'], a:0, e:'Higher CPAP recruits alveoli and reduces preload and afterload. Watch for hypotension. The 88–92% target applies to hypercapnic patients at risk. Here, use the standard target according to BTS oxygen guidance and local protocol.'}
    ]},
   {name:'4. Alarms on the ward round', intro:'A patient on NIV-ST (PEEP 5, ΔPinsp 15) for AECOPD. You hear alarms. The screen shows "Low pressure" (red) and "Loss of PEEP" (yellow). SpO2 falling from 90% to 84%.',
@@ -3668,37 +3668,37 @@ $('#caseChips').addEventListener('click', e => { const b = e.target.closest('[da
 
 /* ======================= QUIZ ======================= */
 const QUIZ = [
-  {q:'On a HAMILTON-T1 in NIV-ST, PEEP is 5 and ΔPinsp is 12. What is the IPAP?', o:['12 cmH2O','17 cmH2O','7 cmH2O','24 cmH2O'], a:1, e:'ΔPinsp (or ΔPsupport) is added on top of PEEP: 5 + 12 = 17.'},
+  {q:'On the transport ventilator in NIV-ST, PEEP is 5 and ΔPinsp is 12. What is the IPAP?', o:['12 cmH2O','17 cmH2O','7 cmH2O','24 cmH2O'], a:1, e:'ΔPinsp (or ΔPsupport) is added on top of PEEP: 5 + 12 = 17.'},
   {q:'You increase PEEP from 5 to 8 and leave ΔPsupport at 10. What happens to IPAP?', o:['It stays at 15','It rises to 18','It falls to 13','It depends on ETS'], a:1, e:'IPAP = PEEP + ΔP, so it rises with PEEP. Unlike IPAP/EPAP-style devices, you do not need to raise ΔP to "keep the gap".'},
-  {q:'Which mask should be used with a T1 dual-limb or coaxial NIV circuit?', o:['A vented mask with an exhalation port','A non-vented mask with a standard elbow','A mask with an anti-asphyxia vented elbow','Any mask; it makes no difference'], a:1, e:'Exhalation goes through the ventilator\'s expiratory valve. Hamilton\'s anti-asphyxia (vented) elbows are labelled "not to be used with ventilators".'},
+  {q:'Which mask should be used with the transport ventilator\'s dual-limb or coaxial NIV circuit?', o:['A vented mask with an exhalation port','A non-vented mask with a standard elbow','A mask with an anti-asphyxia vented elbow','Any mask; it makes no difference'], a:1, e:'Exhalation goes through the ventilator\'s expiratory valve. The manufacturer\'s anti-asphyxia (vented) elbows are labelled "not to be used with ventilators".'},
   {q:'BTS/ICS 2016: in AECOPD, when should NIV be started?', o:['pH < 7.25 only','pH < 7.35 and pCO2 > 6.5 kPa persisting or developing despite optimal medical therapy','Any pCO2 > 6.0 kPa','SpO2 < 88% on air'], a:1, e:'Recommendation 25 (Grade A). Figure 1 also notes RR > 23.'},
   {q:'According to BTS/ICS Figure 1, GCS < 8 is:', o:['An absolute contraindication','A relative contraindication needing enhanced observation and an early decision','Not relevant','An indication for nasal pillows'], a:1, e:'The absolute contraindications are severe facial deformity, facial burns and fixed upper airway obstruction. BTS/ICS notes reports of similar outcomes with NIV in some patients with GCS < 8.'},
   {q:'Which of these is an absolute contraindication in BTS/ICS Figure 1?', o:['pH 7.20','Confusion','Facial burns','Age over 80'], a:2, e:'Facial burns, severe facial deformity and fixed upper airway obstruction. Advanced age alone should not rule out NIV (Rec 29).'},
   {q:'BTS Quality Standards: when should blood gases be checked after starting acute NIV?', o:['Only at 24 h','Routinely at 1 h, with more at 4 h and on deterioration; at least within 2 h','Only if SpO2 falls','At 6 h'], a:1, e:'QS 6: a blood gas within 2 h. The rationale recommends routine analysis at 1 h, with additional sampling at 4 h and with clinical deterioration.'},
   {q:'Within what time of the decisive blood gas should NIV be started (BTS QS 4)?', o:['15 min','60 min','4 h','12 h'], a:1, e:'Within 60 min of that gas result, and within 120 min of hospital arrival for patients presenting acutely.'},
-  {q:'What happens when you increase ETS (for example from 25% to 40%)?', o:['Inspiration ends earlier, at a higher flow','Inspiration lasts longer','The trigger becomes more sensitive','PEEP increases'], a:0, e:'ETS is the percentage of peak inspiratory flow at which the T1 cycles to exhalation. A higher ETS ends the breath sooner, which helps with leaks and gives more expiratory time in COPD.'},
+  {q:'What happens when you increase ETS (for example from 25% to 40%)?', o:['Inspiration ends earlier, at a higher flow','Inspiration lasts longer','The trigger becomes more sensitive','PEEP increases'], a:0, e:'ETS is the percentage of peak inspiratory flow at which the transport ventilator cycles to exhalation. A higher ETS ends the breath sooner, which helps with leaks and gives more expiratory time in COPD.'},
   {q:'With a large mask leak, spontaneous breaths keep ending at exactly the TI max value. Why?', o:['Leak keeps inspiratory flow above the ETS threshold, so TI max ends the breath','The trigger is too sensitive','The O2 supply has failed','The battery is low'], a:0, e:'Manual §7.6.4: with a significant leak, inspiratory flow may never fall below ETS. TI max provides an alternative way to cycle into exhalation.'},
-  {q:'In NIV mode, how can you make the T1 deliver CPAP?', o:['Set ΔPsupport to 0','Set the Rate to 0','Use NIV-ST with ΔPinsp 0','Turn off the flow sensor'], a:0, e:'With pressure support at zero, NIV mode works like a conventional CPAP system. In v3.1.x the minimum ΔPinsp in NIV-ST is 3.'},
-  {q:'A patient on NIV has their mask pulled off. Which T1 alarm setting matters most for this to alarm promptly?', o:['fTotal high','The low Pressure limit, set near PEEP + ΔP','The Oxygen limit','Pressure high'], a:1, e:'The manual advises setting the low Pressure limit near the set ventilation pressure in NIV. Excessive leak or disconnection then generates a Low pressure alarm.'},
+  {q:'In NIV mode, how can you make the transport ventilator deliver CPAP?', o:['Set ΔPsupport to 0','Set the Rate to 0','Use NIV-ST with ΔPinsp 0','Turn off the flow sensor'], a:0, e:'With pressure support at zero, NIV mode works like a conventional CPAP system. In v3.1.x the minimum ΔPinsp in NIV-ST is 3.'},
+  {q:'A patient on NIV has their mask pulled off. Which alarm setting matters most for this to alarm promptly?', o:['fTotal high','The low Pressure limit, set near PEEP + ΔP','The Oxygen limit','Pressure high'], a:1, e:'The manual advises setting the low Pressure limit near the set ventilation pressure in NIV. Excessive leak or disconnection then generates a Low pressure alarm.'},
   {q:'The Leak (Tightness) test fails. Which is NOT part of the manufacturer\'s troubleshooting sequence?', o:['Check for a disconnection or large leaks','Check that the flow sensor and expiratory valve set are seated','Replace the expiratory valve set, then the circuit','Ventilate the patient anyway and repeat the test later'], a:3, e:'Keep checking and replacing components as described. If it still fails, have the ventilator serviced. Do not use a ventilator that has failed its checks.'},
   {q:'What does the O2 enrichment key deliver in an adult?', o:['100% oxygen for 2 minutes','100% oxygen until cancelled','50% oxygen for 30 minutes','It increases PEEP'], a:0, e:'Adult/Ped: 100% oxygen for 2 min (neonatal: 125% of the current setting). Oxygen alarms are suppressed while it is active. Press it again to cancel.'},
   {q:'What SpO2 target does BTS/ICS recommend during NIV for acute hypercapnic respiratory failure?', o:['94–98%','88–92%','85–88%','> 98%'], a:1, e:'Recommendation 4 (Grade A): adjust oxygen to achieve SaO2 88–92% in all causes of AHRF treated with NIV.'},
   {q:'A patient with acute asthma has a pCO2 of 7.2 kPa and pH 7.30. What does BTS/ICS advise?', o:['Start NIV-ST','NIV should not be used. Refer to ICU to consider invasive ventilation','Start CPAP 10','Start HiFlowO2 and discharge'], a:1, e:'Recommendation 39 (Grade C): NIV should not be used in acute asthma with AHRF. Figure 1: refer to ICU.'}
 ];
 const INV_QUIZ = [
-  {q:'On the HAMILTON-T1, what is Plimit?', o:['The high Pressure alarm limit minus 10 cmH2O','PEEP plus 10 cmH2O','The plateau pressure target','A fixed 30 cmH2O'], a:0, e:'Plimit is always 10 cmH2O below the high Pressure alarm limit; changing one changes the other. The adaptive modes never use more than Plimit (except sigh breaths).'},
-  {q:'A patient on (S)CMV+ develops stiffer lungs. What does the T1 do?', o:['Raises inspiratory pressure to keep Vt, up to Plimit','Keeps the pressure the same so Vt falls straight away','Switches to PCV+','Increases the rate'], a:0, e:'APV adjusts pressure between breaths to reach the target Vt. Once it needs more than Plimit, Vt falls short and the Pressure limitation alarm appears.'},
+  {q:'On the transport ventilator, what is Plimit?', o:['The high Pressure alarm limit minus 10 cmH2O','PEEP plus 10 cmH2O','The plateau pressure target','A fixed 30 cmH2O'], a:0, e:'Plimit is always 10 cmH2O below the high Pressure alarm limit; changing one changes the other. The adaptive modes never use more than Plimit (except sigh breaths).'},
+  {q:'A patient on (S)CMV+ develops stiffer lungs. What does the transport ventilator do?', o:['Raises inspiratory pressure to keep Vt, up to Plimit','Keeps the pressure the same so Vt falls straight away','Switches to PCV+','Increases the rate'], a:0, e:'APV adjusts pressure between breaths to reach the target Vt. Once it needs more than Plimit, Vt falls short and the Pressure limitation alarm appears.'},
   {q:'A patient on PCV+ has a partly blocked tube. What is the first sign on the ventilator?', o:['Falling Vt and minute volume','Rising peak pressure above the set ΔPcontrol','A Pressure limitation alarm','Rising PEEP'], a:0, e:'In pressure-controlled modes the pressure is fixed, so obstruction or stiffer lungs show as a lower Vt. Set the Vt and ExpMinVol low alarms sensibly.'},
   {q:'What did the ARDS Network trial use in the lower tidal volume group?', o:['6 ml/kg predicted body weight with plateau pressure ≤ 30 cmH2O','8 ml/kg actual body weight','10 ml/kg with PEEP 5','4 ml/kg with plateau pressure ≤ 20 cmH2O'], a:0, e:'ARDSNet (NEJM 2000) compared 6 ml/kg predicted body weight (plateau ≤ 30 cmH2O) with 12 ml/kg and found lower mortality with the lower volume.'},
-  {q:'How does the T1 work out ideal body weight?', o:['From height and sex','From the weight you enter','From the measured tidal volume','From age and sex'], a:0, e:'IBW comes from patient height and sex in the Standby or Patient window. It sets the starting Vt and the ASV and APRV starting values, so measure the height.'},
+  {q:'How does the transport ventilator work out ideal body weight?', o:['From height and sex','From the weight you enter','From the measured tidal volume','From age and sex'], a:0, e:'IBW comes from patient height and sex in the Standby or Patient window. It sets the starting Vt and the ASV and APRV starting values, so measure the height.'},
   {q:'A ventilated patient with severe asthma has AutoPEEP of 9 cmH2O and a falling blood pressure. Which change helps most?', o:['Lower the rate and lengthen expiration','Raise the rate to clear CO2','Increase Vt','Shorten the expiratory time'], a:0, e:'Air trapping needs more time to exhale: a lower rate and a longer expiratory time (I:E 1:3 to 1:4). A raised pCO2 is usually accepted. Briefly disconnecting lets trapped air out in an emergency.'},
   {q:'A ventilated patient suddenly desaturates with high airway pressures. What do you do first?', o:['Call for help, disconnect and hand-ventilate with 100% oxygen, then work through DOPES','Increase PEEP by 5','Silence the alarm and repeat the blood gas','Switch to SPONT'], a:0, e:'Taking the ventilator out of the picture tells you quickly whether the problem is the patient, the tube or the machine. DOPES: Displacement, Obstruction, Pneumothorax, Equipment, Stacked breaths.'},
   {q:'In ASV, what does %MinVol 100% mean?', o:['The normal minute ventilation for the patient\'s IBW','100% oxygen','The maximum Vt','The rate is set by the patient alone'], a:0, e:'%MinVol is the target minute ventilation as a percentage of normal for IBW. Increase it in steps of 10–20% if a passive patient has a high pCO2 (ASV quick guide).'},
   {q:'With CPR ventilation on, what happens to the flow trigger?', o:['It is set to Off and P-ramp is fixed at 50 ms','It becomes more sensitive','It is unchanged','It switches to a pressure trigger'], a:0, e:'Manual section 10.9.1: flow trigger Off and P-ramp 50 ms, so compressions do not trigger breaths. Default settings are Rate 10, I:E 1:5, PEEP 5, Oxygen 100%.'},
   {q:'You lower Vt from 8 to 6 ml/kg IBW in ARDS and the pCO2 rises. What is the usual next step?', o:['Increase the rate to restore minute ventilation','Put Vt back to 8 ml/kg','Increase PEEP','Lower the Oxygen'], a:0, e:'CO2 clearance depends on alveolar minute ventilation. Raise the rate (watching for air trapping) and accept a modestly raised pCO2 rather than larger tidal volumes.'},
-  {q:'A paralysed patient is put on SPONT with Apnea backup on. What happens?', o:['After the Apnea time, backup ventilation starts and "Apnea ventilation" shows','The T1 delivers CPAP and nothing else, silently','The T1 switches to ASV','Ventilation stops and only a low-priority message shows'], a:0, e:'With backup on, the T1 switches to backup ventilation after the Apnea time. With backup off, a high-priority Apnea alarm sounds instead. Use a mode with mandatory breaths for a paralysed patient.'},
+  {q:'A paralysed patient is put on SPONT with Apnea backup on. What happens?', o:['After the Apnea time, backup ventilation starts and "Apnea ventilation" shows','The transport ventilator delivers CPAP and nothing else, silently','The transport ventilator switches to ASV','Ventilation stops and only a low-priority message shows'], a:0, e:'With backup on, the transport ventilator switches to backup ventilation after the Apnea time. With backup off, a high-priority Apnea alarm sounds instead. Use a mode with mandatory breaths for a paralysed patient.'},
   {q:'In DuoPAP, PEEP is 5, ΔPsupport 10 and P high 20. Are spontaneous breaths at P high supported?', o:['No: PEEP + ΔPsupport (15) is below P high','Yes, by 10 cmH2O above P high','Yes, by 5 cmH2O','Only with PSync'], a:0, e:'ΔPsupport is set above PEEP, so at P high it only helps when PEEP + ΔPsupport is greater than P high (manual 7.3.4).'},
-  {q:'When does the T1 raise "Inspiratory volume limitation"?', o:['When delivered Vt is more than 1.5 times the Vt high alarm limit','When Vt is below the Vt low limit','When Plimit is reached','When the leak is above 30%'], a:0, e:'The breath is ended and pressure drops to PEEP; the APV modes reduce the pressure for the next breath by 3 cmH2O.'}
+  {q:'When does the transport ventilator raise "Inspiratory volume limitation"?', o:['When delivered Vt is more than 1.5 times the Vt high alarm limit','When Vt is below the Vt low limit','When Plimit is reached','When the leak is above 30%'], a:0, e:'The breath is ended and pressure drops to PEEP; the APV modes reduce the pressure for the next breath by 3 cmH2O.'}
 ];
 function makeQuiz(Q, listSel, scoreSel, resetSel, pre) {
   const ans = Q.map(() => null);
