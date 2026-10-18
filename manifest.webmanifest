@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "HAMILTON-T1 Ventilator Trainer",
-  "short_name": "T1 Trainer",
-  "description": "HAMILTON-T1 ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.",
+  "name": "Transport ventilator trainer",
+  "short_name": "Vent trainer",
+  "description": "Transport ventilator trainer for emergency medicine doctors and nurses: an on-screen simulator with every adult mode, plus teaching on acute NIV and invasive ventilation, cases and quizzes.",
   "lang": "en-GB",
   "dir": "ltr",
   "start_url": "./",
