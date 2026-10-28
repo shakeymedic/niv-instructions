@@ -850,7 +850,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
         <ul class="tight">
           <li><b>ΔPsupport</b> (older software: Psupport): pressure above PEEP. <b>ΔPsupport 0 = CPAP.</b></li>
           <li>Also: <b>PEEP/CPAP</b>, <b>Oxygen</b>; synchrony: <b>Trigger</b>, <b>P-ramp</b>, <b>ETS</b>, <b>TI max</b>.</li>
-          <li><b>No set rate.</b> No breath for the <b>Apnea time</b>: apnoea backup if enabled (PCV+, or NIV-ST with the NIV-only option). Not enabled: high-priority "Apnea" alarm.</li>
+          <li><b>No set rate.</b> No breath for the <b>Apnoea time</b>: apnoea backup if enabled (PCV+, or NIV-ST with the NIV-only option). Not enabled: high-priority "Apnoea" alarm.</li>
         </ul>
         <p><b>Use for:</b> CPAP (e.g. cardiogenic pulmonary oedema), or bilevel support with a reliable respiratory drive.</p>
       </div></details>
@@ -868,7 +868,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
       <ul class="tight">
         <li>Continuous air/oxygen via nasal cannula. Set <b>Flow</b> (adults 2–60 l/min) and <b>Oxygen</b>.</li>
         <li>For spontaneously breathing patients. <b>Not life-supporting.</b></li>
-        <li>Select in Standby only. Disconnection and apnea alarms inactive; Manual breath disabled.</li>
+        <li>Select in Standby only. Disconnection and apnoea alarms inactive; Manual breath disabled.</li>
         <li>Screen: Oxygen and Flow trends; pleth with SpO2 on (manual section 10.5).</li>
         <li>Manual warns: excessive flow could cause barotrauma or pneumothorax. Do not use during intrahospital transport.</li>
       </ul>
@@ -975,7 +975,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
     <p style="font-size:.88rem;color:var(--muted);margin-top:-.3em">Tap an alarm for what it means.</p>
     <div class="split">
       <div>
-        <p style="font-size:.92rem">Paraphrased from the manufacturer's operator's manual v3.1.x, Table 9-3. On-screen wording is the manual's (US spelling, e.g. "Apnea"). <span class="sop">Check your local operator's manual / trust SOP</span></p>
+        <p style="font-size:.92rem">Paraphrased from the manufacturer's operator's manual v3.1.x, Table 9-3. On-screen wording follows the manual, but in British spelling (the real screen uses US spelling, e.g. "Apnea" for "Apnoea"). <span class="sop">Check your local operator's manual / trust SOP</span></p>
         <div class="note"><b>Set the low Pressure limit near the set pressure</b> (PEEP + ΔP). In NIV, Low pressure is the main disconnection alarm.</div>
       </div>
       <figure class="fig sm">
@@ -989,7 +989,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
       <details class="alarm"><summary><span class="an">Disconnection on patient side</span> <span class="ap"><span class="tag red">High</span></span><span class="ado"><b>Do:</b> In NIV, rely on Low pressure, Loss of PEEP, volume alarms and the patient.</span></summary><p><b>Means:</b> VTE less than one-eighth of VTI. The manual lists it for <b>invasive</b> modes.</p></details>
       <details class="alarm"><summary><span class="an">High pressure</span> <span class="ap"><span class="tag red">High</span></span><span class="ado"><b>Do:</b> Coughing, fighting, secretions, kinked limb? Treat the cause. Do not just raise the limit.</span></summary><p><b>Means:</b> Pressure above the high limit. Gas flow stops; expiratory valve opens; pressure drops to PEEP.</p></details>
       <details class="alarm"><summary><span class="an">Pressure limitation</span> <span class="ap"><span class="tag amb">Medium</span></span><span class="ado"><b>Do:</b> Review settings. Raise the Pressure high alarm only if the higher pressure is intended and safe.</span></summary><p><b>Means:</b> Target pressure (including PEEP) above Plimit, which is always 10 below the Pressure high limit. Applied pressure is limited.</p></details>
-      <details class="alarm"><summary><span class="an">Apnea / Apnea ventilation</span> <span class="ap"><span class="tag red">High</span> / <span class="tag amb">Low</span></span><span class="ado"><b>Do:</b> Patient. Arrest, CO2 narcosis, oversedation? Airway and breathing. Escalate.</span></summary><p><b>Means:</b> No patient trigger within the Apnea time (NIV). Backup on: backup ventilation starts (low priority), and reverts after 2 consecutive patient triggers.</p></details>
+      <details class="alarm"><summary><span class="an">Apnoea / Apnoea ventilation</span> <span class="ap"><span class="tag red">High</span> / <span class="tag amb">Low</span></span><span class="ado"><b>Do:</b> Patient. Arrest, CO2 narcosis, oversedation? Airway and breathing. Escalate.</span></summary><p><b>Means:</b> No patient trigger within the Apnoea time (NIV). Backup on: backup ventilation starts (low priority), and reverts after 2 consecutive patient triggers.</p></details>
       <details class="alarm"><summary><span class="an">Low minute volume / Vt low</span> <span class="ap"><span class="tag red">High</span> / <span class="tag amb">Medium</span></span><span class="ado"><b>Do:</b> Patient effort and chest movement, leak, disconnection, ΔP too low.</span></summary><p><b>Means:</b> ExpMinVol or VTE below its limit. NIV volumes are leak-affected estimates, so the manual advises setting low limits low (avoids nuisance alarms).</p></details>
       <details class="alarm"><summary><span class="an">High frequency</span> <span class="ap"><span class="tag amb">Medium</span></span><span class="ado"><b>Do:</b> Distress, hypoxia, auto-triggering (leak or over-sensitive trigger).</span></summary><p><b>Means:</b> fTotal above its limit.</p></details>
       <details class="alarm"><summary><span class="an">Exhalation obstructed / High PEEP</span> <span class="ap"><span class="tag red">High</span> / <span class="tag amb">Medium</span></span><span class="ado"><b>Do:</b> Kinked or wet expiratory limb; blocked expiratory valve or filter (e.g. after nebulisation). Replace if needed.</span></summary><p><b>Means:</b> End-expiratory pressure too high or end-expiratory flow too low. Monitored PEEP &gt; set + 5 for 2 breaths.</p></details>
@@ -1235,7 +1235,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <tr><td><b>VS</b> (volume support)</td><td>Spontaneous only</td><td>Vt, PEEP, Oxygen, Trigger, ETS</td><td>Pressure support, to reach Vt</td></tr>
           <tr><td><b>PCV+</b></td><td>Mandatory, pressure-controlled</td><td>ΔPcontrol, Rate, I:E (or TI), PEEP, Oxygen</td><td>Nothing: Vt varies with compliance and resistance</td></tr>
           <tr><td><b>PSIMV+</b></td><td>Pressure-controlled mandatory + spontaneous breaths. With <b>PSync</b>, a triggered breath in the mandatory window is flow cycled.</td><td>ΔPcontrol (ΔPinsp with PSync), ΔPsupport, Rate, TI, PEEP</td><td>Nothing</td></tr>
-          <tr><td><b>SPONT</b></td><td>Spontaneous, pressure supported (ΔPsupport 0 = CPAP)</td><td>ΔPsupport, PEEP, Oxygen, Trigger, ETS</td><td>Nothing; Apnea backup if the patient stops</td></tr>
+          <tr><td><b>SPONT</b></td><td>Spontaneous, pressure supported (ΔPsupport 0 = CPAP)</td><td>ΔPsupport, PEEP, Oxygen, Trigger, ETS</td><td>Nothing; Apnoea backup if the patient stops</td></tr>
           <tr><td><b>DuoPAP</b></td><td>Two CPAP levels, spontaneous breathing at both</td><td>P high, T high, Rate, PEEP/CPAP, ΔPsupport</td><td>Synchronises the switch to P high with patient effort</td></tr>
           <tr><td><b>APRV</b></td><td>Long P high, brief releases to P low; spontaneous breathing at any time</td><td>P high, P low, T high, T low</td><td>Nothing; APRV keeps its own settings, separate from other modes</td></tr>
           <tr><td><b>ASV</b></td><td>Pressure-controlled mandatory + pressure-supported spontaneous breaths</td><td>%MinVol, PEEP, Oxygen (plus Plimit)</td><td>Rate, Vt, TI and pressure, within lung-protective rules</td></tr>
@@ -1250,10 +1250,10 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <li><b>Pressure target</b> (PCV+, PSIMV+): you set pressure. Stiffer lungs or a blocked tube: <b>Vt falls</b>. The Vt and ExpMinVol low alarms are your warning.</li>
         </ul>
       </div></details>
-      <details class="card acc"><summary><h3>Apnea backup</h3></summary><div class="acc-body">
+      <details class="card acc"><summary><h3>Apnoea backup</h3></summary><div class="acc-body">
         <ul class="tight">
-          <li>Modes where the patient must trigger (SIMV+, PSIMV+, SPONT, VS, DuoPAP, APRV): set <b>Apnea time</b> and keep <b>Apnea backup</b> on (Controls &gt; Apnea).</li>
-          <li>Patient stops breathing: the transport ventilator switches to backup ventilation and shows "Apnea ventilation".</li>
+          <li>Modes where the patient must trigger (SIMV+, PSIMV+, SPONT, VS, DuoPAP, APRV): set <b>Apnoea time</b> and keep <b>Apnoea backup</b> on (Controls &gt; Apnoea).</li>
+          <li>Patient stops breathing: the transport ventilator switches to backup ventilation and shows "Apnoea ventilation".</li>
           <li>A sedated, paralysed patient on SPONT gets only backup breaths. Try it in the simulator.</li>
         </ul>
       </div></details>
@@ -1350,7 +1350,7 @@ details.alarm p{font-size:.92rem;margin-bottom:10px}
           <li><b>Disconnection on patient side</b> (invasive modes): expired volume much less than inspired.</li>
           <li><b>Vt low / ExpMinVol low</b>: leak, disconnection, or stiffer lungs in a pressure-controlled mode.</li>
           <li><b>Inspiratory volume limitation</b>: delivered Vt more than 1.5 × the Vt high limit. The breath ends; APV modes lower the next breath's pressure by 3 cmH2O.</li>
-          <li><b>Apnea</b> / <b>Apnea ventilation</b>: no breaths within the Apnea time; backup starts if enabled.</li>
+          <li><b>Apnoea</b> / <b>Apnoea ventilation</b>: no breaths within the Apnoea time; backup starts if enabled.</li>
         </ul>
         <p style="font-size:.9rem;color:var(--muted)">In the simulator, open the alarm buffer and touch an alarm for its help text. Use <b>Inject a problem</b> to practise.</p>
       </div></details>
@@ -1541,7 +1541,7 @@ const ALIM = {
   flow:  {label:'fTotal', unit:'b/min', min:0, max:99, step:1},
   vthigh:{label:'Vt', unit:'ml', min:10, max:3000, step:vtStep, offMax:true},
   vtlow: {label:'Vt', unit:'ml', min:10, max:3000, step:vtStep, off0:true},
-  apnoea:{label:'Apnea time', unit:'s', min:15, max:60, step:5}
+  apnoea:{label:'Apnoea time', unit:'s', min:15, max:60, step:5}
 };
 /* The manual does not list which limits sit on which tab; this layout follows Fig 5-19 (Limits 1) and is otherwise the trainer's choice */
 const LIMIT_PAGES = {
@@ -1849,7 +1849,7 @@ function startOverlay(effort) {
   /* in APRV the trigger setting is only used to count spontaneous breaths */
   if (!V.cpr && V.set.trig > 0 && effort >= V.set.trig) {
     B.lastStart = B.now; recordStart('spont', vol); trigMark = 1; B.trigFlash = 0.35;
-    if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnea ventilation ended', 'low'); } }
+    if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnoea ventilation ended', 'low'); } }
     clear('apnea');
   }
 }
@@ -1959,7 +1959,7 @@ function effortHappens() {
   const triggered = !V.cpr && V.set.trig > 0 && effort >= V.set.trig;
   pushLog(B.missLog, !triggered);
   if (triggered) {
-    if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnea ventilation ended', 'low'); } }
+    if (B.apnoeaVent) { B.consecTrig++; if (B.consecTrig >= 2) { B.apnoeaVent = false; clear('apvent'); logEvent('Apnoea ventilation ended', 'low'); } }
     clear('apnea');
     startBreath(triggeredKind());
   } else {
@@ -2107,8 +2107,8 @@ const ALARMS = {
   vthigh:  {t:'Vt high', p:'med', mmp:'vte'},
   fhigh:   {t:'High frequency', p:'med', mmp:'ftot'},
   flow:    {t:'Low frequency', p:'med', mmp:'ftot'},
-  apnea:   {t:'Apnea', p:'hi'},
-  apvent:  {t:'Apnea ventilation', p:'low'},
+  apnea:   {t:'Apnoea', p:'hi'},
+  apvent:  {t:'Apnoea ventilation', p:'low'},
   o2fail:  {t:'Oxygen supply failed', p:'hi'},
   lowo2:   {t:'Low oxygen', p:'hi'},
   higho2:  {t:'High oxygen', p:'hi'},
@@ -2139,8 +2139,8 @@ const HELP = {
   vthigh:'<ul><li>VTE above the high Vt limit for two consecutive breaths.</li><li>Check the settings and for leaks.</li></ul>',
   fhigh:'<ul><li>fTotal is above the high limit.</li><li>Check the patient, the limits and the trigger.</li></ul>',
   flow:'<ul><li>fTotal is below the low limit.</li><li>Check the patient and the trigger.</li></ul>',
-  apnea:'<ul><li>No breath was triggered within the Apnea time and Apnea backup is off.</li><li>Check the patient. Check the trigger. Consider a mode with mandatory breaths or turning Apnea backup on.</li></ul>',
-  apvent:'<ul><li>Apnea backup ventilation has started. It ends after two consecutive patient-triggered breaths.</li><li>Check the patient and the backup settings.</li></ul>',
+  apnea:'<ul><li>No breath was triggered within the Apnoea time and Apnoea backup is off.</li><li>Check the patient. Check the trigger. Consider a mode with mandatory breaths or turning Apnoea backup on.</li></ul>',
+  apvent:'<ul><li>Apnoea backup ventilation has started. It ends after two consecutive patient-triggered breaths.</li><li>Check the patient and the backup settings.</li></ul>',
   o2fail:'<ul><li>Flow from the oxygen source is lower than expected.</li><li>Check the oxygen supply and connections. Provide an alternative oxygen source.</li></ul>',
   lowo2:'<ul><li>Measured oxygen is more than 5% below the setting.</li><li>Check the oxygen supply. Calibrate or replace the O2 sensor.</li></ul>',
   higho2:'<ul><li>Measured oxygen is more than 5% above the setting.</li><li>Calibrate or replace the O2 sensor.</li></ul>',
@@ -2614,7 +2614,7 @@ function renderWindow() {
     const mc = modeCtrls(mk, psync);
     const tl = [['basic', 'Basic']];
     if (mc.more.length) tl.push(['more', 'More']);
-    if (BACKUP_MODES.includes(mk)) tl.push(['apnoea', 'Apnea']);
+    if (BACKUP_MODES.includes(mk)) tl.push(['apnoea', 'Apnoea']);
     tl.push(['patient', 'Patient']);
     if (!tl.some(t => t[0] === winTab)) winTab = 'basic';
     const title = isDraft ? (D.cpr ? '<b>CPR ventilation</b>: review, then Confirm' : 'New mode: <b>' + esc(mName(mode)) + '</b> (not active until confirmed)') : 'Controls · ' + esc(modeLabel());
@@ -2623,7 +2623,7 @@ function renderWindow() {
     if (winTab === 'apnoea') {
       const bk = mk === 'NIV' ? 'PCV+' : 'SIMV+ (APVsimv)';
       body = `<div class="wrow" style="margin-top:6px"><span>Backup</span><button class="wb ${V.backupOn ? 'green' : ''}" data-kf data-backup="on">On</button><button class="wb ${!V.backupOn ? 'green' : ''}" data-kf data-backup="off">Off</button><span class="wnote" style="margin:0 0 0 10px">Backup mode: <b>${bk}</b> · Automatic</span></div>
-        <p class="wnote">With Apnea backup on, if no breath occurs within the Apnea time (Alarms &gt; Limits 1), the ventilator switches to backup ventilation in ${bk}, shows the low-priority alarm "Apnea ventilation", and returns to ${esc(mName(mk))} after two consecutive patient-triggered breaths ("Apnea ventilation ended"). With backup off, a high-priority "Apnea" alarm is generated instead. With Automatic on, the device sets the backup controls from IBW; the manual does not list them, so in this trainer backup breaths are ${mk === 'NIV' ? 'ΔPsupport (at least 10 cmH2O)' : 'Vt 8 ml/kg IBW'} at the default rate for IBW.</p>`;
+        <p class="wnote">With Apnoea backup on, if no breath occurs within the Apnoea time (Alarms &gt; Limits 1), the ventilator switches to backup ventilation in ${bk}, shows the low-priority alarm "Apnoea ventilation", and returns to ${esc(mName(mk))} after two consecutive patient-triggered breaths ("Apnoea ventilation ended"). With backup off, a high-priority "Apnoea" alarm is generated instead. With Automatic on, the device sets the backup controls from IBW; the manual does not list them, so in this trainer backup breaths are ${mk === 'NIV' ? 'ΔPsupport (at least 10 cmH2O)' : 'Vt 8 ml/kg IBW'} at the default rate for IBW.</p>`;
     } else if (winTab === 'patient') {
       body = `<div class="wrow" style="margin-top:6px"><span style="min-width:80px">Sex</span><button class="wb ${V.sex === 'Male' ? 'green' : ''}" data-kf data-sex="Male">Male</button><button class="wb ${V.sex === 'Female' ? 'green' : ''}" data-kf data-sex="Female">Female</button></div>
         <div class="wrow" style="margin-top:6px">${ctlHTML('wctl', 'height', isDraft ? 'draft' : 'ctrl', src.height)}<span class="ibw">${calcIBW()}<small>IBW (kg)</small></span></div>`;
@@ -2726,7 +2726,7 @@ function controlsNote(mode, mk, s, psync, tab, tp, plim, isDraft) {
     const ibw = calcIBW();
     parts.push(`Target MinVol = IBW ${ibw} kg × 0.1 l/kg/min × ${s.minvol}% = ${fmt(ibw * 0.1 * s.minvol / 100, 1)} l/min. ASV chooses rate, Vt, TI and ΔPinsp within lung-protective limits (max ΔPinsp = Plimit ${plim} − PEEP).` + (live ? ` Now: target f ${fmt(A.fTarget)} b/min, Vt ${fmt(A.vtTarget * 1000)} ml, ΔPinsp ${fmt(A.p)} cmH2O.` : ''));
   }
-  if (mode === 'HiFlowO2') parts.push('HiFlowO2 delivers a continuous flow through a nasal cannula. It is not life-supporting: disconnection and apnea alarms are inactive, and Manual breath is disabled.');
+  if (mode === 'HiFlowO2') parts.push('HiFlowO2 delivers a continuous flow through a nasal cannula. It is not life-supporting: disconnection and apnoea alarms are inactive, and Manual breath is disabled.');
   if (tp !== null) parts.push(`Total inspiratory pressure ${tp} cmH2O; Plimit ${plim} cmH2O (high Pressure alarm − 10).` + (tp > plim ? ' <b>Total pressure exceeds Plimit: delivered pressure will be limited.</b>' : ''));
   return parts.join(' ');
 }
@@ -2768,7 +2768,7 @@ function applyDraft() {
   if (nIf !== oldIf) {
     if (nIf === 'inv') addPrompt('Invasive mode: this trainer now assumes the patient has been intubated (the NIV patient scenarios are written for a mask). The leak buttons act as a leak at the tube or circuit. Disconnection on patient side and Inspiratory volume limitation now apply.');
     if (nIf === 'niv') addPrompt('Noninvasive mode: the trainer assumes a non-vented mask. Volume alarms are less meaningful; set the low Pressure limit near the set pressure.');
-    if (nIf === 'hfo') addPrompt('HiFlowO2: the trainer assumes a nasal cannula. There is no pressure support. Only Oxygen and Flow are monitored, and disconnection and apnea alarms are inactive.');
+    if (nIf === 'hfo') addPrompt('HiFlowO2: the trainer assumes a nasal cannula. There is no pressure support. Only Oxygen and Flow are monitored, and disconnection and apnoea alarms are inactive.');
   }
   if (entering && V.standby) { startVentilation(); return; }
   win = null; closeWin(); updateTasks();
@@ -2909,7 +2909,7 @@ $('#screen').addEventListener('click', e => {
   if (b.dataset.open) { if (win === b.dataset.open && !b.closest('#win')) { closeWin(); return; } openWin(b.dataset.open, b.dataset.tab); return; }
   if (b.dataset.tab) { winTab = b.dataset.tab; helpFor = null; renderWindow(); return; }
   if (b.dataset.sex) { V.sex = b.dataset.sex; renderAll(); return; }
-  if (b.dataset.backup) { V.backupOn = b.dataset.backup === 'on'; logEvent('Apnea backup ' + (V.backupOn ? 'on' : 'off'), 'info'); renderWindow(); return; }
+  if (b.dataset.backup) { V.backupOn = b.dataset.backup === 'on'; logEvent('Apnoea backup ' + (V.backupOn ? 'on' : 'off'), 'info'); renderWindow(); return; }
   if (b.dataset.loud) { V.loud = +b.dataset.loud; renderWindow(); return; }
   if (b.dataset.gfx) { V.gfx = b.dataset.gfx; closeWin(); return; }
   if (b.dataset.spo2) { V.spo2On = b.dataset.spo2 === 'on'; renderAll(); return; }
@@ -2948,7 +2948,7 @@ function autoLimits() {
   V.lim.fhigh = clamp(Math.round(M.ftot * 1.4 + 5), 2, 99);
   V.lim.flow = clamp(Math.round(M.ftot * 0.6), 0, V.lim.fhigh - 1);
   logEvent('Alarm limits set with Auto', 'info');
-  addPrompt('Auto set the alarm limits around the current values (Vt and Apnea limits are not changed). The manual warns that automatic limits are not appropriate in all situations: check them, and in NIV set the low Pressure limit yourself. (This trainer\'s Auto rules are illustrative.)');
+  addPrompt('Auto set the alarm limits around the current values (Vt and Apnoea limits are not changed). The manual warns that automatic limits are not appropriate in all situations: check them, and in NIV set the low Pressure limit yourself. (This trainer\'s Auto rules are illustrative.)');
   renderAll();
 }
 
@@ -3546,10 +3546,10 @@ const SCN = [
     q1:{q:'How do you interpret this?', o:['NIV failure: worsening acidosis despite optimised NIV','A technical problem with the mask','Normal early response','Oxygen-induced hypercapnia only, so no action is needed'], a:0, e:'With technical issues addressed, worsening acidosis, a persistent RR above 25 and new confusion are BTS/ICS red flags. Silence on the ventilator does not mean the patient is safe.'},
     q2:{q:'Best next step?', o:['Urgent senior or ICU review (within 30 min, QS 6). Act on the escalation plan: intubation if appropriate, or palliation if NIV is the ceiling','Keep going and recheck the gas in 4 h','Increase IPAP to 40','Stop NIV and give 15 l/min oxygen'], a:0, e:'Invasive ventilation should be considered for persistent or worsening acidosis despite optimised NIV (Rec 32). NIV must not delay escalation (Rec 27). If NIV is the agreed ceiling, focus on symptom control (Rec 9).'},
     dopes:'P: Patient', load:'det'},
-  {id:'apnoea', name:'Apnoea', alarms:[['Apnea','hi']], mmp:{Ppeak:'--', PEEP:'5', 'VTE NIV':'--', fTotal:'0', VLeak:'--', MVLeak:'3 l/min', Oxygen:'40 %'},
-    obs:'NIV mode (ΔPsupport 10), Apnea backup OFF. No breaths for 20 s. The patient is unresponsive, with SpO2 falling.',
-    q1:{q:'What does this mean?', o:['No patient trigger within the Apnea time and no backup ventilation: a respiratory arrest or severe CO2 narcosis/oversedation until proven otherwise','Mask leak','Low battery','Flow sensor fault'], a:0, e:'In NIV mode every breath must be triggered. With backup off, the transport ventilator gives a high-priority Apnea alarm. With backup on, it starts PCV+ backup ("Apnea ventilation", low priority).'},
-    q2:{q:'Best immediate action?', o:['Assess using ABC and call for help. Open the airway and support ventilation (bag-valve-mask). Decide on intubation according to the plan','Turn Apnea backup on and leave','Increase oxygen','Switch to NIV-ST and walk away'], a:0, e:'NIV supplements spontaneous breathing. Respiratory arrest or peri-arrest is an indication for intubation unless there is rapid recovery (Rec 33). NIV-ST with a backup rate is used for patients at risk of reduced drive, but it is not a substitute for airway management in arrest.'},
+  {id:'apnoea', name:'Apnoea', alarms:[['Apnoea','hi']], mmp:{Ppeak:'--', PEEP:'5', 'VTE NIV':'--', fTotal:'0', VLeak:'--', MVLeak:'3 l/min', Oxygen:'40 %'},
+    obs:'NIV mode (ΔPsupport 10), Apnoea backup OFF. No breaths for 20 s. The patient is unresponsive, with SpO2 falling.',
+    q1:{q:'What does this mean?', o:['No patient trigger within the Apnoea time and no backup ventilation: a respiratory arrest or severe CO2 narcosis/oversedation until proven otherwise','Mask leak','Low battery','Flow sensor fault'], a:0, e:'In NIV mode every breath must be triggered. With backup off, the transport ventilator gives a high-priority Apnoea alarm. With backup on, it starts PCV+ backup ("Apnoea ventilation", low priority).'},
+    q2:{q:'Best immediate action?', o:['Assess using ABC and call for help. Open the airway and support ventilation (bag-valve-mask). Decide on intubation according to the plan','Turn Apnoea backup on and leave','Increase oxygen','Switch to NIV-ST and walk away'], a:0, e:'NIV supplements spontaneous breathing. Respiratory arrest or peri-arrest is an indication for intubation unless there is rapid recovery (Rec 33). NIV-ST with a backup rate is used for patients at risk of reduced drive, but it is not a substitute for airway management in arrest.'},
     dopes:'P: Patient', load:'apnoea'},
   {id:'o2', name:'O2 supply low', alarms:[['Oxygen supply failed','hi'],['Low oxygen','hi']], mmp:{Ppeak:'20', PEEP:'5', 'VTE NIV':'410', fTotal:'22', VLeak:'10 %', MVLeak:'8 l/min', Oxygen:'21 %'},
     obs:'During transfer to the ward. Set Oxygen 40%. SpO2 drifting down from 91 to 85%.',
@@ -3597,7 +3597,7 @@ function loadScenario(s) {
   if (V.standby) startVentilation();
   EVENTS.forEach(ev => { if (ev.is()) ev.off(); });
   const ev = EVENTS.find(x => x.id === s.load); if (ev) { ev.on(); if (s.load === 'leakL') leakSeen = true; }
-  if (s.load === 'apnoea' && V.mode !== 'NIV') { V.mode = 'NIV'; V.set.ps = 10; V.backupOn = false; addPrompt('Mode set to NIV with Apnea backup OFF for this scenario.'); }
+  if (s.load === 'apnoea' && V.mode !== 'NIV') { V.mode = 'NIV'; V.set.ps = 10; V.backupOn = false; addPrompt('Mode set to NIV with Apnoea backup OFF for this scenario.'); }
   renderEvents(); renderAll();
   addPrompt('Scenario loaded: ' + s.name + '. Find and fix the problem using the event buttons and the controls.');
   if (typeof showPanel === 'function') showPanel('sim');
@@ -3696,7 +3696,7 @@ const INV_QUIZ = [
   {q:'In ASV, what does %MinVol 100% mean?', o:['The normal minute ventilation for the patient\'s IBW','100% oxygen','The maximum Vt','The rate is set by the patient alone'], a:0, e:'%MinVol is the target minute ventilation as a percentage of normal for IBW. Increase it in steps of 10–20% if a passive patient has a high pCO2 (ASV quick guide).'},
   {q:'With CPR ventilation on, what happens to the flow trigger?', o:['It is set to Off and P-ramp is fixed at 50 ms','It becomes more sensitive','It is unchanged','It switches to a pressure trigger'], a:0, e:'Manual section 10.9.1: flow trigger Off and P-ramp 50 ms, so compressions do not trigger breaths. Default settings are Rate 10, I:E 1:5, PEEP 5, Oxygen 100%.'},
   {q:'You lower Vt from 8 to 6 ml/kg IBW in ARDS and the pCO2 rises. What is the usual next step?', o:['Increase the rate to restore minute ventilation','Put Vt back to 8 ml/kg','Increase PEEP','Lower the Oxygen'], a:0, e:'CO2 clearance depends on alveolar minute ventilation. Raise the rate (watching for air trapping) and accept a modestly raised pCO2 rather than larger tidal volumes.'},
-  {q:'A paralysed patient is put on SPONT with Apnea backup on. What happens?', o:['After the Apnea time, backup ventilation starts and "Apnea ventilation" shows','The transport ventilator delivers CPAP and nothing else, silently','The transport ventilator switches to ASV','Ventilation stops and only a low-priority message shows'], a:0, e:'With backup on, the transport ventilator switches to backup ventilation after the Apnea time. With backup off, a high-priority Apnea alarm sounds instead. Use a mode with mandatory breaths for a paralysed patient.'},
+  {q:'A paralysed patient is put on SPONT with Apnoea backup on. What happens?', o:['After the Apnoea time, backup ventilation starts and "Apnoea ventilation" shows','The transport ventilator delivers CPAP and nothing else, silently','The transport ventilator switches to ASV','Ventilation stops and only a low-priority message shows'], a:0, e:'With backup on, the transport ventilator switches to backup ventilation after the Apnoea time. With backup off, a high-priority Apnoea alarm sounds instead. Use a mode with mandatory breaths for a paralysed patient.'},
   {q:'In DuoPAP, PEEP is 5, ΔPsupport 10 and P high 20. Are spontaneous breaths at P high supported?', o:['No: PEEP + ΔPsupport (15) is below P high','Yes, by 10 cmH2O above P high','Yes, by 5 cmH2O','Only with PSync'], a:0, e:'ΔPsupport is set above PEEP, so at P high it only helps when PEEP + ΔPsupport is greater than P high (manual 7.3.4).'},
   {q:'When does the transport ventilator raise "Inspiratory volume limitation"?', o:['When delivered Vt is more than 1.5 times the Vt high alarm limit','When Vt is below the Vt low limit','When Plimit is reached','When the leak is above 30%'], a:0, e:'The breath is ended and pressure drops to PEEP; the APV modes reduce the pressure for the next breath by 3 cmH2O.'}
 ];
